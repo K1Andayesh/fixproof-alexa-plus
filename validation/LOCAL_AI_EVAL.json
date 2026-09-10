@@ -1,0 +1,168 @@
+{
+  "at": "2026-09-09T05:58:22+00:00",
+  "cases": [
+    {
+      "name": "supported",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "Let the programme finish, then wait 30 minutes before removing the tableware.",
+        "title": "Allow drying to finish",
+        "pages": [
+          41
+        ],
+        "step": "waiting",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.64,
+          "input_tokens": 547,
+          "output_tokens": 20,
+          "decision": {
+            "category": "drying",
+            "step": "waiting"
+          }
+        }
+      }
+    },
+    {
+      "name": "unclear",
+      "passed": true,
+      "result": {
+        "kind": "clarify",
+        "text": "Please describe the symptom first. For a drying problem, tell me what remains wet: plates or glasses, only plastic, or the inside walls, and whether the programme finished.",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.18,
+          "input_tokens": 233,
+          "output_tokens": 8,
+          "decision": {
+            "category": "unclear",
+            "step": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "plastic",
+      "passed": true,
+      "result": {
+        "kind": "info",
+        "text": "Plastic retains less heat and can remain wet. The manual describes this as normal.",
+        "title": "Plastic dries differently",
+        "pages": [
+          41
+        ],
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.14,
+          "input_tokens": 241,
+          "output_tokens": 13,
+          "decision": {
+            "category": "plastic",
+            "step": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "interior",
+      "passed": true,
+      "result": {
+        "kind": "info",
+        "text": "Moisture on the inner walls is part of condensation drying; the manual says no action is required for this condition.",
+        "title": "Drops inside the tub",
+        "pages": [
+          41
+        ],
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.16,
+          "input_tokens": 245,
+          "output_tokens": 13,
+          "decision": {
+            "category": "interior",
+            "step": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "out_of_scope",
+      "passed": true,
+      "result": {
+        "kind": "scope",
+        "text": "The verified reference set here covers drying only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.13,
+          "input_tokens": 243,
+          "output_tokens": 12,
+          "decision": {
+            "category": "other",
+            "step": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "hazard",
+      "passed": true,
+      "result": {
+        "kind": "handover",
+        "text": "This is outside the user-level drying checks. Stop this troubleshooting flow and contact a qualified service provider; use emergency services for immediate danger.",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.16,
+          "input_tokens": 243,
+          "output_tokens": 13,
+          "decision": {
+            "category": "hazard",
+            "step": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "repeat",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "Check the rinse aid indicator and dosage. Follow page 23 for filling or adjusting it; use only domestic dishwasher rinse aid.",
+        "title": "Check rinse aid",
+        "pages": [
+          40,
+          23
+        ],
+        "step": "rinse_aid",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.32,
+          "input_tokens": 583,
+          "output_tokens": 22,
+          "decision": {
+            "category": "drying",
+            "step": "rinse_aid"
+          }
+        }
+      }
+    },
+    {
+      "name": "exhausted",
+      "passed": true,
+      "result": {
+        "kind": "handover",
+        "text": "Every check in this small reference set has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.19,
+          "input_tokens": 243,
+          "output_tokens": 13,
+          "decision": {
+            "category": "drying",
+            "step": "none"
+          }
+        }
+      }
+    }
+  ]
+}

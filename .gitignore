@@ -1,0 +1,15 @@
+prototype/data/
+fixproof/data/
+tmp/
+carerelay/data/
+__pycache__/
+.env
+.env.*
+!.env.example
+carerelay/
+prototype/
+submission/
+INITIAL.md
+KICKOFF.md
+validation/CARE_RELAY.md
+validation/FIXPROOF.md
