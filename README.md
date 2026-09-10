@@ -4,7 +4,7 @@ A local voice-first Alexa+ experience simulation for the Amazon Developer Hackat
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.airy-kiwi-4307.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The hosted interface states that it is a simulation and does not run the local AI implementation.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The hosted interface states that it is a simulation and does not run the local AI implementation.
 
 ## Run on Windows
 
