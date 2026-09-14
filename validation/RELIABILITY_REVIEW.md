@@ -46,10 +46,11 @@ The revised interface was exercised and visually inspected in Chrome from the lo
 
 ## Release evidence
 
-- Commit `1bd1ff49d34dfbeb8168eca26b2ec842fbe01eb4` was pushed to the public GitHub repository and the Sites source repository.
-- The exact archive from that commit was saved as Site version 7 and production deployment `appgdep_6aa80667cfd88191a4eb0bfe5b345a65` succeeded on 14 September 2026.
-- The production page showed 26 automated checks and 10/10 local-AI scenarios after deployment.
-- In production Chrome QA, the evidence card described the structured citation contract. A fictional case returned the supported step "Allow drying to finish" with the clickable exact-page citation `Manual · p. 41`, linking to the verified manual at page 41.
-- Devpost remained publicly accessible and the competition submission remained `SUBMITTED`, with 5/5 steps complete.
+- Commit `735588368e8946001e3f76d697a2a032886b23c6` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 8 and production deployment `appgdep_6aa830e6a6208191a752883c8207612b` succeeded on 15 September 2026.
+- The real HTTP MCP exercise returned `fixproof-handover-1`, preserved a deferred check as `deferred_or_skipped`, included its exact-page citation and source hash, then preserved a later safety stop across a new client connection.
+- The production page showed 27 automated checks and 10/10 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract.
+- In production Chrome QA, a fictional case returned the exact page 41 source link, recorded `Not yet tested` without counting it as performed, and rendered the observation and boundary correctly in the handover preview.
+- Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
