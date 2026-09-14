@@ -44,10 +44,10 @@ The revised interface was exercised and visually inspected in Chrome from the lo
 
 ## Release evidence
 
-- Commit `10947a144001ccf984010fbeea6a15f414a4cf30` was pushed to the public GitHub repository and the Sites source repository.
-- The exact archive from that commit was saved as Site version 5 and production deployment `appgdep_6aa7a554527c8191ac32d36359af96a4` succeeded on 14 September 2026.
-- The public page showed 23 automated checks and 8/8 local-AI scenarios after deployment.
-- A resumed production case showed one user-reported performed check separately from three checks with no recorded outcome while retaining the persistent safety stop.
-- Devpost's public and submitted project copy showed the new reliability claims and remained `SUBMITTED`, with 5/5 steps complete.
+- Commit `9defac29163afbb28ae96623985a15d7227af3f4` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 6 and production deployment `appgdep_6aa7ba2ae7c48191b21d6e35ca21330b` succeeded on 14 September 2026.
+- The production page showed 25 automated checks and 10/10 local-AI scenarios after deployment.
+- In production Chrome QA, an explicit no-hazard issue and a technical phrase continued to the supported check. The mixed report "No smoke, but water is leaking" then stopped troubleshooting, cleared the pending check, disabled further prompts and preserved the stopped-before-outcome state.
+- Devpost's public story and Open Source contribution copy showed the new context-handling evidence. The competition submission remained `SUBMITTED`, with 5/5 steps complete.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
