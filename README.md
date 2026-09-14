@@ -6,6 +6,43 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The hosted interface states that it is a simulation and does not run the local AI implementation.
 
+## 90-second judge tour
+
+1. Start the fictional Bosch SMS6HAI02A/01 drying case.
+2. Ask **What should I check first?** and open the cited manual page.
+3. Save **Still wet** with the observation **Waited 30 minutes; glasses remained wet.**
+4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
+5. Preview the handover and confirm that it contains the observation, exact-model provenance, page-level source, and unresolved limits.
+6. Use the scenario shortcuts to inspect the plastic, safety, unsupported-issue, and unclear-report boundaries.
+
+## Runtime architecture
+
+```mermaid
+flowchart LR
+    A[Alexa+ experience or MCP client] --> B[Five-tool Streamable HTTP MCP server]
+    B --> C[Revisioned case workflow]
+    C --> D[(SQLite evidence record)]
+    C --> E[Local Ollama + Qwen 3.5 4B]
+    E -->|category and approved step ID only| C
+    F[Verified model catalog] -->|instruction text and page citations| C
+    C --> G[Repair handover]
+```
+
+The model classifies the symptom and selects only from server-provided remaining check IDs. Application code supplies every instruction and citation. A user action is the only path that records an outcome.
+
+## Evidence map
+
+| Claim | Reproducible evidence |
+| --- | --- |
+| Real MCP runtime | `fixproof/mcp_server.py`, `fixproof/mcp_smoke.py`, and the MCP integration test |
+| State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
+| Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
+| Sources are application-owned | `fixproof/catalog.py` contains exact-model document provenance and page links |
+| Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
+| Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
+
+The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).
+
 ## Run the local web experience on Windows
 
 Requires Python 3.10+ and a running local Ollama instance with `qwen3.5:4b` already installed. The browser experience itself uses only the Python standard library and needs no cloud credentials.

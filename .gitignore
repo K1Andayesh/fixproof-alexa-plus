@@ -9,8 +9,8 @@ __pycache__/
 .venv/
 carerelay/
 prototype/
-submission/
+submission/*
+!submission/JUDGING_STRATEGY.md
 INITIAL.md
 KICKOFF.md
 validation/CARE_RELAY.md
-validation/FIXPROOF.md

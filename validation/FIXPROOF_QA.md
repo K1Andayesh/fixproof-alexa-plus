@@ -1,4 +1,4 @@
-# FixProof QA evidence — 9 September 2026
+# FixProof QA evidence — updated 14 September 2026
 
 ## Result
 
@@ -23,6 +23,9 @@ Working local MVP at http://127.0.0.1:8768. Real Qwen 3.5 4B inference through t
 | Desktop screenshot inspection | Readable two-column layout; no overlapping controls observed at tested desktop size |
 | Voice-first UI | Chrome exposed an enabled Speak control, review-before-send privacy text, and typed fallback |
 | Spoken response | Browser action completed and the live status returned to Ready; audible output could not be independently measured |
+| Hosted judge-mode shortcuts | Plastic, safety hazard, unsupported issue, and unclear report each reached the intended bounded response |
+| Safety stop persistence | Hazard language produced an explicit stop/handover response; after reload the case remained Handover ready and the ask form stayed unavailable |
+| Handover completeness | Preview showed the exact model, recorded outcome, source, observation, and unresolved limits without overlap |
 
 Main case: `5af1e227-332c-4d5f-ab7d-6da4312082d5`. Isolated failure/recovery case: `26f996b7-e461-462e-8365-c5a6d5374ba8`; unknown-model case: `84ae5f0b-433a-4991-87d4-9b35e52e5117`, both in ignored temporary data. All notes are fictional QA observations.
 
@@ -36,7 +39,7 @@ The download link was clicked and the server served the attachment. Its actual n
 - Eight local-model scenarios pass: drying, unclear symptom, plastic, inside-wall condensation, unsupported error/drainage issue, hazard, already-recorded check and exhausted catalog. Full results and local latency/token observations: [LOCAL_AI_EVAL.json](LOCAL_AI_EVAL.json).
 - Python compilation and JavaScript syntax checks pass.
 - A source-only rehearsal copy under ignored `tmp/` passed the eight workflow tests and syntax checks. A focused scan found no email address, personal path or credential marker. Test-generated `__pycache__` remains excluded by the project `.gitignore`; the rehearsal intentionally contains no database or downloaded manual.
-- The hosted evaluation build passed a Chrome desktop journey: start the fictional exact-model case, request the first source-backed check, record a Still wet observation, reload, resume the saved case, and preview a handover containing the saved outcome, page 41 source and unresolved/unverified limits. The tested view had no visible overlap.
+- The improved hosted-source build passed an actual Chrome desktop journey at `http://127.0.0.1:8769`: start the fictional exact-model case, request the first source-backed check, record a Still wet observation, reload, resume the saved case, and preview a handover containing the saved outcome, page 41 source and unresolved/unverified limits. The tested view had no visible overlap. Judge-mode shortcuts also exercised plastic, hazard, unsupported-issue, and unclear-report boundaries. These source changes remain local until the public Site is republished.
 
 Two defects found and fixed during work: combined classification/selection occasionally assumed drying for an unclear report or failed to move past a recorded check. Classification now runs separately on user evidence; selection's schema is restricted to remaining catalog IDs. SQLite connections are explicitly closed after each transaction; the Windows test database cleanup exposed the original missing close.
 
