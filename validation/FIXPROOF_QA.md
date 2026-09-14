@@ -31,6 +31,8 @@ The download link was clicked and the server served the attachment. Its actual n
 ## Automated and live-model checks
 
 - Eight standard-library workflow tests pass: duplicate request, origin guard, pending outcome requirement, separate resolution, SQLite persistence, stale writes, model failure, wrong/unconfirmed model gating, invalid model output, exclusion of recorded checks and explicit outcome revisiting. Some tests cover multiple assertions.
+- One MCP integration test passes through the official SDK's in-process client, covering tool discovery, idempotent case creation, bounded next-step selection, explicit outcome persistence, read-back and handover content.
+- A separate client connected to the running Streamable HTTP endpoint at `/mcp`, negotiated protocol `2026-07-28`, discovered all five tools, created a fictional case, obtained a real local-AI selected check, recorded an outcome and verified that the handover retained its observation. A request with an untrusted browser Origin was rejected with HTTP 403.
 - Eight local-model scenarios pass: drying, unclear symptom, plastic, inside-wall condensation, unsupported error/drainage issue, hazard, already-recorded check and exhausted catalog. Full results and local latency/token observations: [LOCAL_AI_EVAL.json](LOCAL_AI_EVAL.json).
 - Python compilation and JavaScript syntax checks pass.
 - A source-only rehearsal copy under ignored `tmp/` passed the eight workflow tests and syntax checks. A focused scan found no email address, personal path or credential marker. Test-generated `__pycache__` remains excluded by the project `.gitignore`; the rehearsal intentionally contains no database or downloaded manual.

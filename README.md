@@ -1,14 +1,14 @@
 # FixProof
 
-A local voice-first Alexa+ experience simulation for the Amazon Developer Hackathon 2026. FixProof carries a dishwasher issue through source-linked checks, explicit user outcomes and a repair handover. It is an independent prototype, not a live Alexa integration or manufacturer service.
+A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackathon 2026. FixProof carries a dishwasher issue through source-linked checks, explicit user outcomes and a repair handover. It is an independent prototype, not a manufacturer service.
 
 ## Try the hosted workflow
 
 Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The hosted interface states that it is a simulation and does not run the local AI implementation.
 
-## Run on Windows
+## Run the local web experience on Windows
 
-Requires Python 3.10+ and a running local Ollama instance with `qwen3.5:4b` already installed. No Python/JavaScript packages or cloud credentials are needed.
+Requires Python 3.10+ and a running local Ollama instance with `qwen3.5:4b` already installed. The browser experience itself uses only the Python standard library and needs no cloud credentials.
 
 ```powershell
 python fixproof/server.py
@@ -20,6 +20,24 @@ If Ollama is unavailable, case creation, saved records and export still work. AI
 
 Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_PORT`, `FIXPROOF_DATA`. Defaults: `qwen3.5:4b`, `http://127.0.0.1:11434`, `8768`, `fixproof/data`. Keep the provider local unless remote data transfer and cost are approved. No model download is performed by the application.
 
+## Run the MCP server
+
+The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe fixproof\mcp_server.py
+```
+
+Connect to `http://127.0.0.1:8771/mcp`. In another terminal, verify the transport and create a fictional case:
+
+```powershell
+.\.venv\Scripts\python.exe fixproof\mcp_smoke.py
+```
+
+The server defaults to loopback, uses the same SQLite record and bounded AI decisions as the browser experience, and rejects invalid browser origins through the SDK transport. A public deployment needs HTTPS and authentication before accepting real case data.
+
 ## Implemented
 
 - Exact reference model Bosch SMS6HAI02A/01; manufacturer manual pages 23, 40 and 41 visually checked.
@@ -27,12 +45,13 @@ Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_P
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
 - Reload/resume, model traces, manufacturer links, handover preview and Markdown download.
 - Optional Chrome speech input fills the question for review without submitting it. Browser speech output can read the latest FixProof response aloud. The typed path remains available throughout.
+- Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum.
 - Loopback binding, Host/Origin checks, bounded requests, parameterized SQL and no arbitrary source URL fetching.
 
 ## Verify
 
 ```powershell
-python -m unittest discover -s fixproof -p test_server.py -v
+.\.venv\Scripts\python.exe -m unittest discover -s fixproof -p "test*.py" -v
 python fixproof/evaluate.py
 node --check fixproof/app.js
 ```
@@ -41,7 +60,7 @@ Live evaluations use the local model and write `validation/LOCAL_AI_EVAL.json`. 
 
 ## Boundaries
 
-Local, single-user MVP: no authentication, encrypted storage, remote sharing, physical inspection, live Alexa/device integration or customer validation. Do not expose this development server publicly. AI can misclassify novel phrasing; the evaluated set is small. Four checks do not cover the whole manual or prove a repair is needed.
+Local, single-user MVP: no authentication, encrypted storage, remote sharing, physical inspection, Alexa device execution or customer validation. Do not expose either development server publicly. AI can misclassify novel phrasing; the evaluated set is small. Four checks do not cover the whole manual or prove a repair is needed.
 
 Chrome provides speech recognition and may use its online service; spoken transcripts can therefore leave the computer before FixProof receives them. The UI states this before the microphone control. Speech input never submits automatically. The microphone permission path has not been accepted or end-to-end tested; typed input and spoken playback were browser-tested.
 
