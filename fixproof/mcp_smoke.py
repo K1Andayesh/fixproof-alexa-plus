@@ -12,6 +12,13 @@ async def main() -> None:
     url = os.environ.get("FIXPROOF_MCP_URL", "http://127.0.0.1:8771/mcp")
     async with Client(url, raise_exceptions=True) as client:
         tools = await client.list_tools()
+        annotations = {
+            tool.name: tool.annotations.model_dump(by_alias=True, exclude_none=True)
+            for tool in tools.tools
+        }
+        assert annotations['read_case']['readOnlyHint'] is True
+        assert annotations['prepare_handover']['readOnlyHint'] is True
+        assert all(item['openWorldHint'] is False for item in annotations.values())
         result = await client.call_tool(
             "start_case",
             {
@@ -79,6 +86,7 @@ async def main() -> None:
                 {
                     "protocol_version": client.protocol_version,
                     "tools": [tool.name for tool in tools.tools],
+                    "tool_annotations": annotations,
                     "case_id": case["case_id"],
                     "selected_step": pending["step_id"],
                     "selected_step_citations": [citation["url"] for citation in citations],

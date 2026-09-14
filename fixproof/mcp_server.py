@@ -14,6 +14,7 @@ import uuid
 from typing import Any, Literal
 
 from mcp.server import MCPServer
+from mcp.types import ToolAnnotations
 
 import server as workflow
 
@@ -31,6 +32,19 @@ mcp = MCPServer(
         "physical inspection, or a verified repair. The current reference catalog covers "
         "Bosch SMS6HAI02A/01 drying guidance only."
     ),
+)
+
+LOCAL_READ = ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    idempotentHint=True,
+    openWorldHint=False,
+)
+LOCAL_WRITE = ToolAnnotations(
+    readOnlyHint=False,
+    destructiveHint=False,
+    idempotentHint=True,
+    openWorldHint=False,
 )
 
 
@@ -202,7 +216,7 @@ def _handover_evidence(case: dict) -> dict[str, Any]:
     }
 
 
-@mcp.tool(structured_output=True)
+@mcp.tool(title="Start a FixProof case", annotations=LOCAL_WRITE, structured_output=True)
 def start_case(
     request_id: str,
     reported_issue: str,
@@ -253,14 +267,14 @@ def start_case(
     return _case_view(_save_new(case, request_id))
 
 
-@mcp.tool(structured_output=True)
+@mcp.tool(title="Read a FixProof case", annotations=LOCAL_READ, structured_output=True)
 def read_case(case_id: str) -> dict[str, Any]:
     """Read current case state before taking a revision-sensitive action."""
     workflow.init()
     return _case_view(workflow.read_case(workflow.clean(case_id, 80)))
 
 
-@mcp.tool(structured_output=True)
+@mcp.tool(title="Ask FixProof", annotations=LOCAL_WRITE, structured_output=True)
 def ask_fixproof(
     request_id: str, case_id: str, revision: int, user_message: str
 ) -> dict[str, Any]:
@@ -286,7 +300,7 @@ def ask_fixproof(
     return _case_view(_save_updated(case, request_id, revision))
 
 
-@mcp.tool(structured_output=True)
+@mcp.tool(title="Record a check outcome", annotations=LOCAL_WRITE, structured_output=True)
 def record_outcome(
     request_id: str,
     case_id: str,
@@ -310,7 +324,7 @@ def record_outcome(
     return _case_view(_save_updated(case, request_id, revision))
 
 
-@mcp.tool(structured_output=True)
+@mcp.tool(title="Prepare a repair handover", annotations=LOCAL_READ, structured_output=True)
 def prepare_handover(case_id: str) -> dict[str, Any]:
     """Return human-readable Markdown and a structured evidence handover."""
     workflow.init()

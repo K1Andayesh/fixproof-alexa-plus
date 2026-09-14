@@ -164,6 +164,19 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(evidence["reference"]["content_sha256"], mcp_server.workflow.SOURCE["sha256"])
             self.assertIn("No fault or repair requirement was diagnosed.", evidence["limits"])
 
+    async def test_tools_publish_client_planning_annotations(self):
+        async with Client(mcp_server.mcp, raise_exceptions=True) as client:
+            listed = {tool.name: tool for tool in (await client.list_tools()).tools}
+            for name in ("read_case", "prepare_handover"):
+                self.assertTrue(listed[name].annotations.read_only_hint)
+                self.assertTrue(listed[name].annotations.idempotent_hint)
+                self.assertFalse(listed[name].annotations.open_world_hint)
+            for name in ("start_case", "ask_fixproof", "record_outcome"):
+                self.assertFalse(listed[name].annotations.read_only_hint)
+                self.assertTrue(listed[name].annotations.idempotent_hint)
+                self.assertFalse(listed[name].annotations.destructive_hint)
+                self.assertFalse(listed[name].annotations.open_world_hint)
+
 
 if __name__ == "__main__":
     unittest.main()
