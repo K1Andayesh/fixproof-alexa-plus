@@ -45,10 +45,10 @@ The revised interface was exercised and visually inspected in Chrome from the lo
 
 ## Release evidence
 
-- Commit `9defac29163afbb28ae96623985a15d7227af3f4` was pushed to the public GitHub repository and the Sites source repository.
-- The exact archive from that commit was saved as Site version 6 and production deployment `appgdep_6aa7ba2ae7c48191b21d6e35ca21330b` succeeded on 14 September 2026.
-- The production page showed 25 automated checks and 10/10 local-AI scenarios after deployment.
-- In production Chrome QA, an explicit no-hazard issue and a technical phrase continued to the supported check. The mixed report "No smoke, but water is leaking" then stopped troubleshooting, cleared the pending check, disabled further prompts and preserved the stopped-before-outcome state.
-- Devpost's public story and Open Source contribution copy showed the new context-handling evidence. The competition submission remained `SUBMITTED`, with 5/5 steps complete.
+- Commit `1bd1ff49d34dfbeb8168eca26b2ec842fbe01eb4` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 7 and production deployment `appgdep_6aa80667cfd88191a4eb0bfe5b345a65` succeeded on 14 September 2026.
+- The production page showed 26 automated checks and 10/10 local-AI scenarios after deployment.
+- In production Chrome QA, the evidence card described the structured citation contract. A fictional case returned the supported step "Allow drying to finish" with the clickable exact-page citation `Manual · p. 41`, linking to the verified manual at page 41.
+- Devpost remained publicly accessible and the competition submission remained `SUBMITTED`, with 5/5 steps complete.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
