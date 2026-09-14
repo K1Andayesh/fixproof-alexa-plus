@@ -7,7 +7,7 @@
     "record_outcome",
     "prepare_handover"
   ],
-  "case_id": "7b070c2e-228a-4bd2-9f6c-ce1a26a5df4f",
+  "case_id": "cf66a200-c19f-4792-9e0c-3c2b13dde166",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -15,6 +15,8 @@
   "source_hash_in_tool_contract": true,
   "recorded_outcome": "Not yet tested",
   "handover_contains_observation": true,
+  "machine_readable_handover": "fixproof-handover-1",
+  "handover_preserves_evidence_status": "deferred_or_skipped",
   "deferred_not_counted_as_performed": true,
   "safety_stop_survives_client_reconnect": true,
   "safety_report_in_handover": true

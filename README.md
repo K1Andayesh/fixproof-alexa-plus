@@ -38,6 +38,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
+| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object with explicit check status and citations |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
 
@@ -73,7 +74,7 @@ Connect to `http://127.0.0.1:8771/mcp`. In another terminal, verify the transpor
 .\.venv\Scripts\python.exe fixproof\mcp_smoke.py
 ```
 
-The server defaults to loopback, uses the same SQLite record and bounded AI decisions as the browser experience, and rejects invalid browser origins through the SDK transport. A public deployment needs HTTPS and authentication before accepting real case data.
+The server defaults to loopback, uses the same SQLite record and bounded AI decisions as the browser experience, and rejects invalid browser origins through the SDK transport. `prepare_handover` returns both readable Markdown and a versioned evidence object so another agent can consume the record without parsing prose. A public deployment needs HTTPS and authentication before accepting real case data.
 
 ## Implemented
 
@@ -83,6 +84,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 - Reload/resume, model traces, manufacturer links, handover preview and Markdown download.
 - Optional Chrome speech input fills the question for review without submitting it. Browser speech output can read the latest FixProof response aloud. The typed path remains available throughout.
 - Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum. Supported step and informational results carry self-contained page citations plus the verified source hash.
+- Versioned machine-readable handover evidence preserves the status, observation and citations for every recorded check alongside the human-readable Markdown.
 - Loopback binding, Host/Origin checks, bounded requests, parameterized SQL and no arbitrary source URL fetching.
 
 ## Verify
@@ -108,4 +110,4 @@ The `dist/` folder is the transparent hosted evaluation build. It uses a fixed s
 
 The revised browser flow keeps the question available while a check is pending. A hazard report cancels the pending check, stops troubleshooting, persists the warning, and includes the report in the handover. See [recorded verification](validation/VIDEO_V2_QA.md).
 
-The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, and returns self-contained citations in MCP guidance. Its 19 Python regression tests, seven public-interface logic tests and ten live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.
+The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, and exposes a versioned structured handover. Its 20 Python regression tests, seven public-interface logic tests and ten live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.

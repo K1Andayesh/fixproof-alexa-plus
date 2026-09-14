@@ -135,6 +135,35 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result["latest_event"]["citations"][0]["url"],
                              mcp_server.workflow.SOURCE["url"] + "#page=41")
 
+    async def test_handover_returns_machine_readable_evidence_boundaries(self):
+        async with Client(mcp_server.mcp, raise_exceptions=True) as client:
+            started = await self.call(client, "start_case", {
+                "request_id": str(uuid.uuid4()), "reported_issue": "Plates are wet.",
+                "model": mcp_server.workflow.MODEL, "model_confirmed": True,
+                "fictional_demo": True,
+            })
+            reply = {"kind": "step", "step": "waiting", **mcp_server.workflow.STEPS["waiting"]}
+            with patch.object(mcp_server.workflow, "assess", return_value=reply):
+                assessed = await self.call(client, "ask_fixproof", {
+                    "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                    "revision": started["revision"], "user_message": "What is first?",
+                })
+            recorded = await self.call(client, "record_outcome", {
+                "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                "revision": assessed["revision"], "step_id": "waiting",
+                "outcome": "Not yet tested", "observation": "Will test after dinner.",
+            })
+            handover = await self.call(client, "prepare_handover", {
+                "case_id": recorded["case_id"],
+            })
+            evidence = handover["evidence"]
+            self.assertEqual(evidence["schema_version"], "fixproof-handover-1")
+            self.assertEqual(evidence["checks"][0]["evidence_status"], "deferred_or_skipped")
+            self.assertEqual(evidence["checks"][0]["observation"], "Will test after dinner.")
+            self.assertEqual(evidence["checks"][0]["citations"][0]["page"], 41)
+            self.assertEqual(evidence["reference"]["content_sha256"], mcp_server.workflow.SOURCE["sha256"])
+            self.assertIn("No fault or repair requirement was diagnosed.", evidence["limits"])
+
 
 if __name__ == "__main__":
     unittest.main()

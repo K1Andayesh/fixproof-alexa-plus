@@ -59,6 +59,10 @@ async def main() -> None:
         restored = restored_result.structured_content
         assert restored['evidence_summary'] == {'user_reports_performed': 0, 'deferred_or_skipped': 1}
         assert 'Fictional MCP transport verification.' in handover['markdown']
+        evidence = handover['evidence']
+        assert evidence['schema_version'] == 'fixproof-handover-1'
+        assert evidence['checks'][0]['evidence_status'] == 'deferred_or_skipped'
+        assert evidence['checks'][0]['citations'][0]['content_sha256']
         safety_result = await client.call_tool('ask_fixproof', {
             'request_id': str(uuid.uuid4()), 'case_id': case['case_id'],
             'revision': restored['revision'], 'user_message': 'There is smoke from the door.'
@@ -81,6 +85,8 @@ async def main() -> None:
                     "source_hash_in_tool_contract": all(bool(citation["content_sha256"]) for citation in citations),
                     "recorded_outcome": recorded["recorded_outcomes"][pending["step_id"]]["outcome"],
                     "handover_contains_observation": "Fictional MCP transport verification." in handover["markdown"],
+                    "machine_readable_handover": evidence["schema_version"],
+                    "handover_preserves_evidence_status": evidence["checks"][0]["evidence_status"],
                     "deferred_not_counted_as_performed": True,
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,

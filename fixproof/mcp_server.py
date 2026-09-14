@@ -144,6 +144,64 @@ def _case_view(case: dict) -> dict:
     }
 
 
+def _handover_evidence(case: dict) -> dict[str, Any]:
+    """Return the handover facts as a stable, machine-readable evidence bundle."""
+    checks = []
+    for step_id, attempt in case["attempts"].items():
+        step = workflow.STEPS[step_id]
+        checks.append(
+            {
+                "step_id": step_id,
+                "title": step["title"],
+                "evidence_status": (
+                    "user_reports_performed"
+                    if attempt["outcome"] in workflow.PERFORMED
+                    else "deferred_or_skipped"
+                ),
+                "outcome": attempt["outcome"],
+                "observation": attempt["note"],
+                "recorded_at": attempt["at"],
+                "citations": _citations(step["pages"]),
+            }
+        )
+    pending = case.get("pending")
+    return {
+        "schema_version": "fixproof-handover-1",
+        "case_id": case["id"],
+        "case_status": case["status"],
+        "reported_issue": case["issue"],
+        "model": {
+            "reported": case["model"],
+            "user_confirmed": case["verified"],
+            "fictional_demo": case["demo"],
+            "catalog_match": workflow.is_supported(case["model"]),
+        },
+        "reference": {
+            "title": workflow.SOURCE["title"],
+            "document": workflow.SOURCE["document"],
+            "url": workflow.SOURCE["url"],
+            "source_verified": workflow.SOURCE["verified"],
+            "content_sha256": workflow.SOURCE["sha256"],
+        },
+        "checks": checks,
+        "suggested_awaiting_outcome": (
+            {
+                "step_id": pending,
+                "title": workflow.STEPS[pending]["title"],
+                "citations": _citations(workflow.STEPS[pending]["pages"]),
+            }
+            if pending
+            else None
+        ),
+        "safety_report": case.get("safety_report"),
+        "limits": [
+            "No physical inspection was performed.",
+            "No fault or repair requirement was diagnosed.",
+            "Deferred or skipped checks do not establish performed work.",
+        ],
+    }
+
+
 @mcp.tool(structured_output=True)
 def start_case(
     request_id: str,
@@ -254,7 +312,7 @@ def record_outcome(
 
 @mcp.tool(structured_output=True)
 def prepare_handover(case_id: str) -> dict[str, Any]:
-    """Return an evidence-backed Markdown handover without claiming diagnosis."""
+    """Return human-readable Markdown and a structured evidence handover."""
     workflow.init()
     case = workflow.read_case(workflow.clean(case_id, 80))
     return {
@@ -262,6 +320,7 @@ def prepare_handover(case_id: str) -> dict[str, Any]:
         "revision": case["revision"],
         "status": case["status"],
         "markdown": workflow.handover(case),
+        "evidence": _handover_evidence(case),
     }
 
 
