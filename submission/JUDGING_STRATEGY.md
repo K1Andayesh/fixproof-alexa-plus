@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, and Origin rejection.
 
-**Judge should see:** the MCP transport output in the video, the exact page URLs and versioned handover evidence returned by the live tool contract, the architecture and evidence map in the README, 27 passing automated checks, ten live local-AI scenarios, and the public implementation card.
+**Judge should see:** the MCP transport output in the video, then expand **See the verified HTTP run** in the public implementation card for the captured result and integration tests. The README evidence map links to the same artifact. It records exact page URLs, versioned handover evidence, 27 passing automated checks and ten live local-AI scenarios.
 
 ## Design and user experience
 
