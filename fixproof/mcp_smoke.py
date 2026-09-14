@@ -36,6 +36,9 @@ async def main() -> None:
         pending = assessed["pending_check"]
         if pending is None:
             raise RuntimeError("The clear drying scenario did not produce a bounded check.")
+        citations = pending.get("citations", [])
+        assert citations and all(citation["url"].startswith("https://") for citation in citations)
+        assert all(citation["content_sha256"] for citation in citations)
         recorded_result = await client.call_tool(
             "record_outcome",
             {
@@ -74,6 +77,8 @@ async def main() -> None:
                     "tools": [tool.name for tool in tools.tools],
                     "case_id": case["case_id"],
                     "selected_step": pending["step_id"],
+                    "selected_step_citations": [citation["url"] for citation in citations],
+                    "source_hash_in_tool_contract": all(bool(citation["content_sha256"]) for citation in citations),
                     "recorded_outcome": recorded["recorded_outcomes"][pending["step_id"]]["outcome"],
                     "handover_contains_observation": "Fictional MCP transport verification." in handover["markdown"],
                     "deferred_not_counted_as_performed": True,

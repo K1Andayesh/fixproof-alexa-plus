@@ -7,8 +7,12 @@
     "record_outcome",
     "prepare_handover"
   ],
-  "case_id": "13fc01e5-d952-4014-907d-c067e68cb974",
+  "case_id": "7b070c2e-228a-4bd2-9f6c-ce1a26a5df4f",
   "selected_step": "waiting",
+  "selected_step_citations": [
+    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
+  ],
+  "source_hash_in_tool_contract": true,
   "recorded_outcome": "Not yet tested",
   "handover_contains_observation": true,
   "deferred_not_counted_as_performed": true,

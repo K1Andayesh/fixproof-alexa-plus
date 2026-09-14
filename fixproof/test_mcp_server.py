@@ -90,6 +90,12 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
                     },
                 )
             self.assertEqual(assessed["pending_check"]["step_id"], "waiting")
+            citation = assessed["pending_check"]["citations"][0]
+            self.assertEqual(citation["page"], 41)
+            self.assertEqual(citation["document"], mcp_server.workflow.SOURCE["document"])
+            self.assertEqual(citation["content_sha256"], mcp_server.workflow.SOURCE["sha256"])
+            self.assertEqual(citation["url"], mcp_server.workflow.SOURCE["url"] + "#page=41")
+            self.assertTrue(assessed["reference_match"]["supported"])
 
             recorded = await self.call(
                 client,
@@ -110,6 +116,24 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             handover = await self.call(client, "prepare_handover", {"case_id": started["case_id"]})
             self.assertIn("Still wet after waiting.", handover["markdown"])
             self.assertIn("not a diagnosis", handover["markdown"])
+
+    async def test_informational_guidance_returns_page_citations(self):
+        async with Client(mcp_server.mcp, raise_exceptions=True) as client:
+            started = await self.call(client, "start_case", {
+                "request_id": str(uuid.uuid4()), "reported_issue": "Only plastic is wet.",
+                "model": mcp_server.workflow.MODEL, "model_confirmed": True,
+                "fictional_demo": True,
+            })
+            info = {"kind": "info", **mcp_server.workflow.INFO["plastic"]}
+            with patch.object(mcp_server.workflow, "assess", return_value=info):
+                result = await self.call(client, "ask_fixproof", {
+                    "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                    "revision": started["revision"], "user_message": "Is plastic different?",
+                })
+            self.assertIsNone(result["pending_check"])
+            self.assertEqual(result["latest_event"]["kind"], "info")
+            self.assertEqual(result["latest_event"]["citations"][0]["url"],
+                             mcp_server.workflow.SOURCE["url"] + "#page=41")
 
 
 if __name__ == "__main__":

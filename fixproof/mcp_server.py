@@ -89,8 +89,27 @@ def _save_updated(case: dict, request_id: str, expected_revision: int) -> dict:
     return case
 
 
+def _citations(pages: list[int]) -> list[dict[str, Any]]:
+    """Return self-contained source references for an MCP guidance result."""
+    source = workflow.SOURCE
+    return [
+        {
+            "title": source["title"],
+            "document": source["document"],
+            "page": page,
+            "url": f'{source["url"]}#page={page}',
+            "source_verified": source["verified"],
+            "content_sha256": source["sha256"],
+        }
+        for page in pages
+    ]
+
+
 def _case_view(case: dict) -> dict:
     pending = case.get("pending")
+    latest = dict(case["events"][-1]) if case["events"] else None
+    if latest and latest.get("pages"):
+        latest["citations"] = _citations(latest["pages"])
     return {
         "case_id": case["id"],
         "revision": case["revision"],
@@ -99,6 +118,13 @@ def _case_view(case: dict) -> dict:
         "model_confirmed": case["verified"],
         "fictional_demo": case["demo"],
         "reported_issue": case["issue"],
+        "reference_match": {
+            "supported": workflow.is_supported(case["model"]) and case["verified"],
+            "catalog_model": workflow.MODEL,
+            "user_confirmed_model": case["verified"],
+            "document": workflow.SOURCE["document"],
+            "source_verified": workflow.SOURCE["verified"],
+        },
         "recorded_outcomes": case["attempts"],
         "safety_report": case.get("safety_report"),
         "evidence_summary": {
@@ -106,9 +132,15 @@ def _case_view(case: dict) -> dict:
             "deferred_or_skipped": sum(a['outcome'] not in workflow.PERFORMED for a in case['attempts'].values()),
         },
         "pending_check": (
-            {"step_id": pending, **workflow.STEPS[pending]} if pending else None
+            {
+                "step_id": pending,
+                **workflow.STEPS[pending],
+                "citations": _citations(workflow.STEPS[pending]["pages"]),
+            }
+            if pending
+            else None
         ),
-        "latest_event": case["events"][-1] if case["events"] else None,
+        "latest_event": latest,
     }
 
 
@@ -177,7 +209,8 @@ def ask_fixproof(
     """Assess the user's message and propose one bounded source-backed next step.
 
     This may call the configured local Ollama model. The application, rather than
-    the model, supplies instruction text and citations. It never diagnoses a fault.
+    the model, supplies instruction text and self-contained page citations. It never
+    diagnoses a fault.
     """
     workflow.init()
     request_id = _request_id(request_id)
