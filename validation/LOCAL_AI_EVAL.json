@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-09T05:58:22+00:00",
+  "at": "2026-09-14T07:38:57+00:00",
   "cases": [
     {
       "name": "supported",
@@ -14,7 +14,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.64,
+          "seconds": 5.67,
           "input_tokens": 547,
           "output_tokens": 20,
           "decision": {
@@ -32,7 +32,7 @@
         "text": "Please describe the symptom first. For a drying problem, tell me what remains wet: plates or glasses, only plastic, or the inside walls, and whether the programme finished.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.18,
+          "seconds": 0.29,
           "input_tokens": 233,
           "output_tokens": 8,
           "decision": {
@@ -54,7 +54,7 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.14,
+          "seconds": 0.21,
           "input_tokens": 241,
           "output_tokens": 13,
           "decision": {
@@ -76,7 +76,7 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.16,
+          "seconds": 0.17,
           "input_tokens": 245,
           "output_tokens": 13,
           "decision": {
@@ -94,7 +94,7 @@
         "text": "The verified reference set here covers drying only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.13,
+          "seconds": 0.16,
           "input_tokens": 243,
           "output_tokens": 12,
           "decision": {
@@ -109,17 +109,9 @@
       "passed": true,
       "result": {
         "kind": "handover",
-        "text": "This is outside the user-level drying checks. Stop this troubleshooting flow and contact a qualified service provider; use emergency services for immediate danger.",
-        "trace": {
-          "model": "qwen3.5:4b",
-          "seconds": 0.16,
-          "input_tokens": 243,
-          "output_tokens": 13,
-          "decision": {
-            "category": "hazard",
-            "step": "none"
-          }
-        }
+        "text": "Stop using the appliance and stop troubleshooting. Seek qualified help; use emergency services for immediate danger. No diagnosis has been made.",
+        "safety_stop": true,
+        "safety_report": "There is smoke and a burning smell from the dishwasher."
       }
     },
     {
@@ -136,7 +128,7 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.32,
+          "seconds": 0.4,
           "input_tokens": 583,
           "output_tokens": 22,
           "decision": {
@@ -154,7 +146,7 @@
         "text": "Every check in this small reference set has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.19,
+          "seconds": 0.23,
           "input_tokens": 243,
           "output_tokens": 13,
           "decision": {

@@ -91,6 +91,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 .\.venv\Scripts\python.exe -m unittest discover -s fixproof -p "test*.py" -v
 python fixproof/evaluate.py
 node --check fixproof/app.js
+node --test validation/test_public_workflow.cjs
 ```
 
 Live evaluations use the local model and write `validation/LOCAL_AI_EVAL.json`. Tests use an isolated temporary database. See [QA evidence](validation/FIXPROOF_QA.md), [scope](validation/FIXPROOF.md) and [submission draft](submission/DRAFT.md).
@@ -106,3 +107,5 @@ Personal case data in `fixproof/data/` and reference downloads in `tmp/` are ign
 The `dist/` folder is the transparent hosted evaluation build. It uses a fixed source-backed sequence and browser storage so external testers can assess the workflow without access to the local Ollama service. It identifies that limitation in the interface. FixProof was submitted to the Alexa+ track and Open Source Mini Challenge on 14 September 2026.
 
 The revised browser flow keeps the question available while a check is pending. A hazard report cancels the pending check, stops troubleshooting, persists the warning, and includes the report in the handover. See [recorded verification](validation/VIDEO_V2_QA.md).
+
+The next local revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, and preserves pending checks through informational replies. Its 17 Python regression tests, six public-interface logic tests and eight live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.

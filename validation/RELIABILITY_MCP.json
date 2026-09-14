@@ -1,0 +1,17 @@
+{
+  "protocol_version": "2026-07-28",
+  "tools": [
+    "start_case",
+    "read_case",
+    "ask_fixproof",
+    "record_outcome",
+    "prepare_handover"
+  ],
+  "case_id": "13fc01e5-d952-4014-907d-c067e68cb974",
+  "selected_step": "waiting",
+  "recorded_outcome": "Not yet tested",
+  "handover_contains_observation": true,
+  "deferred_not_counted_as_performed": true,
+  "safety_stop_survives_client_reconnect": true,
+  "safety_report_in_handover": true
+}

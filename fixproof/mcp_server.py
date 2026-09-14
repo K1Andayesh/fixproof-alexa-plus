@@ -100,6 +100,11 @@ def _case_view(case: dict) -> dict:
         "fictional_demo": case["demo"],
         "reported_issue": case["issue"],
         "recorded_outcomes": case["attempts"],
+        "safety_report": case.get("safety_report"),
+        "evidence_summary": {
+            "user_reports_performed": sum(a['outcome'] in workflow.PERFORMED for a in case['attempts'].values()),
+            "deferred_or_skipped": sum(a['outcome'] not in workflow.PERFORMED for a in case['attempts'].values()),
+        },
         "pending_check": (
             {"step_id": pending, **workflow.STEPS[pending]} if pending else None
         ),
@@ -152,6 +157,9 @@ def start_case(
         "attempts": {},
         "pending": None,
     }
+    if workflow.hazard_report(issue):
+        workflow.stop_for_safety(case, issue)
+        case['events'].append(dict(role='assistant', at=workflow.now(), **workflow.safety_reply()))
     return _case_view(_save_new(case, request_id))
 
 
@@ -183,11 +191,7 @@ def ask_fixproof(
         raise ValueError("Reopen the case before requesting more checks.")
     message = workflow.clean(user_message)
     reply = workflow.assess(case, message)
-    case["events"] += [
-        {"role": "user", "text": message, "at": workflow.now()},
-        {"role": "assistant", "at": workflow.now(), **reply},
-    ]
-    case["pending"] = reply.get("step")
+    workflow.apply_reply(case, message, reply)
     return _case_view(_save_updated(case, request_id, revision))
 
 
@@ -211,26 +215,7 @@ def record_outcome(
     case = workflow.read_case(workflow.clean(case_id, 80))
     if case["revision"] != revision:
         raise ValueError("This case changed. Read it again before continuing.")
-    if case["status"] != "Open" or case.get("pending") != step_id:
-        raise ValueError("That check is not currently awaiting an outcome.")
-    note = observation.strip()
-    if len(note) > 2000:
-        raise ValueError("Observation is too long.")
-    case["attempts"][step_id] = {
-        "outcome": outcome,
-        "note": note,
-        "at": workflow.now(),
-    }
-    case["events"].append(
-        {
-            "role": "record",
-            "text": note,
-            "step": step_id,
-            "outcome": outcome,
-            "at": workflow.now(),
-        }
-    )
-    case["pending"] = None
+    workflow.record_evidence(case, step_id, outcome, observation)
     return _case_view(_save_updated(case, request_id, revision))
 
 

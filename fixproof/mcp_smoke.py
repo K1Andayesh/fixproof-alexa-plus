@@ -44,7 +44,7 @@ async def main() -> None:
                 "revision": assessed["revision"],
                 "step_id": pending["step_id"],
                 "outcome": "Not yet tested",
-                "observation": "Fictional MCP transport smoke test.",
+                "observation": "Fictional MCP transport verification.",
             },
         )
         recorded = recorded_result.structured_content
@@ -52,6 +52,21 @@ async def main() -> None:
             "prepare_handover", {"case_id": case["case_id"]}
         )
         handover = handover_result.structured_content
+        restored_result = await client.call_tool('read_case', {'case_id': case['case_id']})
+        restored = restored_result.structured_content
+        assert restored['evidence_summary'] == {'user_reports_performed': 0, 'deferred_or_skipped': 1}
+        assert 'Fictional MCP transport verification.' in handover['markdown']
+        safety_result = await client.call_tool('ask_fixproof', {
+            'request_id': str(uuid.uuid4()), 'case_id': case['case_id'],
+            'revision': restored['revision'], 'user_message': 'There is smoke from the door.'
+        })
+        stopped = safety_result.structured_content
+        assert stopped['status'] == 'Handover ready' and stopped['pending_check'] is None
+        async with Client(url, raise_exceptions=True) as reconnected:
+            reread = await reconnected.call_tool('read_case', {'case_id': case['case_id']})
+            assert reread.structured_content['safety_report'] == 'There is smoke from the door.'
+            safety_handover = await reconnected.call_tool('prepare_handover', {'case_id': case['case_id']})
+            assert '## Safety report' in safety_handover.structured_content['markdown']
         print(
             json.dumps(
                 {
@@ -60,7 +75,10 @@ async def main() -> None:
                     "case_id": case["case_id"],
                     "selected_step": pending["step_id"],
                     "recorded_outcome": recorded["recorded_outcomes"][pending["step_id"]]["outcome"],
-                    "handover_contains_observation": "Fictional MCP transport smoke test." in handover["markdown"],
+                    "handover_contains_observation": "Fictional MCP transport verification." in handover["markdown"],
+                    "deferred_not_counted_as_performed": True,
+                    "safety_stop_survives_client_reconnect": True,
+                    "safety_report_in_handover": True,
                 },
                 indent=2,
             )
