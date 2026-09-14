@@ -37,11 +37,25 @@ def base_reply(kind, text, **kw): return dict(kind=kind, text=text, **kw)
 
 PERFORMED = ('Still wet', 'Improved, not resolved')
 OUTCOMES = PERFORMED + ('Not yet tested', 'Skipped')
-HAZARD = re.compile(r'smoke|burn|electrical|electric shock|sparks?|flood|leak|exposed wir|open.*(?:panel|casing)|bypass.*(?:lock|switch)', re.I)
+HAZARD = re.compile(
+    r'\b(?:smoke|smoking|burning|burnt|burned|electric shock|sparks?|sparking|arcing|flood(?:ed|ing)?|leaks?|leaking|exposed wir\w*)\b'
+    r'|\belectrical\s+(?:issue|problem|fault|hazard|damage|burn\w*|smell|shock|spark\w*)\b'
+    r'|\bopen\w*.*\b(?:panel|casing)\b|\bbypass\w*.*\b(?:lock|switch)\b', re.I)
+NON_REPORT_HAZARD = re.compile(
+    r'\bsmoke\s+test(?:s|ing)?\b'
+    r'|\b(?:no|without)\s+(?:visible\s+)?(?:smoke|sparks?|sparking|leaks?|leaking|flood(?:ed|ing)?|burning(?:\s+(?:smell|odou?r))?|electrical\s+(?:issue|problem|fault|hazard|damage))'
+    r'(?:\s*(?:,|or|and)\s*(?:no\s+)?(?:visible\s+)?(?:smoke|sparks?|sparking|leaks?|leaking|flood(?:ed|ing)?|burning(?:\s+(?:smell|odou?r))?|electrical\s+(?:issue|problem|fault|hazard|damage)))*'
+    r'|\b(?:do\s+not|don[\'’]t|did\s+not|didn[\'’]t|cannot|can[\'’]t)\s+(?:see|smell|notice|observe|find|detect)\s+(?:any\s+)?(?:smoke|sparks?|sparking|leaks?|leaking|flood(?:ed|ing)?|burning(?:\s+(?:smell|odou?r))?)\b'
+    r'|\bthere\s+(?:is|are)\s+no\s+(?:smoke|sparks?|leaks?|leaking|flood(?:ed|ing)?|burning(?:\s+(?:smell|odou?r))?)\b'
+    r'|\bthere\s+(?:isn[\'’]t|aren[\'’]t)\s+any\s+(?:smoke|sparks?|leaks?|leaking|flood(?:ed|ing)?|burning(?:\s+(?:smell|odou?r))?)\b', re.I)
 
 def hazard_report(text):
-    """Conservative lexical preflight, not a comprehensive hazard detector."""
-    return bool(HAZARD.search(text))
+    """Conservative lexical preflight, excluding explicit no-hazard statements."""
+    return bool(HAZARD.search(hazard_context(text)))
+
+def hazard_context(text):
+    """Remove only tested no-hazard and technical phrases before classification."""
+    return NON_REPORT_HAZARD.sub(' ', text).strip()
 
 def stop_for_safety(case, report):
     case['pending'] = None
@@ -102,8 +116,8 @@ def assess(case, message):
         'other for any error code or non-drying issue, including E24 and drainage. Do not ask a drying question for an error code. '
         'unclear when the issue and history together do not establish a symptom, such as "Something is wrong" or "Help me". '
         'Never assume a drying problem without a stated drying symptom. Do not diagnose.')
-    history = [{'role':e['role'], 'text': e.get('text',''), 'step':e.get('step'), 'outcome':e.get('outcome')} for e in case['events'][-20:] if e['role']!='assistant']
-    context={'issue':case['issue'],'history':history,'latest':message}
+    history = [{'role':e['role'], 'text': hazard_context(e.get('text','')), 'step':e.get('step'), 'outcome':e.get('outcome')} for e in case['events'][-20:] if e['role']!='assistant']
+    context={'issue':hazard_context(case['issue']),'history':history,'latest':hazard_context(message)}
     started = time.monotonic()
     result,raw=infer(prompt,context,schema)
     category,step=result['category'],'none'

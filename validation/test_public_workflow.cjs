@@ -42,6 +42,14 @@ test('hazards in initial issues, questions and observations stop persisted state
   restored.ask('next');assert.equal(restored.run('state.pending'),null);
  }
 });
+test('explicit no-hazard statements and technical phrases do not false stop',()=>{
+ for(const report of ['No smoke or burning smell, just wet dishes.',"I don't see any smoke.",'The smoke test passed.']){
+  const a=app();a.run(`start(${JSON.stringify(report)})`);assert.equal(a.run('state.status'),'Open');
+ }
+ for(const report of ['No smoke, but water is leaking.','The smoke test found smoke.']){
+  const a=app();a.run(`start(${JSON.stringify(report)})`);assert.equal(a.run('state.status'),'Handover ready');
+ }
+});
 test('information and clarification preserve a pending suggestion',()=>{
  const a=app();a.start();a.ask('first check');
  for(const q of ['Help me.','Only plastic stays wet.','E24 error']){a.ask(q);assert.equal(a.run('state.pending'),'waiting');}

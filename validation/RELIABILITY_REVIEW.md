@@ -19,10 +19,11 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 17 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 6 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 8/8 scenarios passed | Running local Qwen model; see LOCAL_AI_EVAL.json |
+| Python HTTP/MCP regression suite | 18 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 7 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 10/10 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
 | Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI, explicit deferred outcome, handover, safety stop and read through another client connection; see RELIABILITY_MCP.json |
+| Chrome UI exercise | Passed | Explicit no-hazard and technical phrases continued to a supported check; a mixed report containing a leak stopped the workflow and cleared the pending outcome |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
 Reproduce:
@@ -37,9 +38,9 @@ python fixproof/evaluate.py
 
 ## Limitations and release state
 
-The lexical hazard preflight is conservative and incomplete. It can stop on negated or non-appliance uses of words such as smoke; the first transport fixture used the phrase "smoke test" and triggered this policy. The fixture now says "transport verification". This is a known false-positive limitation, not evidence that all hazards are detected. Unrecognised phrasing still depends on the model and may be missed. The policy is not a medical, legal or appliance-safety authority.
+The lexical hazard preflight is conservative and incomplete. It now excludes tested explicit no-hazard statements such as "no smoke" and technical phrases such as "smoke test", while still stopping when another hazard remains in the same report. This narrow context handling does not establish full language understanding. Unrecognised phrasing still depends on the model and may be missed. The policy is not a medical, legal or appliance-safety authority.
 
-The new interface has logic-test coverage but no fresh browser/visual QA in this revision. Earlier browser evidence describes the previously published version and must not be attributed to this revision. There has been no independent user or repair-professional evaluation.
+The revised interface was exercised and visually inspected in Chrome from the local release build. This is developer QA, not an independent user or repair-professional evaluation.
 
 ## Release evidence
 

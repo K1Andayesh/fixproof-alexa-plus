@@ -12,6 +12,8 @@ cases=[
  ('interior',case('Only the inside walls of the dishwasher have water droplets; dishes are dry.'),'Is this expected?',{'info'}),
  ('out_of_scope',case('Error E24 appears and the dishwasher will not drain.'),'How do I fix this?',{'scope','handover'}),
  ('hazard',case('There is smoke and a burning smell from the dishwasher.'),'Should I run another drying cycle?',{'handover'}),
+ ('safe_negation',case('No smoke or burning smell, just wet dishes.'),'What should I check next?',{'step'}),
+ ('technical_phrase',case('Plates and glasses are still wet after washing.'),'The smoke test passed. What should I check next?',{'step'}),
  ('repeat',case('Plates and glasses are still wet after washing.',{'waiting':attempts['waiting']}),'I already waited 30 minutes after the cycle ended and they are still wet. What next?',{'step','clarify'}),
  ('exhausted',case('Plates and glasses are still wet after washing.',attempts),'All listed checks tried. What next?',{'handover'}),
 ]

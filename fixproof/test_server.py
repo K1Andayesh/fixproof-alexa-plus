@@ -76,6 +76,26 @@ class WorkflowTests(unittest.TestCase):
                 self.assertIsNone(c['pending'])
                 self.assertIn(issue,server.handover(c))
 
+    def test_no_hazard_statements_and_technical_phrases_do_not_false_stop(self):
+        safe = ['No smoke or burning smell, just wet dishes.', "I don't see any smoke.",
+                'There is no leaking.', 'The smoke test passed.', 'No electrical problem was found.']
+        for report in safe:
+            with self.subTest(report=report): self.assertFalse(server.hazard_report(report))
+        hazardous = ['No smoke, but water is leaking.', 'The smoke test found smoke.',
+                     'There is an electrical fault.', 'Sparks behind the panel.']
+        for report in hazardous:
+            with self.subTest(report=report): self.assertTrue(server.hazard_report(report))
+        c=self.create(issue='No smoke or burning smell, just wet dishes.')
+        seen=[]
+        def classify_without_ai_hazard(prompt,context,schema):
+            seen.append(context)
+            value='drying' if 'category' in schema['properties'] else 'waiting'
+            return ({next(iter(schema['properties'])):value},{'model':'test','prompt_eval_count':0,'eval_count':0})
+        with patch.object(server,'infer',side_effect=classify_without_ai_hazard):
+            reply=server.assess(c,'The smoke test passed. What should I check next?')
+        self.assertEqual(reply['kind'],'step')
+        self.assertNotIn('smoke',json.dumps(seen).lower())
+
     def test_pending_hazard_stops_without_ai_and_cannot_reopen(self):
         c=self.create()
         with patch.object(server,'assess',return_value=dict(kind='step',step='waiting',**server.STEPS['waiting'])):
