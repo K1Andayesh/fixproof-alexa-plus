@@ -41,6 +41,12 @@ The lexical hazard preflight is conservative and incomplete. It can stop on nega
 
 The new interface has logic-test coverage but no fresh browser/visual QA in this revision. Earlier browser evidence describes the previously published version and must not be attributed to this revision. There has been no independent user or repair-professional evaluation.
 
-Before attributing this claim to a public release, verify that the exact tested source was committed, pushed and deployed, then record the release evidence below.
+## Release evidence
+
+- Commit `10947a144001ccf984010fbeea6a15f414a4cf30` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 5 and production deployment `appgdep_6aa7a554527c8191ac32d36359af96a4` succeeded on 14 September 2026.
+- The public page showed 23 automated checks and 8/8 local-AI scenarios after deployment.
+- A resumed production case showed one user-reported performed check separately from three checks with no recorded outcome while retaining the persistent safety stop.
+- Devpost's public and submitted project copy showed the new reliability claims and remained `SUBMITTED`, with 5/5 steps complete.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
