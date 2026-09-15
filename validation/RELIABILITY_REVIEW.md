@@ -28,7 +28,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 | Public application-logic regression suite | 9 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
 | Local AI evaluation | 11/11 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
 | Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for both drying and food-remnant cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
-| Chrome UI exercise | Passed | Explicit no-hazard and technical phrases continued to a supported check; a mixed report containing a leak stopped the workflow and cleared the pending outcome |
+| Chrome UI exercise | Passed | Production food-remnant path selected a page-42 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; implementation evidence expanded correctly |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
 Reproduce:
@@ -45,15 +45,15 @@ python fixproof/evaluate.py
 
 The lexical hazard preflight is conservative and incomplete. It now excludes tested explicit no-hazard statements such as "no smoke" and technical phrases such as "smoke test", while still stopping when another hazard remains in the same report. This narrow context handling does not establish full language understanding. Unrecognised phrasing still depends on the model and may be missed. The policy is not a medical, legal or appliance-safety authority.
 
-The revised interface was exercised and visually inspected in Chrome from the local release build. This is developer QA, not an independent user or repair-professional evaluation.
+The revised interface was exercised and visually inspected in Chrome from the production Site version 13. This is developer QA, not an independent user or repair-professional evaluation.
 
 ## Release evidence
 
-- Commit `7bbb4408828021c4a1db01f2afce4db49dedc0e0` was pushed to the public GitHub repository and the Sites source repository.
-- The exact archive from that commit was saved as Site version 11 and production deployment `appgdep_6aa8a2bae2b48191a43644d31ba08772` succeeded on 15 September 2026.
-- The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining check, included the exact-page citation and source hash, then preserved a later safety stop through another connection.
-- The production page showed 33 automated checks and 11/11 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, and cross-connection continuity, with direct links to the captured HTTP result and integration tests.
-- In production Chrome QA, **See the verified HTTP run** expanded to show all five evidence bullets and both GitHub evidence links. The browser console reported no warnings or errors.
+- Product commit `9ce5e9b8da3e5262682b7c76a9e973f72752125c` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 13 and production deployment `appgdep_6aa8b36e8f308191bf6cd3ff218a77ca` succeeded on 15 September 2026.
+- The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining drying check, included exact-page citations and the source hash, preserved a later safety stop through another connection, and selected `food_spacing` with the page-42 citation for a second case.
+- The production page showed two source-backed paths, 33 automated checks and 11/11 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, cross-connection continuity and two-path MCP evidence.
+- Production Chrome QA exercised the food-remnant path from selection through page-42 guidance, the `Issue unchanged` outcome and a handover carrying the food-path label, observation and source. **See the verified HTTP run** expanded to show six evidence bullets and both GitHub evidence links. The browser console reported no warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
