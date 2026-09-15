@@ -16,7 +16,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Potential impact
 
-**Lead story:** the Australian Productivity Commission found significant and unnecessary barriers to repair for some products and identified restricted access to repair information among them. DCCEEW reports that Australia created 511,000 tonnes of e-waste in 2019. FixProof tests a narrow response: keep verified instructions and user-confirmed outcomes portable between the household, assistant and technician. Four source-backed paths demonstrate that evidence pattern beyond one scripted symptom while remaining bounded to one exact model.
+**Lead story:** the Australian Productivity Commission found significant and unnecessary barriers to repair for some products and identified restricted access to repair information among them. DCCEEW reports that Australia created 511,000 tonnes of e-waste in 2019. FixProof tests a narrow response: keep verified instructions and user-confirmed outcomes portable between the household, assistant and technician. Four source-backed paths now run against two independently verified exact-model catalogs, showing that the evidence pattern can change references without blending sources.
 
 **Judge should see:** the public impact card first, including the controlled retrieval result, then complete one check and open the handover. In eight blind reads per format, two independent local model families recovered 76/80 exact fields with zero critical errors from the structured handover versus 71/80 fields and two critical errors from equal-fact transcripts.
 

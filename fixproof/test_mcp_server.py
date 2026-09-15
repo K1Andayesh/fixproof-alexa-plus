@@ -121,21 +121,21 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_informational_guidance_returns_page_citations(self):
         async with Client(mcp_server.mcp, raise_exceptions=True) as client:
-            started = await self.call(client, "start_case", {
-                "request_id": str(uuid.uuid4()), "reported_issue": "Only plastic is wet.",
-                "model": mcp_server.workflow.MODEL, "model_confirmed": True,
-                "fictional_demo": True,
-            })
-            info = {"kind": "info", **mcp_server.workflow.INFO["plastic"]}
-            with patch.object(mcp_server.workflow, "assess", return_value=info):
-                result = await self.call(client, "ask_fixproof", {
-                    "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
-                    "revision": started["revision"], "user_message": "Is plastic different?",
+            for model,page in ((mcp_server.workflow.MODEL,41),("Bosch SMS6HCI01A/38",44)):
+                started = await self.call(client, "start_case", {
+                    "request_id": str(uuid.uuid4()), "reported_issue": "Only plastic is wet.",
+                    "model": model, "model_confirmed": True, "fictional_demo": True,
                 })
-            self.assertIsNone(result["pending_check"])
-            self.assertEqual(result["latest_event"]["kind"], "info")
-            self.assertEqual(result["latest_event"]["citations"][0]["url"],
-                             mcp_server.workflow.SOURCE["url"] + "#page=41")
+                info = {"kind": "info", **mcp_server.workflow.info_for(model)["plastic"]}
+                with patch.object(mcp_server.workflow, "assess", return_value=info):
+                    result = await self.call(client, "ask_fixproof", {
+                        "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                        "revision": started["revision"], "user_message": "Is plastic different?",
+                    })
+                self.assertIsNone(result["pending_check"])
+                self.assertEqual(result["latest_event"]["kind"], "info")
+                source=mcp_server.workflow.source_for(model)
+                self.assertEqual(result["latest_event"]["citations"][0]["url"],source["url"]+f"#page={page}")
 
     async def test_handover_returns_machine_readable_evidence_boundaries(self):
         async with Client(mcp_server.mcp, raise_exceptions=True) as client:

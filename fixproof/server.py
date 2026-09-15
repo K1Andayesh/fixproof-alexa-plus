@@ -5,7 +5,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime, timezone
 from contextlib import contextmanager
-from catalog import MODEL, SOURCE, STEPS, INFO
+from catalog import MODEL, SOURCE, STEPS, INFO, CATALOGS, catalog_for, source_for, steps_for, info_for
 
 ROOT = Path(__file__).resolve().parent
 DATA = Path(os.environ.get('FIXPROOF_DATA', ROOT / 'data'))
@@ -32,7 +32,7 @@ def read_case(cid):
 def clean(value, limit=2000):
     if not isinstance(value, str) or not value.strip() or len(value) > limit: raise ValueError('Enter text within the displayed limit.')
     return value.strip()
-def is_supported(model): return re.sub(r'\s+', '', model).upper() in ('BOSCHSMS6HAI02A/01','SMS6HAI02A/01')
+def is_supported(model): return catalog_for(model) is not None
 def base_reply(kind, text, **kw): return dict(kind=kind, text=text, **kw)
 
 PERFORMED = ('Issue unchanged', 'Still wet', 'Improved, not resolved')
@@ -104,7 +104,10 @@ def assess(case, message):
     if hazard_report(case['issue']):
         return {**safety_reply(), 'safety_report': case['issue']}
     if not case['verified'] or not is_supported(case['model']):
-        return base_reply('scope', 'This reference set covers Bosch SMS6HAI02A/01 only. Confirm the exact model from its label before using these checks. Your notes can still be exported.')
+        supported = ', '.join(entry['model'] for entry in CATALOGS.values())
+        return base_reply('scope', f'This reference catalog covers {supported}. Confirm the exact model from its label before using these checks. Your notes can still be exported.')
+    steps = steps_for(case['model'])
+    info = info_for(case['model'])
     schema = {'type':'object','properties':{
         'category':{'type':'string','enum':['drying','food','detergent','streaks','plastic','interior','hazard','other','unclear']}},
         'required':['category'],'additionalProperties':False}
@@ -124,15 +127,15 @@ def assess(case, message):
     started = time.monotonic()
     result,raw=infer(prompt,context,schema)
     category,step=result['category'],'none'
-    pending_workflow = STEPS[case['pending']].get('workflow') if case.get('pending') else None
+    pending_workflow = steps[case['pending']].get('workflow') if case.get('pending') else None
     supported_categories = ('drying','food','detergent','streaks')
     workflow_conflict = category in supported_categories and pending_workflow and pending_workflow != category
     available = {
-        k:v for k,v in STEPS.items()
+        k:v for k,v in steps.items()
         if k not in case['attempts'] and v.get('workflow') == category
     }
     input_tokens=raw.get('prompt_eval_count',0);output_tokens=raw.get('eval_count',0)
-    if category in supported_categories and case.get('pending') and STEPS[case['pending']].get('workflow') == category:
+    if category in supported_categories and case.get('pending') and steps[case['pending']].get('workflow') == category:
         step = case['pending']
     elif category in supported_categories and not case.get('pending') and available:
         selection,selected_raw=infer(f'Choose one available user-level check for this confirmed {category} issue. '
@@ -143,25 +146,27 @@ def assess(case, message):
     result['step']=step
     trace = {'model':raw['model'],'seconds':round(time.monotonic()-started,2),'input_tokens':input_tokens, 'output_tokens':output_tokens,'decision':result}
     if category == 'hazard': reply = safety_reply()
-    elif category in INFO: reply = base_reply('info', INFO[category]['text'], title=INFO[category]['title'], pages=INFO[category]['pages'])
+    elif category in info: reply = base_reply('info', info[category]['text'], title=info[category]['title'], pages=info[category]['pages'])
     elif workflow_conflict: reply = base_reply('clarify','A different check is already awaiting an outcome. Record, defer or skip that check before switching to the other supported problem path.')
     elif category == 'other': reply = base_reply('scope','The verified reference set here covers drying, food-remnant, detergent-residue and removable-streak results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.')
     elif category == 'unclear': reply = base_reply('clarify','Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue or removable streaks remain, or another problem occurred, and whether the programme finished.')
     elif category in supported_categories and not available: reply = base_reply('handover','Every check in this supported path has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.')
-    elif step in available or step == case.get('pending'): reply = base_reply('step', **STEPS[step], step=step)
+    elif step in available or step == case.get('pending'): reply = base_reply('step', **steps[step], step=step)
     else: reply = base_reply('clarify','Which part of drying have you checked so far: programme, rinse aid, loading, or waiting until drying ends? I could not select another supported check from your message.')
     reply['trace'] = trace
     return reply
 
 def handover(case):
+    steps = steps_for(case['model'])
+    source = source_for(case['model'])
     lines = ['# FixProof repair handover', '', 'Local Alexa+ simulation · user-reported facts, not a diagnosis.',
         '', f"Case: {case['id']}", f"Created: {case['created']}", f"Exported: {now()}",
         f"Model entered: {case['model']}", f"Model confirmation: {'fictional identity supplied by demo' if case['demo'] else 'user confirmed' if case['verified'] else 'not confirmed'}",
         f"Reference match: {'supported' if is_supported(case['model']) and case['verified'] else 'not established'}",
         f"Scenario: {'fictional demonstration' if case['demo'] else 'user case'}", f"Status: {case['status']}", '', '## Reported issue', case['issue'], '', '## Recorded checks']
     for key, attempt in case['attempts'].items():
-        lines += [f"- {STEPS[key]['title']}: {attempt['outcome']} ({attempt['at']})", f"  User observation: {attempt['note'] or 'No additional observation entered.'}"]
-        lines += [f"  Source: {SOURCE['url']}#page={p}" for p in STEPS[key]['pages']]
+        lines += [f"- {steps[key]['title']}: {attempt['outcome']} ({attempt['at']})", f"  User observation: {attempt['note'] or 'No additional observation entered.'}"]
+        lines += [f"  Source: {source['url']}#page={p}" for p in steps[key]['pages']]
     if not case['attempts']: lines += ['No outcomes recorded.']
     performed = sum(a['outcome'] in PERFORMED for a in case['attempts'].values())
     deferred = sum(a['outcome'] not in PERFORMED for a in case['attempts'].values())
@@ -173,9 +178,9 @@ def handover(case):
     lines += ['', '## Unresolved / unverified', 'Cause and repair requirement have not been diagnosed. Actual appliance identity and physical condition have not been independently inspected.']
     if case['status'] != 'User reports resolved': lines += ['The issue has not been recorded as resolved.']
     else: lines += ['Resolution is the user\'s report; no independent repair verification was performed.']
-    if case.get('pending'): lines += ['Suggested but not recorded as attempted: '+STEPS[case['pending']]['title']]
+    if case.get('pending'): lines += ['Suggested but not recorded as attempted: '+steps[case['pending']]['title']]
     if is_supported(case['model']) and case['verified']:
-        lines += ['', '## Reference provenance', SOURCE['title'], SOURCE['document'], SOURCE['url'], SOURCE['service_url'], 'Reference verified: '+SOURCE['verified'], SOURCE['coverage']]
+        lines += ['', '## Reference provenance', source['title'], source['document'], source['url'], source['service_url'], 'Reference verified: '+source['verified'], source['coverage']]
     return '\n'.join(lines)+'\n'
 
 class Handler(BaseHTTPRequestHandler):
@@ -199,7 +204,7 @@ class Handler(BaseHTTPRequestHandler):
             if p.path in ('/','/app.js','/style.css'):
                 name,mime = {'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/style.css':('style.css','text/css')}[p.path]
                 return self.send(200,(ROOT/name).read_bytes(),mime)
-            if p.path == '/api/config': return self.send(200,dict(model=MODEL,source=SOURCE,steps=STEPS,ai_model=AI_MODEL))
+            if p.path == '/api/config': return self.send(200,dict(model=MODEL,models=[dict(model=e['model'],aliases=e['aliases'],source=e['source'],steps=steps_for(e['model']),info=info_for(e['model'])) for e in CATALOGS.values()],source=SOURCE,steps=STEPS,ai_model=AI_MODEL))
             if p.path == '/api/cases':
                 with db() as c: cases=[json.loads(r['body']) for r in c.execute('SELECT body FROM cases ORDER BY rowid DESC')]
                 return self.send(200,[{k:v for k,v in case.items() if k in ('id','model','issue','status','created','demo')} for case in cases])

@@ -96,9 +96,9 @@ def _save_updated(case: dict, request_id: str, expected_revision: int) -> dict:
     return case
 
 
-def _citations(pages: list[int]) -> list[dict[str, Any]]:
+def _citations(model: str, pages: list[int]) -> list[dict[str, Any]]:
     """Return self-contained source references for an MCP guidance result."""
-    source = workflow.SOURCE
+    source = workflow.source_for(model)
     return [
         {
             "title": source["title"],
@@ -113,10 +113,13 @@ def _citations(pages: list[int]) -> list[dict[str, Any]]:
 
 
 def _case_view(case: dict) -> dict:
+    entry = workflow.catalog_for(case["model"])
+    source = entry["source"] if entry else None
+    steps = workflow.steps_for(case["model"])
     pending = case.get("pending")
     latest = dict(case["events"][-1]) if case["events"] else None
     if latest and latest.get("pages"):
-        latest["citations"] = _citations(latest["pages"])
+        latest["citations"] = _citations(case["model"], latest["pages"])
     return {
         "case_id": case["id"],
         "revision": case["revision"],
@@ -127,10 +130,10 @@ def _case_view(case: dict) -> dict:
         "reported_issue": case["issue"],
         "reference_match": {
             "supported": workflow.is_supported(case["model"]) and case["verified"],
-            "catalog_model": workflow.MODEL,
+            "catalog_model": entry["model"] if entry else None,
             "user_confirmed_model": case["verified"],
-            "document": workflow.SOURCE["document"],
-            "source_verified": workflow.SOURCE["verified"],
+            "document": source["document"] if source else None,
+            "source_verified": source["verified"] if source else None,
         },
         "recorded_outcomes": case["attempts"],
         "safety_report": case.get("safety_report"),
@@ -141,8 +144,8 @@ def _case_view(case: dict) -> dict:
         "pending_check": (
             {
                 "step_id": pending,
-                **workflow.STEPS[pending],
-                "citations": _citations(workflow.STEPS[pending]["pages"]),
+                **steps[pending],
+                "citations": _citations(case["model"], steps[pending]["pages"]),
             }
             if pending
             else None
@@ -153,9 +156,12 @@ def _case_view(case: dict) -> dict:
 
 def _handover_evidence(case: dict) -> dict[str, Any]:
     """Return the handover facts as a stable, machine-readable evidence bundle."""
+    entry = workflow.catalog_for(case["model"])
+    source = entry["source"] if entry else None
+    steps = workflow.steps_for(case["model"])
     checks = []
     for step_id, attempt in case["attempts"].items():
-        step = workflow.STEPS[step_id]
+        step = steps[step_id]
         checks.append(
             {
                 "step_id": step_id,
@@ -168,7 +174,7 @@ def _handover_evidence(case: dict) -> dict[str, Any]:
                 "outcome": attempt["outcome"],
                 "observation": attempt["note"],
                 "recorded_at": attempt["at"],
-                "citations": _citations(step["pages"]),
+                "citations": _citations(case["model"], step["pages"]),
             }
         )
     pending = case.get("pending")
@@ -183,19 +189,20 @@ def _handover_evidence(case: dict) -> dict[str, Any]:
             "fictional_demo": case["demo"],
             "catalog_match": workflow.is_supported(case["model"]),
         },
-        "reference": {
-            "title": workflow.SOURCE["title"],
-            "document": workflow.SOURCE["document"],
-            "url": workflow.SOURCE["url"],
-            "source_verified": workflow.SOURCE["verified"],
-            "content_sha256": workflow.SOURCE["sha256"],
-        },
+        "reference": ({
+            "title": source["title"],
+            "document": source["document"],
+            "url": source["url"],
+            "service_url": source["service_url"],
+            "source_verified": source["verified"],
+            "content_sha256": source["sha256"],
+        } if source else None),
         "checks": checks,
         "suggested_awaiting_outcome": (
             {
                 "step_id": pending,
-                "title": workflow.STEPS[pending]["title"],
-                "citations": _citations(workflow.STEPS[pending]["pages"]),
+                "title": steps[pending]["title"],
+                "citations": _citations(case["model"], steps[pending]["pages"]),
             }
             if pending
             else None
@@ -238,13 +245,13 @@ apps.add_html_resource(
 
 mcp = MCPServer(
     "FixProof",
-    version="0.3.0",
+    version="0.4.0",
     website_url="https://fixproof-alexa.keyvan-andayesh.chatgpt.site",
     instructions=(
         "Carry an appliance issue through source-linked checks and a repair handover. "
         "Only user-confirmed outcomes count as attempted. Never claim a diagnosis, a "
         "physical inspection, or a verified repair. The current reference catalog covers "
-        "Bosch SMS6HAI02A/01 drying, food-remnant, detergent-residue and removable-streak guidance."
+        "two exact Bosch models with drying, food-remnant, detergent-residue and removable-streak guidance."
     ),
     extensions=[apps],
 )

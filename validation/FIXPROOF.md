@@ -4,7 +4,7 @@ Prepared 9 September 2026 after Keyvan confirmed no suitable caregiver testers a
 
 ## First deliverable
 
-One browser case that goes from a reported dishwasher drying, food-remnant or detergent-residue problem to a concise repair handover: exact model, verified reference, user-confirmed attempts, observed outcomes, and questions still unresolved.
+One browser case that goes from a reported dishwasher drying, food-remnant, detergent-residue or removable-streak problem to a concise repair handover: exact model, verified reference, user-confirmed attempts, observed outcomes, and questions still unresolved.
 
 The core question is whether recording and carrying the evidence forward is more useful than a manual plus ordinary chat. Source-backed answers alone are insufficient differentiation.
 
@@ -13,6 +13,12 @@ The core question is whether recording and carrying the evidence forward is more
 Bosch SMS6HAI02A/01, chosen as a public demonstration model rather than a claim about Keyvan's appliance. On 9 September 2026, the [exact service page](https://www.bosch-home.com.au/en/productservice/SMS6HAI02A-01) User Manual link opened [9001676154_A.pdf](https://media3.bsh-group.com/Documents/9001676154_A.pdf). Its cover names SMS6HAI02A; its document footer is 9001676154 (010805) 650 V1, Australian English, 56 pages. The /01 applicability is established by the exact service-page link, not a suffix printed on the cover.
 
 Pages 23, 27, 36, 37, 40, 41, 42, 44 and 45 were extracted and visually inspected. Pages 36–37 show filter maintenance; page 42 lists causes and checks for food remnants and detergent residue; pages 23, 40 and 41 support the drying path; and pages 23, 27, 44 and 45 support the removable-streak path. SHA-256: `af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c`. The public-facing catalog contains original short summaries and page links, not the full manual. Downloaded PDF and rendered pages remain under ignored `tmp/`.
+
+### Second exact-model reference
+
+Bosch SMS6HCI01A/38 was added on 15 September 2026 as an independent catalog entry rather than an alias for the first manual. The [exact service page](https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38) User Manual link opened [9001720311_B.pdf](https://media3.bsh-group.com/Documents/9001720311_B.pdf). Its cover names SMS6HCI01A and Australian information for use; its document footer is 9001720311 (050605) 650 A1, 60 pages. The /38 applicability is established by the exact service-page link.
+
+Pages 24-25, 28, 38-39, 44-46 and 48 were extracted and visually inspected. They support the same fourteen application-owned check summaries, with model-specific page mappings. SHA-256: `b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9`. Each case now carries its selected model's manual URL, service URL, page citations and source hash through the browser and MCP handover.
 
 ## Ordered work
 

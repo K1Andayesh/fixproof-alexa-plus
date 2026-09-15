@@ -80,7 +80,10 @@ async def main() -> None:
             "prepare_handover", {"case_id": case["case_id"]}
         )
         handover = handover_result.structured_content
-        assert handover_result.content and "Fictional MCP transport verification." in handover_result.content[0].text
+        handover_text = "\n".join(
+            getattr(item, "text", "") for item in handover_result.content
+        )
+        assert "Fictional MCP transport verification." in handover_text, repr(handover_result.content)
         restored_result = await client.call_tool('read_case', {'case_id': case['case_id']})
         restored = restored_result.structured_content
         assert restored['evidence_summary'] == {'user_reports_performed': 0, 'deferred_or_skipped': 1}
@@ -164,6 +167,32 @@ async def main() -> None:
             assert streaks_pending is not None and streaks_pending['step_id'].startswith('streaks_')
             streaks_citations = streaks_pending.get('citations', [])
             assert streaks_citations and all(citation['url'].startswith('https://') for citation in streaks_citations)
+            second_model_result = await final_client.call_tool('start_case', {
+                'request_id': str(uuid.uuid4()),
+                'reported_issue': 'Detergent residue remains inside the appliance after the wash.',
+                'model': 'Bosch SMS6HCI01A/38',
+                'model_confirmed': True,
+                'fictional_demo': True,
+            })
+            second_model_case = second_model_result.structured_content
+            second_model_assessed_result = await final_client.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': second_model_case['case_id'],
+                'revision': second_model_case['revision'], 'user_message': 'What should I check first?'
+            })
+            second_model_assessed = second_model_assessed_result.structured_content
+            second_model_pending = second_model_assessed['pending_check']
+            assert second_model_pending is not None and second_model_pending['step_id'].startswith('detergent_')
+            second_model_citations = second_model_pending.get('citations', [])
+            assert second_model_citations
+            assert all(citation['url'].startswith('https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=') for citation in second_model_citations)
+            assert any(citation['url'].endswith('#page=46') for citation in second_model_citations)
+            assert all(citation['content_sha256'] == 'b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9' for citation in second_model_citations)
+            second_model_handover_result = await final_client.call_tool(
+                'prepare_handover', {'case_id': second_model_case['case_id']}
+            )
+            second_model_evidence = second_model_handover_result.structured_content['evidence']
+            assert second_model_evidence['model']['reported'] == 'Bosch SMS6HCI01A/38'
+            assert second_model_evidence['reference']['service_url'] == 'https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38'
         judge_trace = [
             {
                 'connection': 1,
@@ -265,7 +294,7 @@ async def main() -> None:
                         "self_contained": "<script src=" not in app_html and "<link " not in app_html,
                         "external_resource_csp_declared": "csp" in app_resource_ui,
                         "device_permissions_declared": "permissions" in app_resource_ui,
-                        "text_fallback_contains_observation": "Fictional MCP transport verification." in handover_result.content[0].text,
+                        "text_fallback_contains_observation": "Fictional MCP transport verification." in handover_text,
                     },
                     "case_id": case["case_id"],
                     "selected_step": pending["step_id"],
@@ -283,12 +312,21 @@ async def main() -> None:
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
                     "source_backed_paths": 4,
+                    "exact_models": 2,
                     "food_path_selected_step": food_pending['step_id'],
                     "food_path_citations": [citation['url'] for citation in food_citations],
                     "detergent_path_selected_step": detergent_pending['step_id'],
                     "detergent_path_citations": [citation['url'] for citation in detergent_citations],
                     "streaks_path_selected_step": streaks_pending['step_id'],
                     "streaks_path_citations": [citation['url'] for citation in streaks_citations],
+                    "second_model": second_model_evidence['model']['reported'],
+                    "second_model_selected_step": second_model_pending['step_id'],
+                    "second_model_citations": [citation['url'] for citation in second_model_citations],
+                    "second_model_service_url": second_model_evidence['reference']['service_url'],
+                    "second_model_source_hash_verified": all(
+                        citation['content_sha256'] == 'b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9'
+                        for citation in second_model_citations
+                    ),
                     "judge_trace": judge_trace,
                 },
                 indent=2,

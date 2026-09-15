@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-15T08:55:51.923897+00:00",
+  "captured_at": "2026-09-15T10:58:08.228623+00:00",
   "capture_scope": "Fictional local transport verification; no household or customer data.",
   "transport": "Streamable HTTP",
   "protocol_version": "2026-07-28",
@@ -54,7 +54,7 @@
     "device_permissions_declared": false,
     "text_fallback_contains_observation": true
   },
-  "case_id": "0c230e7d-258f-43bb-b288-2cd92c70344e",
+  "case_id": "e74e891b-b445-484b-beea-859a3e5d258c",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -72,6 +72,7 @@
   "safety_stop_survives_client_reconnect": true,
   "safety_report_in_handover": true,
   "source_backed_paths": 4,
+  "exact_models": 2,
   "food_path_selected_step": "food_spacing",
   "food_path_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=42"
@@ -84,6 +85,14 @@
   "streaks_path_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=44"
   ],
+  "second_model": "Bosch SMS6HCI01A/38",
+  "second_model_selected_step": "detergent_tray",
+  "second_model_citations": [
+    "https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=46",
+    "https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=28"
+  ],
+  "second_model_service_url": "https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38",
+  "second_model_source_hash_verified": true,
   "judge_trace": [
     {
       "connection": 1,
@@ -119,7 +128,7 @@
         "fictional_demo": true
       },
       "observed": {
-        "case_id": "0c230e7d-258f-43bb-b288-2cd92c70344e",
+        "case_id": "e74e891b-b445-484b-beea-859a3e5d258c",
         "revision": 0,
         "status": "Open"
       }

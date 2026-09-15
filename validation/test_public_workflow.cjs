@@ -71,6 +71,8 @@ test('detergent-residue journey stays within its two cited checks',()=>{
  assert.equal(a.run('state.pending'),'detergent_tray');assert.match(a.get('progress').textContent,/0 of 2 detergent-residue checks/);
  a.record('Issue unchanged','Detergent residue remains.');
  assert.match(a.handover(),/Supported path: detergent residue/);assert.match(a.handover(),/Manual · p. 42|page=42/);
+ const b=app();b.run("start('Detergent residue remains inside the appliance.','detergent','Bosch SMS6HCI01A/38')");b.ask('What should I check first?');b.record('Issue unchanged','Residue remains.');
+ assert.match(b.handover(),/9001720311_B\.pdf#page=46/);assert.doesNotMatch(b.handover(),/9001676154_A\.pdf/);
 });
 test('removable-streak journey stays within its four cited checks',()=>{
  const a=app();a.run("start('Removable streaks remain on glasses and cutlery.','streaks')");a.ask('What should I check first?');

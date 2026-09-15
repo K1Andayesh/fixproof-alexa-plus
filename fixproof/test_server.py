@@ -53,12 +53,21 @@ class WorkflowTests(unittest.TestCase):
         c=self.create()
         with patch.object(server,'assess',side_effect=TimeoutError):self.assertEqual(self.action(c,action='chat',message='Do not lose this')[0],503)
         self.assertEqual(server.read_case(c['id']),c)
-    def test_wrong_or_unconfirmed_model_never_calls_ai(self):
+    def test_catalog_models_use_their_own_sources_and_unmatched_models_never_call_ai(self):
         for model,verified in [('Other /99',True),(server.MODEL,False)]:
             c=self.create(model=model,verified=verified)
             with patch.object(server.urllib.request,'urlopen',side_effect=AssertionError('AI must not run')):
                 result=server.assess(c,'What should I do?')
             self.assertEqual(result['kind'],'scope');self.assertNotIn('step',result)
+        second='Bosch SMS6HCI01A/38';c=self.create(model=second)
+        def choose_waiting(prompt,context,schema):
+            value={'category':'drying'} if 'category' in schema['properties'] else {'step':'waiting'}
+            return value,{'model':'stub','prompt_eval_count':1,'eval_count':1}
+        with patch.object(server,'infer',side_effect=choose_waiting): result=server.assess(c,'What should I check?')
+        self.assertEqual(result['pages'],[44]);c['pending']='waiting'
+        server.record_evidence(c,'waiting','Still wet','Still wet after waiting.')
+        export=server.handover(c)
+        self.assertIn('9001720311_B.pdf#page=44',export);self.assertNotIn('9001676154_A.pdf',export)
     def test_invalid_ai_output_not_executed(self):
         c=self.create()
         class Response:

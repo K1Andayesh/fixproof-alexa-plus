@@ -1,4 +1,6 @@
-"""Original concise summaries, not a redistributed manufacturer manual."""
+"""Original concise summaries, not redistributed manufacturer manuals."""
+import re
+
 MODEL = 'Bosch SMS6HAI02A/01'
 SOURCE = {
     'title': 'Bosch SMS6HAI02A · Australian English user manual',
@@ -9,9 +11,9 @@ SOURCE = {
     'sha256': 'af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c',
     'coverage': 'Exact /01 service page links to this manual; cover names SMS6HAI02A.'
 }
-STEPS = {
+STEP_DEFINITIONS = {
     'programme': {'workflow': 'drying', 'title': 'Check the programme', 'text': 'Check whether the selected programme includes drying. Shortening options can reduce drying performance.', 'pages': [40]},
-    'rinse_aid': {'workflow': 'drying', 'title': 'Check rinse aid', 'text': 'Check the rinse aid indicator and dosage. Follow page 23 for filling or adjusting it; use only domestic dishwasher rinse aid.', 'pages': [40, 23]},
+    'rinse_aid': {'workflow': 'drying', 'title': 'Check rinse aid', 'text': 'Check the rinse aid indicator and dosage. Use the cited pages for filling or adjusting it; use only domestic dishwasher rinse aid.', 'pages': [40, 23]},
     'loading': {'workflow': 'drying', 'title': 'Check pooled water', 'text': 'Where possible, angle items so water can drain from their recesses.', 'pages': [41]},
     'waiting': {'workflow': 'drying', 'title': 'Allow drying to finish', 'text': 'Let the programme finish, then wait 30 minutes before removing the tableware.', 'pages': [41]},
     'food_spacing': {'workflow': 'food', 'title': 'Check spacing and contact', 'text': 'Arrange tableware with enough space for spray jets to reach the surfaces, and avoid points of contact.', 'pages': [42]},
@@ -25,7 +27,64 @@ STEPS = {
     'streaks_tray': {'workflow': 'streaks', 'title': 'Clear the tablet collecting tray', 'text': 'Arrange the top basket so tableware does not block the detergent dispenser lid, and keep tableware and fragrance dispensers out of the tablet collecting tray.', 'pages': [44, 27]},
     'streaks_prerinse': {'workflow': 'streaks', 'title': 'Avoid intensive pre-rinsing', 'text': 'Remove only large food remnants before loading; do not pre-rinse the tableware.', 'pages': [45]},
 }
-INFO = {
+INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
     'interior': {'title': 'Drops inside the tub', 'text': 'Moisture on the inner walls is part of condensation drying; the manual says no action is required for this condition.', 'pages': [41]},
 }
+
+CATALOGS = {
+    'SMS6HAI02A/01': {
+        'model': MODEL,
+        'aliases': ('BOSCHSMS6HAI02A/01', 'SMS6HAI02A/01'),
+        'source': SOURCE,
+        'step_pages': {key: value['pages'] for key, value in STEP_DEFINITIONS.items()},
+        'info_pages': {key: value['pages'] for key, value in INFO_DEFINITIONS.items()},
+    },
+    'SMS6HCI01A/38': {
+        'model': 'Bosch SMS6HCI01A/38',
+        'aliases': ('BOSCHSMS6HCI01A/38', 'SMS6HCI01A/38'),
+        'source': {
+            'title': 'Bosch SMS6HCI01A · Australian English user manual',
+            'url': 'https://media3.bsh-group.com/Documents/9001720311_B.pdf',
+            'service_url': 'https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38',
+            'document': '9001720311 (050605) 650 A1',
+            'verified': '2026-09-15',
+            'sha256': 'b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9',
+            'coverage': 'Exact /38 service page links to this manual; cover names SMS6HCI01A.',
+        },
+        'step_pages': {
+            'programme': [44], 'rinse_aid': [44, 24, 25], 'loading': [44], 'waiting': [44],
+            'food_spacing': [45], 'food_spray_arm': [45, 39], 'food_filters': [45, 38, 39],
+            'food_programme': [45], 'detergent_tray': [46, 28], 'detergent_position': [46],
+            'streaks_rinse_setting': [48, 25], 'streaks_add_rinse_aid': [48, 24],
+            'streaks_tray': [48, 28], 'streaks_prerinse': [48],
+        },
+        'info_pages': {'plastic': [44], 'interior': [45]},
+    },
+}
+
+
+def catalog_for(model):
+    normalised = re.sub(r'\s+', '', model or '').upper()
+    return next((entry for entry in CATALOGS.values() if normalised in entry['aliases']), None)
+
+
+def source_for(model):
+    entry = catalog_for(model)
+    return entry['source'] if entry else SOURCE
+
+
+def steps_for(model):
+    entry = catalog_for(model)
+    pages = entry['step_pages'] if entry else CATALOGS['SMS6HAI02A/01']['step_pages']
+    return {key: {**value, 'pages': list(pages[key])} for key, value in STEP_DEFINITIONS.items()}
+
+
+def info_for(model):
+    entry = catalog_for(model)
+    pages = entry['info_pages'] if entry else CATALOGS['SMS6HAI02A/01']['info_pages']
+    return {key: {**value, 'pages': list(pages[key])} for key, value in INFO_DEFINITIONS.items()}
+
+
+STEPS = steps_for(MODEL)
+INFO = info_for(MODEL)
