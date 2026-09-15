@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, and Origin rejection.
 
-**Judge should see:** the MCP transport output in the video, then expand **See the verified HTTP run** in the public implementation card for the captured result and integration tests. The README evidence map links to the same artifact. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 33 passing automated checks and eleven live local-AI scenarios.
+**Judge should see:** the MCP transport output in the video, then expand **See the verified HTTP run** in the public implementation card for the captured result and integration tests. The README evidence map links to the same artifact. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 35 passing automated checks and twelve live local-AI scenarios.
 
 ## Design and user experience
 
@@ -16,7 +16,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Potential impact
 
-**Lead story:** appliance support loses evidence between the household, manual, assistant, and technician. FixProof makes a user-confirmed observation portable to the next conversation. Two source-backed paths now demonstrate that this evidence pattern generalises beyond one scripted symptom while remaining bounded to one exact model.
+**Lead story:** appliance support loses evidence between the household, manual, assistant, and technician. FixProof makes a user-confirmed observation portable to the next conversation. Three source-backed paths now demonstrate that this evidence pattern generalises beyond one scripted symptom while remaining bounded to one exact model.
 
 **Evidence boundary:** no customer validation or repair-cost claim. Explain the concrete information loss and show the complete handover artifact.
 
@@ -36,4 +36,4 @@ The entry was submitted on 14 September 2026, with the revised public demo at ht
 
 ## Current release evidence
 
-The reliability changes in validation/RELIABILITY_REVIEW.md have 24 Python tests, nine public-interface logic tests and eleven passing live local-AI scenarios. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
+The reliability changes in validation/RELIABILITY_REVIEW.md have 25 Python tests, ten public-interface logic tests and twelve passing live local-AI scenarios. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.

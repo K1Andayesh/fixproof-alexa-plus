@@ -8,6 +8,7 @@ attempts={k:dict(outcome='Issue unchanged',note='Fictional evaluation',at=now())
 cases=[
  ('supported',case('Plates and glasses stay wet after the wash.'),'What should I check?',{'step'}),
  ('food_remnants',case('Food remnants remain on plates after the wash.'),'What should I check first?',{'step'}),
+ ('detergent_residue',case('Detergent residue remains inside the appliance after the wash.'),'What should I check first?',{'step'}),
  ('unclear',case('Something is wrong.'),'Can you help?',{'clarify'}),
  ('plastic',case('Only plastic boxes stay wet. Everything else is dry.'),'Is this a fault?',{'info'}),
  ('interior',case('Only the inside walls of the dishwasher have water droplets; dishes are dry.'),'Is this expected?',{'info'}),

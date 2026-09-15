@@ -153,6 +153,20 @@ class WorkflowTests(unittest.TestCase):
         c['pending']='food_spacing';server.record_evidence(c,'food_spacing','Issue unchanged','Food still remains.')
         self.assertEqual(c['attempts']['food_spacing']['outcome'],'Issue unchanged')
 
+    def test_detergent_residue_flow_uses_only_source_backed_detergent_steps(self):
+        c=self.create(issue='Detergent residue remains inside the appliance.')
+        seen=[]
+        def choose_detergent(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'detergent'},raw
+            seen.append(context['available_checks'])
+            return {'step':'detergent_tray'},raw
+        with patch.object(server,'infer',side_effect=choose_detergent):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'detergent_tray')
+        self.assertEqual(reply['pages'],[42])
+        self.assertEqual(set(seen[0]),{'detergent_tray','detergent_position'})
+
     def test_switching_supported_path_does_not_erase_pending_check(self):
         c=self.create();c['pending']='waiting'
         with patch.object(server,'infer',return_value=({'category':'food'},{'model':'stub'})) as infer:

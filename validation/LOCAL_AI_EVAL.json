@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-15T02:52:50+00:00",
+  "at": "2026-09-15T03:41:16+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,8 +15,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 4.24,
-          "input_tokens": 597,
+          "seconds": 3.46,
+          "input_tokens": 626,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -39,8 +39,8 @@
         "step": "food_spacing",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.66,
-          "input_tokens": 595,
+          "seconds": 0.57,
+          "input_tokens": 624,
           "output_tokens": 20,
           "decision": {
             "category": "food",
@@ -50,15 +50,39 @@
       }
     },
     {
+      "name": "detergent_residue",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "Arrange the top basket so tableware does not obstruct the tablet collecting tray, and keep tableware and fragrance dispensers out of the tray.",
+        "workflow": "detergent",
+        "title": "Clear the tablet collecting tray",
+        "pages": [
+          42
+        ],
+        "step": "detergent_tray",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.56,
+          "input_tokens": 545,
+          "output_tokens": 25,
+          "decision": {
+            "category": "detergent",
+            "step": "detergent_tray"
+          }
+        }
+      }
+    },
+    {
       "name": "unclear",
       "passed": true,
       "result": {
         "kind": "clarify",
-        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, or shows another problem, and whether the programme finished.",
+        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue remains, or another problem occurred, and whether the programme finished.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.27,
-          "input_tokens": 255,
+          "seconds": 0.26,
+          "input_tokens": 284,
           "output_tokens": 8,
           "decision": {
             "category": "unclear",
@@ -79,8 +103,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.27,
-          "input_tokens": 263,
+          "seconds": 0.25,
+          "input_tokens": 292,
           "output_tokens": 13,
           "decision": {
             "category": "plastic",
@@ -101,8 +125,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.27,
-          "input_tokens": 267,
+          "seconds": 0.26,
+          "input_tokens": 296,
           "output_tokens": 13,
           "decision": {
             "category": "interior",
@@ -116,11 +140,11 @@
       "passed": true,
       "result": {
         "kind": "scope",
-        "text": "The verified reference set here covers drying and food-remnant results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
+        "text": "The verified reference set here covers drying, food-remnant and detergent-residue results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.26,
-          "input_tokens": 265,
+          "input_tokens": 294,
           "output_tokens": 12,
           "decision": {
             "category": "other",
@@ -153,8 +177,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.57,
-          "input_tokens": 587,
+          "seconds": 0.54,
+          "input_tokens": 616,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -177,8 +201,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.61,
-          "input_tokens": 607,
+          "seconds": 0.55,
+          "input_tokens": 636,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -202,9 +226,9 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.65,
-          "input_tokens": 626,
-          "output_tokens": 22,
+          "seconds": 0.62,
+          "input_tokens": 655,
+          "output_tokens": 23,
           "decision": {
             "category": "drying",
             "step": "rinse_aid"
@@ -221,7 +245,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.31,
-          "input_tokens": 265,
+          "input_tokens": 294,
           "output_tokens": 13,
           "decision": {
             "category": "drying",

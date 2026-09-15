@@ -110,6 +110,23 @@ async def main() -> None:
             assert food_pending is not None and food_pending['step_id'].startswith('food_')
             food_citations = food_pending.get('citations', [])
             assert food_citations and all(citation['url'].startswith('https://') for citation in food_citations)
+            detergent_case_result = await final_client.call_tool('start_case', {
+                'request_id': str(uuid.uuid4()),
+                'reported_issue': 'Detergent residue remains inside the appliance after the wash.',
+                'model': 'Bosch SMS6HAI02A/01',
+                'model_confirmed': True,
+                'fictional_demo': True,
+            })
+            detergent_case = detergent_case_result.structured_content
+            detergent_assessed_result = await final_client.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': detergent_case['case_id'],
+                'revision': detergent_case['revision'], 'user_message': 'What should I check first?'
+            })
+            detergent_assessed = detergent_assessed_result.structured_content
+            detergent_pending = detergent_assessed['pending_check']
+            assert detergent_pending is not None and detergent_pending['step_id'].startswith('detergent_')
+            detergent_citations = detergent_pending.get('citations', [])
+            assert detergent_citations and all(citation['url'].endswith('#page=42') for citation in detergent_citations)
         print(
             json.dumps(
                 {
@@ -131,9 +148,11 @@ async def main() -> None:
                     "continued_step": next_pending['step_id'],
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
-                    "source_backed_paths": 2,
+                    "source_backed_paths": 3,
                     "food_path_selected_step": food_pending['step_id'],
                     "food_path_citations": [citation['url'] for citation in food_citations],
+                    "detergent_path_selected_step": detergent_pending['step_id'],
+                    "detergent_path_citations": [citation['url'] for citation in detergent_citations],
                 },
                 indent=2,
             )

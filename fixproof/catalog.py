@@ -18,6 +18,8 @@ STEPS = {
     'food_spray_arm': {'workflow': 'food', 'title': 'Check spray-arm movement', 'text': 'Arrange tableware so it does not block the spray arms from rotating.', 'pages': [42]},
     'food_filters': {'workflow': 'food', 'title': 'Check the filters', 'text': 'Check the filters for residue and clean them under running water as described in the manual.', 'pages': [42, 36, 37]},
     'food_programme': {'workflow': 'food', 'title': 'Check wash intensity', 'text': 'Select a more intensive washing programme for stubborn food remnants.', 'pages': [42]},
+    'detergent_tray': {'workflow': 'detergent', 'title': 'Clear the tablet collecting tray', 'text': 'Arrange the top basket so tableware does not obstruct the tablet collecting tray, and keep tableware and fragrance dispensers out of the tray.', 'pages': [42]},
+    'detergent_position': {'workflow': 'detergent', 'title': 'Reposition the detergent tablet', 'text': 'Position the detergent tablet transversely in the dispenser rather than vertically.', 'pages': [42]},
 }
 INFO = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
