@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-15T02:45:57+00:00",
+  "at": "2026-09-15T02:52:50+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,7 +15,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 3.05,
+          "seconds": 4.24,
           "input_tokens": 597,
           "output_tokens": 20,
           "decision": {
@@ -39,7 +39,7 @@
         "step": "food_spacing",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.71,
+          "seconds": 0.66,
           "input_tokens": 595,
           "output_tokens": 20,
           "decision": {
@@ -57,7 +57,7 @@
         "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, or shows another problem, and whether the programme finished.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.3,
+          "seconds": 0.27,
           "input_tokens": 255,
           "output_tokens": 8,
           "decision": {
@@ -79,7 +79,7 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.32,
+          "seconds": 0.27,
           "input_tokens": 263,
           "output_tokens": 13,
           "decision": {
@@ -101,7 +101,7 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.32,
+          "seconds": 0.27,
           "input_tokens": 267,
           "output_tokens": 13,
           "decision": {
@@ -119,7 +119,7 @@
         "text": "The verified reference set here covers drying and food-remnant results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.31,
+          "seconds": 0.26,
           "input_tokens": 265,
           "output_tokens": 12,
           "decision": {
@@ -153,7 +153,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.64,
+          "seconds": 0.57,
           "input_tokens": 587,
           "output_tokens": 20,
           "decision": {
@@ -177,7 +177,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.7,
+          "seconds": 0.61,
           "input_tokens": 607,
           "output_tokens": 20,
           "decision": {
@@ -202,7 +202,7 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.81,
+          "seconds": 0.65,
           "input_tokens": 626,
           "output_tokens": 22,
           "decision": {
@@ -220,7 +220,7 @@
         "text": "Every check in this supported path has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.34,
+          "seconds": 0.31,
           "input_tokens": 265,
           "output_tokens": 13,
           "decision": {

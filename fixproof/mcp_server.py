@@ -307,7 +307,7 @@ def record_outcome(
     revision: int,
     step_id: str,
     outcome: Literal[
-        "Still wet", "Improved, not resolved", "Not yet tested", "Skipped"
+        "Issue unchanged", "Still wet", "Improved, not resolved", "Not yet tested", "Skipped"
     ],
     observation: str = "",
 ) -> dict[str, Any]:

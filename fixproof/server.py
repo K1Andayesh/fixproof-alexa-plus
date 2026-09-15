@@ -35,7 +35,7 @@ def clean(value, limit=2000):
 def is_supported(model): return re.sub(r'\s+', '', model).upper() in ('BOSCHSMS6HAI02A/01','SMS6HAI02A/01')
 def base_reply(kind, text, **kw): return dict(kind=kind, text=text, **kw)
 
-PERFORMED = ('Still wet', 'Improved, not resolved')
+PERFORMED = ('Issue unchanged', 'Still wet', 'Improved, not resolved')
 OUTCOMES = PERFORMED + ('Not yet tested', 'Skipped')
 HAZARD = re.compile(
     r'\b(?:smoke|smoking|burning|burnt|burned|electric shock|sparks?|sparking|arcing|flood(?:ed|ing)?|leaks?|leaking|exposed wir\w*)\b'

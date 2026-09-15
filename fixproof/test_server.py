@@ -150,6 +150,8 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(reply['pages'],[42])
         self.assertTrue(seen)
         self.assertEqual(set(seen[0]),{'food_spacing','food_spray_arm','food_filters','food_programme'})
+        c['pending']='food_spacing';server.record_evidence(c,'food_spacing','Issue unchanged','Food still remains.')
+        self.assertEqual(c['attempts']['food_spacing']['outcome'],'Issue unchanged')
 
     def test_switching_supported_path_does_not_erase_pending_check(self):
         c=self.create();c['pending']='waiting'

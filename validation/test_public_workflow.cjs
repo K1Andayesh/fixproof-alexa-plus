@@ -63,7 +63,8 @@ test('all deferred outcomes never become performed checks or a diagnosis',()=>{
 test('food-remnant journey stays within its four cited checks',()=>{
  const a=app();a.run("start('Food remnants remain on plates after the wash.','food')");a.ask('What should I check first?');
  assert.equal(a.run('state.pending'),'food_spacing');assert.match(a.get('progress').textContent,/0 of 4 food-remnant checks/);
- assert.match(a.handover(),/Supported path: food remnants/);
+ a.record('Issue unchanged','Food still remains.');assert.match(a.get('evidence-summary').textContent,/1 reported performed/);
+ assert.match(a.handover(),/Supported path: food remnants/);assert.match(a.handover(),/Issue unchanged/);
 });
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');

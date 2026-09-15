@@ -12,7 +12,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits.
 
-**Judge should see:** start a case, save `Still wet`, reload, resume, preview the handover, then use the four boundary shortcuts.
+**Judge should see:** start a case, save `Issue unchanged`, reload, resume, preview the handover, then use the four boundary shortcuts.
 
 ## Potential impact
 

@@ -4,7 +4,7 @@ from pathlib import Path
 from server import assess, MODEL, STEPS, now
 
 def case(issue,attempts=None):return dict(model=MODEL,verified=True,issue=issue,events=[],attempts=attempts or {})
-attempts={k:dict(outcome='Still wet',note='Fictional evaluation',at=now()) for k in STEPS}
+attempts={k:dict(outcome='Issue unchanged',note='Fictional evaluation',at=now()) for k in STEPS}
 cases=[
  ('supported',case('Plates and glasses stay wet after the wash.'),'What should I check?',{'step'}),
  ('food_remnants',case('Food remnants remain on plates after the wash.'),'What should I check first?',{'step'}),

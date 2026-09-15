@@ -12,7 +12,7 @@ const STEPS=[
  {workflow:'food',id:'food_programme',title:'Check wash intensity',text:'Select a more intensive washing programme for stubborn food remnants.',pages:[42]}
 ];
 let state=null,currentStep=null,recognition=null,listening=false,latest='';
-const PERFORMED=['Still wet','Improved, not resolved'];
+const PERFORMED=['Issue unchanged','Still wet','Improved, not resolved'];
 const esc=s=>String(s||'');
 const activeSteps=()=>STEPS.filter(step=>step.workflow===(state?.workflow||'drying'));
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
