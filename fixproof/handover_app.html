@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FixProof repair handover</title>
+  <style>
+    :root { color-scheme: light dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: light-dark(#15261f, #edf8f2); background: light-dark(#f5f8f5, #101916); }
+    main { max-width: 760px; margin: 0 auto; padding: 24px; }
+    header { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
+    .eyebrow { margin: 0 0 7px; color: light-dark(#286146, #8cd8ad); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(1.35rem, 4vw, 2rem); line-height: 1.1; }
+    h2 { margin: 0 0 10px; font-size: 1rem; }
+    p { line-height: 1.55; }
+    .badge { flex: none; border: 1px solid light-dark(#bdd5c8, #416554); border-radius: 999px; padding: 7px 11px; color: light-dark(#22533d, #a7e5c2); font-size: .78rem; font-weight: 750; }
+    .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0; }
+    .metric, section { border: 1px solid light-dark(#d9e5dd, #2f493d); background: light-dark(#fff, #16231d); border-radius: 14px; }
+    .metric { padding: 14px; }
+    .metric strong { display: block; font-size: 1.45rem; }
+    .metric span { color: light-dark(#52645b, #adbbb4); font-size: .78rem; }
+    section { margin-top: 12px; padding: 17px; }
+    .issue { margin: 0; font-size: 1.02rem; }
+    .model { margin: 9px 0 0; color: light-dark(#52645b, #adbbb4); font-size: .82rem; }
+    ol, ul { margin: 0; padding-left: 1.25rem; }
+    li { padding: 5px 0; line-height: 1.45; }
+    .check { list-style: none; margin-left: -1.25rem; border-top: 1px solid light-dark(#e4ece7, #2b4136); padding: 13px 0; }
+    .check:first-child { border-top: 0; padding-top: 0; }
+    .check:last-child { padding-bottom: 0; }
+    .check strong, .check span { display: block; }
+    .check span { margin-top: 3px; color: light-dark(#52645b, #adbbb4); font-size: .84rem; }
+    a { color: light-dark(#15613d, #8de0b1); }
+    .safety { border-color: light-dark(#e0ae6e, #926d39); background: light-dark(#fff8ed, #2a2117); }
+    .limits { color: light-dark(#52645b, #adbbb4); font-size: .84rem; }
+    #loading { text-align: center; padding: 46px 18px; color: light-dark(#52645b, #adbbb4); }
+    #handover[hidden], #safety[hidden], #checks[hidden], #pending[hidden] { display: none; }
+    @media (max-width: 520px) { main { padding: 17px; } header { display: block; } .badge { display: inline-block; margin-top: 12px; } .summary { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="loading" role="status">Waiting for the handover evidence…</div>
+    <article id="handover" hidden>
+      <header>
+        <div><p class="eyebrow">FixProof · portable evidence</p><h1>Repair handover</h1></div>
+        <span class="badge" id="status"></span>
+      </header>
+      <div class="summary" aria-label="Evidence summary">
+        <div class="metric"><strong id="performed">0</strong><span>reported performed</span></div>
+        <div class="metric"><strong id="deferred">0</strong><span>deferred or skipped</span></div>
+        <div class="metric"><strong id="sources">0</strong><span>source citations</span></div>
+      </div>
+      <section><h2>Reported issue</h2><p class="issue" id="issue"></p><p class="model" id="model"></p></section>
+      <section id="checks" hidden><h2>Recorded checks</h2><ol id="check-list"></ol></section>
+      <section id="pending" hidden><h2>Suggested, awaiting outcome</h2><p id="pending-title"></p></section>
+      <section id="safety" class="safety" hidden><h2>Safety report</h2><p id="safety-text"></p></section>
+      <section class="limits"><h2>Evidence boundary</h2><ul id="limits"></ul></section>
+    </article>
+  </main>
+  <script>
+    const byId = (id) => document.getElementById(id);
+    const put = (id, value) => { byId(id).textContent = value ?? ""; };
+    const safeLink = (citation) => {
+      const link = document.createElement("a");
+      link.textContent = `Manual page ${citation.page}`;
+      if (typeof citation.url === "string" && citation.url.startsWith("https://")) {
+        link.href = citation.url; link.target = "_blank"; link.rel = "noopener";
+      }
+      return link;
+    };
+    function render(payload) {
+      const handover = payload?.evidence ? payload : payload?.structuredContent;
+      const evidence = handover?.evidence;
+      if (!evidence) return;
+      const checks = Array.isArray(evidence.checks) ? evidence.checks : [];
+      const performed = checks.filter((item) => item.evidence_status === "user_reports_performed").length;
+      const citations = checks.reduce((sum, item) => sum + (item.citations?.length || 0), 0)
+        + (evidence.suggested_awaiting_outcome?.citations?.length || 0);
+      put("status", handover.status || evidence.case_status);
+      put("performed", performed);
+      put("deferred", checks.length - performed);
+      put("sources", citations);
+      put("issue", evidence.reported_issue);
+      put("model", `${evidence.model?.reported || "Model not supplied"} · ${evidence.model?.user_confirmed ? "user confirmed" : "unconfirmed"}`);
+      const list = byId("check-list"); list.replaceChildren();
+      checks.forEach((item) => {
+        const row = document.createElement("li"); row.className = "check";
+        const title = document.createElement("strong"); title.textContent = item.title;
+        const result = document.createElement("span"); result.textContent = `${item.outcome} · ${item.observation || "No observation supplied"}`;
+        row.append(title, result);
+        (item.citations || []).forEach((citation) => { row.append(document.createTextNode(" "), safeLink(citation)); });
+        list.append(row);
+      });
+      byId("checks").hidden = checks.length === 0;
+      const pending = evidence.suggested_awaiting_outcome;
+      if (pending) { put("pending-title", pending.title); byId("pending").hidden = false; }
+      if (evidence.safety_report) { put("safety-text", evidence.safety_report); byId("safety").hidden = false; }
+      const limits = byId("limits"); limits.replaceChildren();
+      (evidence.limits || []).forEach((text) => { const li = document.createElement("li"); li.textContent = text; limits.append(li); });
+      byId("loading").hidden = true; byId("handover").hidden = false;
+    }
+    window.addEventListener("message", (event) => {
+      if (event.source !== window.parent) return;
+      let data = event.data?.result?.structuredContent;
+      if (!data) {
+        const text = event.data?.result?.content?.find?.((item) => item.type === "text")?.text;
+        if (text) { try { data = JSON.parse(text); } catch (_) {} }
+      }
+      render(data);
+    });
+  </script>
+</body>
+</html>

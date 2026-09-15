@@ -1,16 +1,22 @@
 {
-  "captured_at": "2026-09-15T06:45:58.272977+00:00",
+  "captured_at": "2026-09-15T08:55:51.923897+00:00",
   "capture_scope": "Fictional local transport verification; no household or customer data.",
   "transport": "Streamable HTTP",
   "protocol_version": "2026-07-28",
   "tools": [
+    "prepare_handover",
     "start_case",
     "read_case",
     "ask_fixproof",
-    "record_outcome",
-    "prepare_handover"
+    "record_outcome"
   ],
   "tool_annotations": {
+    "prepare_handover": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "start_case": {
       "readOnlyHint": false,
       "destructiveHint": false,
@@ -34,15 +40,21 @@
       "destructiveHint": false,
       "idempotentHint": true,
       "openWorldHint": false
-    },
-    "prepare_handover": {
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
     }
   },
-  "case_id": "36a070df-3f68-44db-bc2d-f293d07a58d6",
+  "mcp_app": {
+    "extension": "io.modelcontextprotocol/ui",
+    "advertised": true,
+    "tool": "prepare_handover",
+    "resource_uri": "ui://fixproof/handover.html",
+    "mime_type": "text/html;profile=mcp-app",
+    "prefers_border": true,
+    "self_contained": true,
+    "external_resource_csp_declared": false,
+    "device_permissions_declared": false,
+    "text_fallback_contains_observation": true
+  },
+  "case_id": "0c230e7d-258f-43bb-b288-2cd92c70344e",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -79,11 +91,11 @@
       "observed": {
         "protocol_version": "2026-07-28",
         "tools": [
+          "prepare_handover",
           "start_case",
           "read_case",
           "ask_fixproof",
-          "record_outcome",
-          "prepare_handover"
+          "record_outcome"
         ],
         "annotations_present": [
           "ask_fixproof",
@@ -91,7 +103,10 @@
           "read_case",
           "record_outcome",
           "start_case"
-        ]
+        ],
+        "mcp_apps_extension": true,
+        "handover_app_uri": "ui://fixproof/handover.html",
+        "handover_app_mime_type": "text/html;profile=mcp-app"
       }
     },
     {
@@ -104,7 +119,7 @@
         "fictional_demo": true
       },
       "observed": {
-        "case_id": "36a070df-3f68-44db-bc2d-f293d07a58d6",
+        "case_id": "0c230e7d-258f-43bb-b288-2cd92c70344e",
         "revision": 0,
         "status": "Open"
       }

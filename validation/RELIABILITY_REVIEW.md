@@ -2,7 +2,7 @@
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across four source-backed issue paths, the real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across four source-backed issue paths, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -17,6 +17,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - Supported MCP checks and informational guidance return self-contained citations containing document identity, exact page URL, source-verification date and content hash.
 - MCP handovers expose the evidence boundary directly in a versioned object: every recorded check carries its performed or deferred status, observation and citations alongside the readable Markdown.
 - Every MCP tool declares client-planning annotations for read-only access, retry-safe idempotency, non-destructive writes and closed-world operation.
+- `prepare_handover` now binds the same result to an official MCP Apps `ui://` resource. The app loads no external assets, requests no device permissions, renders data without HTML injection, and keeps the complete text fallback for clients that do not negotiate the extension.
 - A new MCP client can resume the case, retain the issue and explicit outcome, and obtain a different remaining check without repeating the recorded one.
 - A second, separately bounded food-remnant path adds four checks grounded in manual pages 36, 37 and 42. Cross-path questions do not replace an awaiting check or mix the two evidence sequences.
 - A third detergent-residue path adds two checks grounded in the manual's page-42 dispenser guidance and remains isolated from the other evidence sequences.
@@ -31,7 +32,8 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 | Python HTTP/MCP regression suite | 26 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
 | Public application-logic regression suite | 11 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
 | Local AI evaluation | 13/13 scenarios passed | Running local Qwen model, including all four source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for drying, food-remnant, detergent-residue and removable-streak cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for four paths, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| MCP App rendering | Passed | The exact `ui://fixproof/handover.html` resource rendered a fictional result in a browser with evidence counts, recorded and pending checks, page citations and limits; the resource itself emitted no browser warnings or errors |
 | Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
 | Chrome UI exercise | Passed | Production removable-streak path selected a page-44 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; no console warnings or errors |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |

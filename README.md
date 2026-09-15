@@ -25,7 +25,8 @@ flowchart LR
     C --> E[Local Ollama + Qwen 3.5 4B]
     E -->|category and approved step ID only| C
     F[Verified model catalog] -->|instruction text and page citations| C
-    C --> G[Repair handover]
+    C --> G[Repair handover data]
+    G --> H[Sandboxed inline MCP App]
 ```
 
 The model classifies the symptom and selects only from server-provided remaining check IDs. Application code supplies every instruction and citation. A user action is the only path that records an outcome.
@@ -38,7 +39,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
-| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object with explicit check status and citations |
+| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object and binds a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
 | Current judge walkthrough | Embedded captioned 2:14 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V3_QA.md) |
@@ -62,7 +63,7 @@ Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_P
 
 ## Run the MCP server
 
-The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow.
+The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow. The handover tool also exposes `ui://fixproof/handover.html` through the official MCP Apps extension, allowing a compatible host to render the evidence inside the conversation.
 
 ```powershell
 python -m venv .venv
@@ -76,7 +77,7 @@ Connect to `http://127.0.0.1:8771/mcp`. In another terminal, verify the transpor
 .\.venv\Scripts\python.exe fixproof\mcp_smoke.py
 ```
 
-The server defaults to loopback, uses the same SQLite record and bounded AI decisions as the browser experience, and rejects invalid browser origins through the SDK transport. `prepare_handover` returns both readable Markdown and a versioned evidence object so another agent can consume the record without parsing prose. A public deployment needs HTTPS and authentication before accepting real case data.
+The server defaults to loopback, uses the same SQLite record and bounded AI decisions as the browser experience, and rejects invalid browser origins through the SDK transport. `prepare_handover` returns readable Markdown and a versioned evidence object so another agent can consume the record without parsing prose. Compatible hosts can render the same result as a self-contained MCP App; clients without Apps support still receive the complete text and structured fallback. A public deployment needs HTTPS and authentication before accepting real case data.
 
 ## Implemented
 
@@ -88,6 +89,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 - Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum. Supported step and informational results carry self-contained page citations plus the verified source hash.
 - Versioned machine-readable handover evidence preserves the status, observation and citations for every recorded check alongside the human-readable Markdown.
 - MCP tool annotations identify read-only and state-changing operations, declare retry-safe idempotency, and tell clients that the tools do not reach into an open external world.
+- The read-only handover tool declares an official MCP Apps `ui://` resource. Its self-contained interface loads no external assets, requests no device permissions, renders values through safe DOM text operations, and retains a meaningful result for text-only clients.
 - Loopback binding, Host/Origin checks, bounded requests, parameterized SQL and no arbitrary source URL fetching.
 
 ## Verify
@@ -113,4 +115,4 @@ The `dist/` folder is the transparent hosted evaluation build. It uses a fixed s
 
 The revised browser flow keeps the question available while a check is pending. A hazard report cancels the pending check, stops troubleshooting, persists the warning, and includes the report in the handover. See [recorded verification](validation/VIDEO_V2_QA.md).
 
-The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, exposes a versioned structured handover, and publishes client-planning annotations for every tool. A cross-connection test and real HTTP run verify that recorded evidence survives a new client and the recorded check is not suggested again. The latest breadth revision adds separately bounded food-remnant, detergent-residue and removable-streak paths without mixing their evidence with drying cases. Its 26 Python regression tests, eleven public-interface logic tests and thirteen live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.
+The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, exposes a versioned structured handover, and publishes client-planning annotations for every tool. A cross-connection test and real HTTP run verify that recorded evidence survives a new client and the recorded check is not suggested again. The latest breadth revision adds separately bounded food-remnant, detergent-residue and removable-streak paths without mixing their evidence with drying cases. The current MCP Apps revision gives the handover a secure inline interface while preserving the same five-tool contract and text fallback. Its 26 Python regression tests, eleven public-interface logic tests and thirteen live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.

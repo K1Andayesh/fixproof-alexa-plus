@@ -7,12 +7,29 @@ import uuid
 from datetime import datetime, timezone
 
 from mcp import Client
+from mcp.client import advertise
+from mcp.server.apps import APP_MIME_TYPE, EXTENSION_ID
 
 
 async def main() -> None:
     url = os.environ.get("FIXPROOF_MCP_URL", "http://127.0.0.1:8771/mcp")
-    async with Client(url, raise_exceptions=True) as client:
+    app_support = advertise(EXTENSION_ID, {"mimeTypes": [APP_MIME_TYPE]})
+    async with Client(url, raise_exceptions=True, extensions=[app_support]) as client:
         tools = await client.list_tools()
+        handover_tool = next(tool for tool in tools.tools if tool.name == "prepare_handover")
+        app_uri = handover_tool.meta["ui"]["resourceUri"]
+        assert app_uri == "ui://fixproof/handover.html"
+        assert EXTENSION_ID in client.server_capabilities.extensions
+        resources = await client.list_resources()
+        app_resource = next(item for item in resources.resources if str(item.uri) == app_uri)
+        assert app_resource.mime_type == APP_MIME_TYPE
+        app_resource_ui = app_resource.meta["ui"]
+        assert "csp" not in app_resource_ui and "permissions" not in app_resource_ui
+        app_document = await client.read_resource(app_uri)
+        app_html = app_document.contents[0].text
+        assert app_document.contents[0].mime_type == APP_MIME_TYPE
+        assert "FixProof repair handover" in app_html
+        assert "innerHTML" not in app_html
         annotations = {
             tool.name: tool.annotations.model_dump(by_alias=True, exclude_none=True)
             for tool in tools.tools
@@ -63,6 +80,7 @@ async def main() -> None:
             "prepare_handover", {"case_id": case["case_id"]}
         )
         handover = handover_result.structured_content
+        assert handover_result.content and "Fictional MCP transport verification." in handover_result.content[0].text
         restored_result = await client.call_tool('read_case', {'case_id': case['case_id']})
         restored = restored_result.structured_content
         assert restored['evidence_summary'] == {'user_reports_performed': 0, 'deferred_or_skipped': 1}
@@ -154,6 +172,9 @@ async def main() -> None:
                     'protocol_version': client.protocol_version,
                     'tools': [tool.name for tool in tools.tools],
                     'annotations_present': sorted(annotations),
+                    'mcp_apps_extension': EXTENSION_ID in client.server_capabilities.extensions,
+                    'handover_app_uri': app_uri,
+                    'handover_app_mime_type': app_resource.mime_type,
                 },
             },
             {
@@ -234,6 +255,18 @@ async def main() -> None:
                     "protocol_version": client.protocol_version,
                     "tools": [tool.name for tool in tools.tools],
                     "tool_annotations": annotations,
+                    "mcp_app": {
+                        "extension": EXTENSION_ID,
+                        "advertised": EXTENSION_ID in client.server_capabilities.extensions,
+                        "tool": "prepare_handover",
+                        "resource_uri": app_uri,
+                        "mime_type": app_resource.mime_type,
+                        "prefers_border": app_resource_ui["prefersBorder"],
+                        "self_contained": "<script src=" not in app_html and "<link " not in app_html,
+                        "external_resource_csp_declared": "csp" in app_resource_ui,
+                        "device_permissions_declared": "permissions" in app_resource_ui,
+                        "text_fallback_contains_observation": "Fictional MCP transport verification." in handover_result.content[0].text,
+                    },
                     "case_id": case["case_id"],
                     "selected_step": pending["step_id"],
                     "selected_step_citations": [citation["url"] for citation in citations],

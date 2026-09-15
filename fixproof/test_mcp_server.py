@@ -4,6 +4,8 @@ import uuid
 from unittest.mock import patch
 
 from mcp import Client
+from mcp.client import advertise
+from mcp.server.apps import APP_MIME_TYPE, EXTENSION_ID
 
 import mcp_server
 
@@ -165,7 +167,10 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             self.assertIn("No fault or repair requirement was diagnosed.", evidence["limits"])
 
     async def test_tools_publish_client_planning_annotations(self):
-        async with Client(mcp_server.mcp, raise_exceptions=True) as client:
+        app_support = advertise(EXTENSION_ID, {"mimeTypes": [APP_MIME_TYPE]})
+        async with Client(
+            mcp_server.mcp, raise_exceptions=True, extensions=[app_support]
+        ) as client:
             listed = {tool.name: tool for tool in (await client.list_tools()).tools}
             for name in ("read_case", "prepare_handover"):
                 self.assertTrue(listed[name].annotations.read_only_hint)
@@ -176,6 +181,22 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
                 self.assertTrue(listed[name].annotations.idempotent_hint)
                 self.assertFalse(listed[name].annotations.destructive_hint)
                 self.assertFalse(listed[name].annotations.open_world_hint)
+            self.assertEqual(
+                listed["prepare_handover"].meta["ui"]["resourceUri"],
+                mcp_server.HANDOVER_APP_URI,
+            )
+            self.assertIn(EXTENSION_ID, client.server_capabilities.extensions)
+            resources = await client.list_resources()
+            handover_resource = next(
+                item for item in resources.resources
+                if str(item.uri) == mcp_server.HANDOVER_APP_URI
+            )
+            self.assertEqual(handover_resource.mime_type, APP_MIME_TYPE)
+            self.assertTrue(handover_resource.meta["ui"]["prefersBorder"])
+            loaded = await client.read_resource(mcp_server.HANDOVER_APP_URI)
+            self.assertEqual(loaded.contents[0].mime_type, APP_MIME_TYPE)
+            self.assertIn("FixProof repair handover", loaded.contents[0].text)
+            self.assertNotIn("innerHTML", loaded.contents[0].text)
 
     async def test_new_client_resumes_without_repeating_recorded_check(self):
         def deterministic_infer(prompt, context, schema):

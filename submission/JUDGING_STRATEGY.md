@@ -4,13 +4,13 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Technical implementation
 
-**Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, and Origin rejection.
+**Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and an official MCP App that renders the handover inside a compatible host.
 
-**Judge should see:** the MCP transport evidence in the current 2:14 video embedded on the public site, then expand **Inspect the captured agent run** in the implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 37 passing automated checks and thirteen live local-AI scenarios.
+**Judge should see:** the MCP transport evidence in the current 2:14 video embedded on the public site, then expand **Inspect the captured agent run** in the implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records MCP Apps negotiation and the handover resource, client-planning tool annotations, exact page URLs, versioned evidence, cross-connection continuity without repeating a recorded check, 37 passing automated checks and thirteen live local-AI scenarios.
 
 ## Design and user experience
 
-**Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits.
+**Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits in both the public simulation and an inline MCP App.
 
 **Judge should see:** start a case, save `Issue unchanged`, reload, resume, preview the handover, then use the four boundary shortcuts.
 
@@ -24,7 +24,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Quality of the idea
 
-**Lead distinction:** the product is a persistent evidence workflow, not another troubleshooting answer. AI chooses only an approved step ID; application code owns the instruction and citation; only the user records an outcome.
+**Lead distinction:** the product is a persistent evidence workflow, not another troubleshooting answer. AI chooses only an approved step ID; application code owns the instruction and citation; only the user records an outcome. The result becomes a portable, human-readable MCP App inside the conversation while retaining machine-readable evidence and a text fallback.
 
 **Memorable line:** The next repair conversation starts with evidence.
 

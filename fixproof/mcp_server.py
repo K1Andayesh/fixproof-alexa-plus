@@ -11,9 +11,11 @@ from __future__ import annotations
 import json
 import os
 import uuid
+from pathlib import Path
 from typing import Any, Literal
 
 from mcp.server import MCPServer
+from mcp.server.apps import Apps
 from mcp.types import ToolAnnotations
 
 import server as workflow
@@ -21,18 +23,9 @@ import server as workflow
 
 HOST = os.environ.get("FIXPROOF_MCP_HOST", "127.0.0.1")
 PORT = int(os.environ.get("FIXPROOF_MCP_PORT", "8771"))
-
-mcp = MCPServer(
-    "FixProof",
-    version="0.2.0",
-    website_url="https://fixproof-alexa.keyvan-andayesh.chatgpt.site",
-    instructions=(
-        "Carry an appliance issue through source-linked checks and a repair handover. "
-        "Only user-confirmed outcomes count as attempted. Never claim a diagnosis, a "
-        "physical inspection, or a verified repair. The current reference catalog covers "
-        "Bosch SMS6HAI02A/01 drying, food-remnant, detergent-residue and removable-streak guidance."
-    ),
-)
+HANDOVER_APP_URI = "ui://fixproof/handover.html"
+HANDOVER_APP_HTML = Path(__file__).with_name("handover_app.html").read_text(encoding="utf-8")
+apps = Apps()
 
 LOCAL_READ = ToolAnnotations(
     readOnlyHint=True,
@@ -216,6 +209,47 @@ def _handover_evidence(case: dict) -> dict[str, Any]:
     }
 
 
+@apps.tool(
+    resource_uri=HANDOVER_APP_URI,
+    title="Prepare a repair handover",
+    annotations=LOCAL_READ,
+    structured_output=True,
+)
+def prepare_handover(case_id: str) -> dict[str, Any]:
+    """Return a readable fallback and structured evidence for the inline handover app."""
+    workflow.init()
+    case = workflow.read_case(workflow.clean(case_id, 80))
+    return {
+        "case_id": case["id"],
+        "revision": case["revision"],
+        "status": case["status"],
+        "markdown": workflow.handover(case),
+        "evidence": _handover_evidence(case),
+    }
+
+
+apps.add_html_resource(
+    HANDOVER_APP_URI,
+    HANDOVER_APP_HTML,
+    title="FixProof repair handover",
+    description="A compact evidence view for appliance owners and repair professionals.",
+    prefers_border=True,
+)
+
+mcp = MCPServer(
+    "FixProof",
+    version="0.3.0",
+    website_url="https://fixproof-alexa.keyvan-andayesh.chatgpt.site",
+    instructions=(
+        "Carry an appliance issue through source-linked checks and a repair handover. "
+        "Only user-confirmed outcomes count as attempted. Never claim a diagnosis, a "
+        "physical inspection, or a verified repair. The current reference catalog covers "
+        "Bosch SMS6HAI02A/01 drying, food-remnant, detergent-residue and removable-streak guidance."
+    ),
+    extensions=[apps],
+)
+
+
 @mcp.tool(title="Start a FixProof case", annotations=LOCAL_WRITE, structured_output=True)
 def start_case(
     request_id: str,
@@ -322,20 +356,6 @@ def record_outcome(
         raise ValueError("This case changed. Read it again before continuing.")
     workflow.record_evidence(case, step_id, outcome, observation)
     return _case_view(_save_updated(case, request_id, revision))
-
-
-@mcp.tool(title="Prepare a repair handover", annotations=LOCAL_READ, structured_output=True)
-def prepare_handover(case_id: str) -> dict[str, Any]:
-    """Return human-readable Markdown and a structured evidence handover."""
-    workflow.init()
-    case = workflow.read_case(workflow.clean(case_id, 80))
-    return {
-        "case_id": case["id"],
-        "revision": case["revision"],
-        "status": case["status"],
-        "markdown": workflow.handover(case),
-        "evidence": _handover_evidence(case),
-    }
 
 
 if __name__ == "__main__":
