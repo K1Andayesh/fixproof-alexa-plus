@@ -171,6 +171,11 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
         async with Client(
             mcp_server.mcp, raise_exceptions=True, extensions=[app_support]
         ) as client:
+            for path in (
+                "drying", "food-remnant", "detergent-residue", "removable-streak",
+                "wash-noise", "cutlery-rust", "irreversible-glass-clouding",
+            ):
+                self.assertIn(path, mcp_server.mcp.instructions)
             listed = {tool.name: tool for tool in (await client.list_tools()).tools}
             for name in ("read_case", "prepare_handover"):
                 self.assertTrue(listed[name].annotations.read_only_hint)

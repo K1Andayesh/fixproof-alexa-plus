@@ -57,4 +57,4 @@ The first main case retains the earlier clarification response as truthful QA hi
 - Microphone capture was not started because accepting a Chrome microphone permission requires separate user authorization. Chrome exposed the API and the control remained enabled, but transcript accuracy and permission-denial UI remain unverified. The app states that Chrome may use an online recognition service and never auto-submits a transcript.
 - No native Alexa account connection or voice/device execution tested. The product is labelled as an Alexa+ experience simulation.
 - No owner/technician feedback or baseline comparison yet. Do not claim saved repair cost, repair accuracy, market demand or a better win probability.
-- External owner/technician feedback, video recording/publication and final submission remain pending. Local pitch/demo/feedback draft is in `submission/DRAFT.md`.
+- Independent owner/technician feedback remains missing. The public submission and current hosted video are live; Devpost's text and YouTube link still describe an earlier release and need an external edit before judging.
