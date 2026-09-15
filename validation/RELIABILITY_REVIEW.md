@@ -35,6 +35,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 | Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for four paths, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | MCP App rendering | Passed | The exact `ui://fixproof/handover.html` resource rendered a fictional result in a browser with evidence counts, recorded and pending checks, page citations and limits; the resource itself emitted no browser warnings or errors |
 | Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
+| Controlled handover retrieval | 76/80 fields; 0 critical errors | Eight blind reads of structured handovers across two local model families, versus 71/80 fields and two critical errors from equal-fact transcripts; synthetic, not user research |
 | Chrome UI exercise | Passed | Production removable-streak path selected a page-44 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; no console warnings or errors |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
@@ -44,6 +45,7 @@ Reproduce:
 .\.venv\Scripts\python.exe -m unittest discover -s fixproof -p "test*.py" -v
 node --test validation/test_public_workflow.cjs
 python fixproof/evaluate.py
+python validation/evaluate_handover_retrieval.py
 # With the local MCP server running:
 .\.venv\Scripts\python.exe fixproof/mcp_smoke.py
 ```
@@ -77,4 +79,4 @@ The revised interface was exercised and visually inspected in Chrome from the pr
 - Site-version-19 browser QA started a fictional drying case, displayed the inline-handover claim, expanded the five-stage evidence trace, and exposed links to the app source, probe and integration tests. The exact MCP App resource also rendered its counts, recorded and pending checks, citation and evidence boundary in a browser. Both production page and direct resource reported no browser warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
-The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
+The controlled retrieval evaluation provides mechanism evidence from synthetic cases: two local model families recovered more exact fields and made fewer critical errors from FixProof handovers than from equal-fact transcripts. The strongest next evidence remains an independent owner/professional assessment. This run cannot establish that FixProof saves time, improves repairs or increases the chance of winning.

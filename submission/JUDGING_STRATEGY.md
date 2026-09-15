@@ -18,9 +18,9 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead story:** the Australian Productivity Commission found significant and unnecessary barriers to repair for some products and identified restricted access to repair information among them. DCCEEW reports that Australia created 511,000 tonnes of e-waste in 2019. FixProof tests a narrow response: keep verified instructions and user-confirmed outcomes portable between the household, assistant and technician. Four source-backed paths demonstrate that evidence pattern beyond one scripted symptom while remaining bounded to one exact model.
 
-**Judge should see:** the public impact card first, then complete one check and open the handover. The card connects the documented problem to the product mechanism and names the outcomes still to measure.
+**Judge should see:** the public impact card first, including the controlled retrieval result, then complete one check and open the handover. In eight blind reads per format, two independent local model families recovered 76/80 exact fields with zero critical errors from the structured handover versus 71/80 fields and two critical errors from equal-fact transcripts.
 
-**Evidence boundary:** official sources establish the repair and e-waste context; they do not establish FixProof's effect. There is no customer validation, time-saving, repair-success, cost or waste-reduction claim. See `validation/IMPACT_EVIDENCE.md`.
+**Evidence boundary:** official sources establish the repair and e-waste context; they do not establish FixProof's effect. The retrieval result is a small synthetic machine-reader evaluation, not customer validation. There is no time-saving, repair-success, cost or waste-reduction claim. See `validation/IMPACT_EVIDENCE.md` and `validation/HANDOVER_RETRIEVAL_EVAL.md`.
 
 ## Quality of the idea
 
@@ -38,4 +38,4 @@ The entry was submitted on 14 September 2026, with the public project at https:/
 
 ## Current release evidence
 
-The reliability changes in validation/RELIABILITY_REVIEW.md have 26 Python tests, eleven public-interface logic tests and thirteen passing live local-AI scenarios. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
+The reliability changes in validation/RELIABILITY_REVIEW.md have 26 Python tests, eleven public-interface logic tests and thirteen passing live local-AI scenarios. The controlled retrieval evaluation adds 16 blind-format reads across two local model families. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.

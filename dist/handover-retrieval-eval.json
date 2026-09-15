@@ -1,0 +1,1123 @@
+{
+  "title": "FixProof controlled handover retrieval evaluation",
+  "schema_version": 1,
+  "captured_at": "2026-09-15T09:51:58+00:00",
+  "reader_models": [
+    "qwen3.5:9b",
+    "gemma3:12b-it-qat"
+  ],
+  "method": {
+    "design": "Four fictional cases x two formats x two local model families",
+    "same_facts": true,
+    "format_blind": true,
+    "temperature": 0,
+    "seed": 42,
+    "limitations": [
+      "Synthetic cases, not user research.",
+      "Measures fact retrieval, not repair success, time saved, or customer impact.",
+      "Local model output can vary across runtime or model versions."
+    ]
+  },
+  "fields": [
+    "reported_issue",
+    "model",
+    "reference_match_supported",
+    "performed_checks",
+    "deferred_checks",
+    "pending_check",
+    "safety_report",
+    "diagnosis_established",
+    "issue_resolved",
+    "source_pages"
+  ],
+  "scenarios": [
+    {
+      "spec": {
+        "slug": "drying-deferred",
+        "issue": "The dishes are still wet after the programme finished.",
+        "attempt": [
+          "waiting",
+          "Not yet tested",
+          "I could not wait 30 minutes today."
+        ],
+        "pending": "rinse_aid",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      }
+    },
+    {
+      "spec": {
+        "slug": "food-performed",
+        "issue": "Food remnants remain on plates after washing.",
+        "attempt": [
+          "food_filters",
+          "Issue unchanged",
+          "I cleaned the filters under running water; food still remains."
+        ],
+        "pending": "food_spacing",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      }
+    },
+    {
+      "spec": {
+        "slug": "detergent-skipped",
+        "issue": "The detergent tablet remains after the wash.",
+        "attempt": [
+          "detergent_tray",
+          "Skipped",
+          "The top basket is full, so I did not move anything."
+        ],
+        "pending": "detergent_position",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      }
+    },
+    {
+      "spec": {
+        "slug": "streaks-safety-stop",
+        "issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "attempt": [
+          "streaks_rinse_setting",
+          "Improved, not resolved",
+          "Lowering the rinse aid setting reduced the streaks."
+        ],
+        "pending": null,
+        "safety": "There is smoke coming from the dishwasher now."
+      },
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      }
+    }
+  ],
+  "aggregate": {
+    "raw_transcript": {
+      "reads": 8,
+      "correct_fields": 71,
+      "total_fields": 80,
+      "field_accuracy_percent": 88.8,
+      "critical_errors": 2
+    },
+    "structured_handover": {
+      "reads": 8,
+      "correct_fields": 76,
+      "total_fields": 80,
+      "field_accuracy_percent": 95.0,
+      "critical_errors": 0
+    }
+  },
+  "results": [
+    {
+      "scenario": "drying-deferred",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 4.05,
+        "retries": 0,
+        "prompt_tokens": 259,
+        "output_tokens": 128
+      }
+    },
+    {
+      "scenario": "drying-deferred",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.5,
+        "retries": 0,
+        "prompt_tokens": 584,
+        "output_tokens": 124
+      }
+    },
+    {
+      "scenario": "drying-deferred",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 19.09,
+        "retries": 0,
+        "prompt_tokens": 276,
+        "output_tokens": 133
+      }
+    },
+    {
+      "scenario": "drying-deferred",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.58,
+        "retries": 0,
+        "prompt_tokens": 613,
+        "output_tokens": 135
+      }
+    },
+    {
+      "scenario": "food-performed",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42,
+          36,
+          37
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 5.8,
+        "retries": 0,
+        "prompt_tokens": 266,
+        "output_tokens": 146
+      }
+    },
+    {
+      "scenario": "food-performed",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42,
+          36,
+          37
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.62,
+        "retries": 0,
+        "prompt_tokens": 643,
+        "output_tokens": 142
+      }
+    },
+    {
+      "scenario": "food-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42,
+          36,
+          37
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.74,
+        "retries": 0,
+        "prompt_tokens": 283,
+        "output_tokens": 142
+      }
+    },
+    {
+      "scenario": "food-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [
+          "Check spacing and contact"
+        ],
+        "pending_check": null,
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42,
+          36,
+          37
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": false,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.92,
+        "retries": 0,
+        "prompt_tokens": 686,
+        "output_tokens": 150
+      }
+    },
+    {
+      "scenario": "detergent-skipped",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 5.71,
+        "retries": 0,
+        "prompt_tokens": 262,
+        "output_tokens": 129
+      }
+    },
+    {
+      "scenario": "detergent-skipped",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.56,
+        "retries": 0,
+        "prompt_tokens": 587,
+        "output_tokens": 133
+      }
+    },
+    {
+      "scenario": "detergent-skipped",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [],
+        "pending_check": "Reposition the detergent tablet.",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 7.12,
+        "retries": 0,
+        "prompt_tokens": 279,
+        "output_tokens": 130
+      }
+    },
+    {
+      "scenario": "detergent-skipped",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.71,
+        "retries": 0,
+        "prompt_tokens": 617,
+        "output_tokens": 137
+      }
+    },
+    {
+      "scenario": "streaks-safety-stop",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Smoke coming from the dishwasher",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "Smoke coming from the dishwasher",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "field_correct": {
+        "reported_issue": false,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": false,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [
+        "safety report lost or changed"
+      ],
+      "runtime": {
+        "seconds": 5.76,
+        "retries": 0,
+        "prompt_tokens": 269,
+        "output_tokens": 135
+      }
+    },
+    {
+      "scenario": "streaks-safety-stop",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.69,
+        "retries": 0,
+        "prompt_tokens": 616,
+        "output_tokens": 141
+      }
+    },
+    {
+      "scenario": "streaks-safety-stop",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Smoke coming from the dishwasher",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Lower the rinse aid setting",
+        "safety_report": "Smoke coming from the dishwasher",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "field_correct": {
+        "reported_issue": false,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": false,
+        "safety_report": false,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 7,
+      "total_fields": 10,
+      "critical_errors": [
+        "safety report lost or changed"
+      ],
+      "runtime": {
+        "seconds": 6.92,
+        "retries": 0,
+        "prompt_tokens": 283,
+        "output_tokens": 139
+      }
+    },
+    {
+      "scenario": "streaks-safety-stop",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting: Improved, not resolved"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": false,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.7,
+        "retries": 0,
+        "prompt_tokens": 642,
+        "output_tokens": 145
+      }
+    }
+  ],
+  "reader_model_details": [
+    {
+      "name": "qwen3.5:9b",
+      "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+      "size": 6594474711
+    },
+    {
+      "name": "gemma3:12b-it-qat",
+      "digest": "5d4fa005e7bb5931be8bc35224080a9b316c7e1c069c9481a6a51b607f4252e2",
+      "size": 8928675346
+    }
+  ]
+}

@@ -40,6 +40,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
 | Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object and binds a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review |
+| Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 76/80 fields with zero critical errors from handovers versus 71/80 fields and two critical errors from equal-fact transcripts across two local model families |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
 | Current judge walkthrough | Embedded captioned 2:14 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V3_QA.md) |
@@ -97,11 +98,12 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s fixproof -p "test*.py" -v
 python fixproof/evaluate.py
+python validation/evaluate_handover_retrieval.py
 node --check fixproof/app.js
 node --test validation/test_public_workflow.cjs
 ```
 
-Live evaluations use the local model and write `validation/LOCAL_AI_EVAL.json`. Tests use an isolated temporary database. See [QA evidence](validation/FIXPROOF_QA.md), [scope](validation/FIXPROOF.md) and the [public Devpost entry](https://devpost.com/software/fixproof).
+Live workflow evaluations use the local model and write `validation/LOCAL_AI_EVAL.json`. The controlled retrieval evaluation writes `validation/HANDOVER_RETRIEVAL_EVAL.json` and measures exact fact extraction from fictional equal-fact formats; it is not an automated test or human study. Tests use an isolated temporary database. See [QA evidence](validation/FIXPROOF_QA.md), [scope](validation/FIXPROOF.md) and the [public Devpost entry](https://devpost.com/software/fixproof).
 
 ## Boundaries
 
