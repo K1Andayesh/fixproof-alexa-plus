@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import uuid
+from datetime import datetime, timezone
 
 from mcp import Client
 
@@ -90,7 +91,8 @@ async def main() -> None:
             assert stopped['status'] == 'Handover ready' and stopped['pending_check'] is None
         async with Client(url, raise_exceptions=True) as final_client:
             reread = await final_client.call_tool('read_case', {'case_id': case['case_id']})
-            assert reread.structured_content['safety_report'] == 'There is smoke from the door.'
+            final_state = reread.structured_content
+            assert final_state['safety_report'] == 'There is smoke from the door.'
             safety_handover = await final_client.call_tool('prepare_handover', {'case_id': case['case_id']})
             assert '## Safety report' in safety_handover.structured_content['markdown']
             food_case_result = await final_client.call_tool('start_case', {
@@ -127,9 +129,91 @@ async def main() -> None:
             assert detergent_pending is not None and detergent_pending['step_id'].startswith('detergent_')
             detergent_citations = detergent_pending.get('citations', [])
             assert detergent_citations and all(citation['url'].endswith('#page=42') for citation in detergent_citations)
+        judge_trace = [
+            {
+                'connection': 1,
+                'operation': 'tools/list',
+                'observed': {
+                    'protocol_version': client.protocol_version,
+                    'tools': [tool.name for tool in tools.tools],
+                    'annotations_present': sorted(annotations),
+                },
+            },
+            {
+                'connection': 1,
+                'operation': 'start_case',
+                'request': {
+                    'reported_issue': 'Plates and glasses are still wet after a wash.',
+                    'model': 'Bosch SMS6HAI02A/01',
+                    'model_confirmed': True,
+                    'fictional_demo': True,
+                },
+                'observed': {
+                    'case_id': case['case_id'],
+                    'revision': case['revision'],
+                    'status': case['status'],
+                },
+            },
+            {
+                'connection': 1,
+                'operation': 'ask_fixproof',
+                'request': {'user_message': 'What should I check first?'},
+                'observed': {
+                    'step_id': pending['step_id'],
+                    'citations': [citation['url'] for citation in citations],
+                    'source_hash_present': all(bool(citation['content_sha256']) for citation in citations),
+                },
+            },
+            {
+                'connection': 1,
+                'operation': 'record_outcome + prepare_handover',
+                'request': {
+                    'outcome': 'Not yet tested',
+                    'observation': 'Fictional MCP transport verification.',
+                },
+                'observed': {
+                    'user_reports_performed': restored['evidence_summary']['user_reports_performed'],
+                    'deferred_or_skipped': restored['evidence_summary']['deferred_or_skipped'],
+                    'handover_schema': evidence['schema_version'],
+                    'recorded_evidence_status': evidence['checks'][0]['evidence_status'],
+                },
+            },
+            {
+                'connection': 2,
+                'operation': 'read_case + ask_fixproof',
+                'request': {'user_message': 'What should I check next?'},
+                'observed': {
+                    'issue_preserved': carried['reported_issue'] == 'Plates and glasses are still wet after a wash.',
+                    'outcome_preserved': carried['recorded_outcomes'][pending['step_id']]['outcome'],
+                    'previous_step': pending['step_id'],
+                    'next_step': next_pending['step_id'],
+                    'previous_step_not_repeated': next_pending['step_id'] != pending['step_id'],
+                },
+            },
+            {
+                'connection': 2,
+                'operation': 'ask_fixproof',
+                'request': {'user_message': 'There is smoke from the door.'},
+                'observed': {
+                    'status': stopped['status'],
+                    'pending_check': stopped['pending_check'],
+                },
+            },
+            {
+                'connection': 3,
+                'operation': 'read_case + prepare_handover',
+                'observed': {
+                    'safety_report_preserved': final_state['safety_report'],
+                    'handover_contains_safety_section': '## Safety report' in safety_handover.structured_content['markdown'],
+                },
+            },
+        ]
         print(
             json.dumps(
                 {
+                    "captured_at": datetime.now(timezone.utc).isoformat(),
+                    "capture_scope": "Fictional local transport verification; no household or customer data.",
+                    "transport": "Streamable HTTP",
                     "protocol_version": client.protocol_version,
                     "tools": [tool.name for tool in tools.tools],
                     "tool_annotations": annotations,
@@ -153,6 +237,7 @@ async def main() -> None:
                     "food_path_citations": [citation['url'] for citation in food_citations],
                     "detergent_path_selected_step": detergent_pending['step_id'],
                     "detergent_path_citations": [citation['url'] for citation in detergent_citations],
+                    "judge_trace": judge_trace,
                 },
                 indent=2,
             )

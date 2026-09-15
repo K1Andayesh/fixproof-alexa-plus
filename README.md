@@ -34,7 +34,7 @@ The model classifies the symptom and selects only from server-provided remaining
 
 | Claim | Reproducible evidence |
 | --- | --- |
-| Real MCP runtime | [Captured HTTP result](validation/RELIABILITY_MCP.json), `fixproof/mcp_smoke.py`, and the MCP integration test |
+| Real MCP runtime | [Captured HTTP result](validation/RELIABILITY_MCP.json), [public judge copy](https://fixproof-alexa.keyvan-andayesh.chatgpt.site/mcp-run.json), executable `fixproof/mcp_smoke.py`, and the MCP integration test |
 | State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
