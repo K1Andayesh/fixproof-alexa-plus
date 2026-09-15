@@ -13,4 +13,4 @@ Verified 16 September 2026.
 - Visual inspection: opening, breadth, public-MCP and closing frames were checked at 1920 by 1080. The final MCP frame visibly says `Seven issue paths`; text remains inside the frame.
 - Evidence boundary: every case shown is fictional. The closing frame says that Alexa device testing and customer validation remain ahead.
 
-Local release Chrome loaded the v7 media, showed the English captions and visibly advanced playback to six seconds. The opening frame showed the current 3-model, 7-path and 23-check scope without overlap. Production verification is recorded after deployment in `RELIABILITY_REVIEW.md`.
+Local release Chrome loaded the v7 media, showed the English captions and visibly advanced playback to six seconds. Production Chrome loaded the same media, displayed its English captions and advanced playback to nine seconds. The opening frame showed the current 3-model, 7-path and 23-check scope without overlap. Site version 27 and its production deployment receipt are recorded in `RELIABILITY_REVIEW.md`.
