@@ -136,6 +136,28 @@ class WorkflowTests(unittest.TestCase):
             reply=server.assess(c,'What next?')
         self.assertEqual(reply['step'],'waiting');self.assertEqual(infer.call_count,1)
 
+    def test_food_remnant_flow_uses_only_source_backed_food_steps(self):
+        c=self.create(issue='Food remains on the plates after the wash.')
+        seen=[]
+        def choose_food(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'food'},raw
+            seen.append(context['available_checks'])
+            return {'step':'food_spacing'},raw
+        with patch.object(server,'infer',side_effect=choose_food):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'food_spacing')
+        self.assertEqual(reply['pages'],[42])
+        self.assertTrue(seen)
+        self.assertEqual(set(seen[0]),{'food_spacing','food_spray_arm','food_filters','food_programme'})
+
+    def test_switching_supported_path_does_not_erase_pending_check(self):
+        c=self.create();c['pending']='waiting'
+        with patch.object(server,'infer',return_value=({'category':'food'},{'model':'stub'})) as infer:
+            reply=server.assess(c,'There is also food left on the plates.')
+        self.assertEqual(reply['kind'],'clarify');self.assertNotIn('step',reply)
+        self.assertEqual(c['pending'],'waiting');self.assertEqual(infer.call_count,1)
+
     def test_handover_separates_performed_deferred_and_pending(self):
         c=self.create();c['pending']='loading'
         for step,outcome in [('waiting','Still wet'),('rinse_aid','Not yet tested'),('programme','Skipped')]:

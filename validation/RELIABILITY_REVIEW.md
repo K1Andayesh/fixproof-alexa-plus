@@ -2,7 +2,7 @@
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. The real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across two source-backed issue paths, the real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -18,15 +18,16 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - MCP handovers expose the evidence boundary directly in a versioned object: every recorded check carries its performed or deferred status, observation and citations alongside the readable Markdown.
 - Every MCP tool declares client-planning annotations for read-only access, retry-safe idempotency, non-destructive writes and closed-world operation.
 - A new MCP client can resume the case, retain the issue and explicit outcome, and obtain a different remaining check without repeating the recorded one.
+- A second, separately bounded food-remnant path adds four checks grounded in manual pages 36, 37 and 42. Cross-path questions do not replace an awaiting check or mix the two evidence sequences.
 
 ## Evidence collected
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 22 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 7 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 10/10 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Python HTTP/MCP regression suite | 24 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 9 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 11/11 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for both drying and food-remnant cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | Chrome UI exercise | Passed | Explicit no-hazard and technical phrases continued to a supported check; a mixed report containing a leak stopped the workflow and cleared the pending outcome |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
@@ -51,7 +52,7 @@ The revised interface was exercised and visually inspected in Chrome from the lo
 - Commit `7bbb4408828021c4a1db01f2afce4db49dedc0e0` was pushed to the public GitHub repository and the Sites source repository.
 - The exact archive from that commit was saved as Site version 11 and production deployment `appgdep_6aa8a2bae2b48191a43644d31ba08772` succeeded on 15 September 2026.
 - The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining check, included the exact-page citation and source hash, then preserved a later safety stop through another connection.
-- The production page showed 29 automated checks and 10/10 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, and cross-connection continuity, with direct links to the captured HTTP result and integration tests.
+- The production page showed 33 automated checks and 11/11 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, and cross-connection continuity, with direct links to the captured HTTP result and integration tests.
 - In production Chrome QA, **See the verified HTTP run** expanded to show all five evidence bullets and both GitHub evidence links. The browser console reported no warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 

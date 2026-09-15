@@ -39,7 +39,7 @@
       "openWorldHint": false
     }
   },
-  "case_id": "fa70f8db-1a23-4adf-9d4d-832438a94454",
+  "case_id": "56c298bb-510f-48d1-8124-da204bb78515",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -55,5 +55,10 @@
   "recorded_check_not_repeated": true,
   "continued_step": "rinse_aid",
   "safety_stop_survives_client_reconnect": true,
-  "safety_report_in_handover": true
+  "safety_report_in_handover": true,
+  "source_backed_paths": 2,
+  "food_path_selected_step": "food_spacing",
+  "food_path_citations": [
+    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=42"
+  ]
 }

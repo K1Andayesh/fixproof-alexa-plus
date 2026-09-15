@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-14T17:34:30+00:00",
+  "at": "2026-09-15T02:45:57+00:00",
   "cases": [
     {
       "name": "supported",
@@ -7,6 +7,7 @@
       "result": {
         "kind": "step",
         "text": "Let the programme finish, then wait 30 minutes before removing the tableware.",
+        "workflow": "drying",
         "title": "Allow drying to finish",
         "pages": [
           41
@@ -14,8 +15,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 4.81,
-          "input_tokens": 547,
+          "seconds": 3.05,
+          "input_tokens": 597,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -25,15 +26,39 @@
       }
     },
     {
+      "name": "food_remnants",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "Arrange tableware with enough space for spray jets to reach the surfaces, and avoid points of contact.",
+        "workflow": "food",
+        "title": "Check spacing and contact",
+        "pages": [
+          42
+        ],
+        "step": "food_spacing",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.71,
+          "input_tokens": 595,
+          "output_tokens": 20,
+          "decision": {
+            "category": "food",
+            "step": "food_spacing"
+          }
+        }
+      }
+    },
+    {
       "name": "unclear",
       "passed": true,
       "result": {
         "kind": "clarify",
-        "text": "Please describe the symptom first. For a drying problem, tell me what remains wet: plates or glasses, only plastic, or the inside walls, and whether the programme finished.",
+        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, or shows another problem, and whether the programme finished.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.27,
-          "input_tokens": 233,
+          "seconds": 0.3,
+          "input_tokens": 255,
           "output_tokens": 8,
           "decision": {
             "category": "unclear",
@@ -54,8 +79,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.28,
-          "input_tokens": 241,
+          "seconds": 0.32,
+          "input_tokens": 263,
           "output_tokens": 13,
           "decision": {
             "category": "plastic",
@@ -76,8 +101,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.26,
-          "input_tokens": 245,
+          "seconds": 0.32,
+          "input_tokens": 267,
           "output_tokens": 13,
           "decision": {
             "category": "interior",
@@ -91,11 +116,11 @@
       "passed": true,
       "result": {
         "kind": "scope",
-        "text": "The verified reference set here covers drying only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
+        "text": "The verified reference set here covers drying and food-remnant results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.25,
-          "input_tokens": 243,
+          "seconds": 0.31,
+          "input_tokens": 265,
           "output_tokens": 12,
           "decision": {
             "category": "other",
@@ -120,6 +145,7 @@
       "result": {
         "kind": "step",
         "text": "Let the programme finish, then wait 30 minutes before removing the tableware.",
+        "workflow": "drying",
         "title": "Allow drying to finish",
         "pages": [
           41
@@ -127,8 +153,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.65,
-          "input_tokens": 537,
+          "seconds": 0.64,
+          "input_tokens": 587,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -143,6 +169,7 @@
       "result": {
         "kind": "step",
         "text": "Let the programme finish, then wait 30 minutes before removing the tableware.",
+        "workflow": "drying",
         "title": "Allow drying to finish",
         "pages": [
           41
@@ -150,8 +177,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.67,
-          "input_tokens": 557,
+          "seconds": 0.7,
+          "input_tokens": 607,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -166,6 +193,7 @@
       "result": {
         "kind": "step",
         "text": "Check the rinse aid indicator and dosage. Follow page 23 for filling or adjusting it; use only domestic dishwasher rinse aid.",
+        "workflow": "drying",
         "title": "Check rinse aid",
         "pages": [
           40,
@@ -174,8 +202,8 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.69,
-          "input_tokens": 583,
+          "seconds": 0.81,
+          "input_tokens": 626,
           "output_tokens": 22,
           "decision": {
             "category": "drying",
@@ -189,11 +217,11 @@
       "passed": true,
       "result": {
         "kind": "handover",
-        "text": "Every check in this small reference set has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
+        "text": "Every check in this supported path has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.27,
-          "input_tokens": 243,
+          "seconds": 0.34,
+          "input_tokens": 265,
           "output_tokens": 13,
           "decision": {
             "category": "drying",

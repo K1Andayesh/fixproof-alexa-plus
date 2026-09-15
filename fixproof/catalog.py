@@ -10,10 +10,14 @@ SOURCE = {
     'coverage': 'Exact /01 service page links to this manual; cover names SMS6HAI02A.'
 }
 STEPS = {
-    'programme': {'title': 'Check the programme', 'text': 'Check whether the selected programme includes drying. Shortening options can reduce drying performance.', 'pages': [40]},
-    'rinse_aid': {'title': 'Check rinse aid', 'text': 'Check the rinse aid indicator and dosage. Follow page 23 for filling or adjusting it; use only domestic dishwasher rinse aid.', 'pages': [40, 23]},
-    'loading': {'title': 'Check pooled water', 'text': 'Where possible, angle items so water can drain from their recesses.', 'pages': [41]},
-    'waiting': {'title': 'Allow drying to finish', 'text': 'Let the programme finish, then wait 30 minutes before removing the tableware.', 'pages': [41]},
+    'programme': {'workflow': 'drying', 'title': 'Check the programme', 'text': 'Check whether the selected programme includes drying. Shortening options can reduce drying performance.', 'pages': [40]},
+    'rinse_aid': {'workflow': 'drying', 'title': 'Check rinse aid', 'text': 'Check the rinse aid indicator and dosage. Follow page 23 for filling or adjusting it; use only domestic dishwasher rinse aid.', 'pages': [40, 23]},
+    'loading': {'workflow': 'drying', 'title': 'Check pooled water', 'text': 'Where possible, angle items so water can drain from their recesses.', 'pages': [41]},
+    'waiting': {'workflow': 'drying', 'title': 'Allow drying to finish', 'text': 'Let the programme finish, then wait 30 minutes before removing the tableware.', 'pages': [41]},
+    'food_spacing': {'workflow': 'food', 'title': 'Check spacing and contact', 'text': 'Arrange tableware with enough space for spray jets to reach the surfaces, and avoid points of contact.', 'pages': [42]},
+    'food_spray_arm': {'workflow': 'food', 'title': 'Check spray-arm movement', 'text': 'Arrange tableware so it does not block the spray arms from rotating.', 'pages': [42]},
+    'food_filters': {'workflow': 'food', 'title': 'Check the filters', 'text': 'Check the filters for residue and clean them under running water as described in the manual.', 'pages': [42, 36, 37]},
+    'food_programme': {'workflow': 'food', 'title': 'Check wash intensity', 'text': 'Select a more intensive washing programme for stubborn food remnants.', 'pages': [42]},
 }
 INFO = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},

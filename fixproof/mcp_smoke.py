@@ -93,6 +93,23 @@ async def main() -> None:
             assert reread.structured_content['safety_report'] == 'There is smoke from the door.'
             safety_handover = await final_client.call_tool('prepare_handover', {'case_id': case['case_id']})
             assert '## Safety report' in safety_handover.structured_content['markdown']
+            food_case_result = await final_client.call_tool('start_case', {
+                'request_id': str(uuid.uuid4()),
+                'reported_issue': 'Food remnants remain on plates after the wash.',
+                'model': 'Bosch SMS6HAI02A/01',
+                'model_confirmed': True,
+                'fictional_demo': True,
+            })
+            food_case = food_case_result.structured_content
+            food_assessed_result = await final_client.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': food_case['case_id'],
+                'revision': food_case['revision'], 'user_message': 'What should I check first?'
+            })
+            food_assessed = food_assessed_result.structured_content
+            food_pending = food_assessed['pending_check']
+            assert food_pending is not None and food_pending['step_id'].startswith('food_')
+            food_citations = food_pending.get('citations', [])
+            assert food_citations and all(citation['url'].startswith('https://') for citation in food_citations)
         print(
             json.dumps(
                 {
@@ -114,6 +131,9 @@ async def main() -> None:
                     "continued_step": next_pending['step_id'],
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
+                    "source_backed_paths": 2,
+                    "food_path_selected_step": food_pending['step_id'],
+                    "food_path_citations": [citation['url'] for citation in food_citations],
                 },
                 indent=2,
             )
