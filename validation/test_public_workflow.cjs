@@ -5,6 +5,7 @@ const vm=require('node:vm');
 const fs=require('node:fs');
 const {webcrypto}=require('node:crypto');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../dist/app.js'),'utf8');
+const page=fs.readFileSync(require('node:path').join(__dirname,'../dist/index.html'),'utf8');
 function app(saved=new Map()){
  const elements=new Map();
  const element=()=>({value:'',children:[],hidden:false,disabled:false,textContent:'',append(...items){this.children.push(...items)},replaceChildren(...items){this.children=items},focus(){},scrollIntoView(){},showModal(){},close(){},classList:{add(){},remove(){}},setAttribute(){}});
@@ -89,4 +90,9 @@ test('a cross-path request does not replace a pending check',()=>{
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);
  const b=app();b.run("start('Food remnants remain on plates after the wash.','food')");b.ask('first check');b.ask('The dishes are also wet.');
  assert.equal(b.run('state.pending'),'food_spacing');assert.match(b.run('latest'),/Start a new fictional case/);
+});
+test('the public evaluation page links to the callable MCP deployment',()=>{
+ assert.match(page,/https:\/\/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\//);
+ assert.match(page,/fictional-only input/);
+ assert.match(page,/official TypeScript SDK 2\.0\.0 plus D1 continuity/);
 });

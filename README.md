@@ -4,7 +4,7 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The page also embeds a captioned 2:14 walkthrough of the current four-path release with Australian neural narration. The hosted interface states that it is a simulation and does not run the local AI implementation.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:14 walkthrough of the current four-path release with Australian neural narration.
 
 ## 90-second judge tour
 
@@ -21,7 +21,7 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 flowchart LR
     A[Alexa+ experience or MCP client] --> B[Five-tool Streamable HTTP MCP server]
     B --> C[Revisioned case workflow]
-    C --> D[(SQLite evidence record)]
+    C --> D[(SQLite or D1 evidence record)]
     C --> E[Local Ollama + Qwen 3.5 4B]
     E -->|category and approved step ID only| C
     F[Verified model catalog] -->|instruction text and page citations| C
@@ -35,7 +35,7 @@ The model classifies the symptom and selects only from server-provided remaining
 
 | Claim | Reproducible evidence |
 | --- | --- |
-| Real MCP runtime | [Captured HTTP result](validation/RELIABILITY_MCP.json), [public judge copy](https://fixproof-alexa.keyvan-andayesh.chatgpt.site/mcp-run.json), executable `fixproof/mcp_smoke.py`, and the MCP integration test |
+| Real MCP runtime | [Public callable endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/), [captured hosted result](validation/HOSTED_MCP.json), executable `fixproof/hosted_mcp_smoke.py`, local [HTTP result](validation/RELIABILITY_MCP.json), and integration tests |
 | State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
@@ -64,6 +64,8 @@ Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_P
 
 ## Run the MCP server
 
+For immediate judge testing, use `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/mcp`. It runs the same bounded three-model, four-path catalog as a separate public TypeScript MCP service with D1 continuity. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data. Its landing page lists all five calls and the required fields.
+
 The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow. The handover tool also exposes `ui://fixproof/handover.html` through the official MCP Apps extension, allowing a compatible host to render the evidence inside the conversation.
 
 ```powershell
@@ -88,6 +90,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 - Reload/resume, model traces, manufacturer links, handover preview and Markdown download.
 - Optional Chrome speech input fills the question for review without submitting it. Browser speech output can read the latest FixProof response aloud. The typed path remains available throughout.
 - Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum. Supported step and informational results carry self-contained page citations plus the verified source hash.
+- Public judge-callable TypeScript MCP SDK 2.0.0 deployment over Streamable HTTP, with D1-backed state across connections and an enforced fictional-only input boundary.
 - Versioned machine-readable handover evidence preserves the status, observation and citations for every recorded check alongside the human-readable Markdown.
 - MCP tool annotations identify read-only and state-changing operations, declare retry-safe idempotency, and tell clients that the tools do not reach into an open external world.
 - The read-only handover tool declares an official MCP Apps `ui://` resource. Its self-contained interface loads no external assets, requests no device permissions, renders values through safe DOM text operations, and retains a meaningful result for text-only clients.
