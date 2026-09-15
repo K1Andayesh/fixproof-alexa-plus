@@ -39,7 +39,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
-| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object, a reproducible SHA-256 fingerprint over that object, and a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review |
+| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object, a reproducible SHA-256 fingerprint over that object, and a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review; the zero-install browser build exports the same evidence schema as JSON |
 | Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 133/140 fields with zero critical errors from handovers versus 127/140 fields and two critical errors from equal-fact transcripts across two local model families and all seven issue paths |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
@@ -87,7 +87,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 - Three exact reference models, Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72. The same twenty-three application-owned checks across drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust and irreversible-glass-clouding paths are independently mapped to visually checked pages in each model's official manual.
 - Local AI classifies symptoms, then selects from remaining source-backed checks. Server supplies instruction text and citations. Unsupported/unconfirmed models do not receive model-specific checks.
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
-- Reload/resume, model traces, manufacturer links, handover preview and Markdown download.
+- Reload/resume, model traces, manufacturer links, handover preview, Markdown download and portable structured-JSON download.
 - Optional Chrome speech input fills the question for review without submitting it. Browser speech output can read the latest FixProof response aloud. The typed path remains available throughout.
 - Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum. Supported step and informational results carry self-contained page citations plus the verified source hash.
 - Public judge-callable TypeScript MCP SDK 2.0.0 deployment over Streamable HTTP, with D1-backed state across connections, an enforced fictional-only input boundary, and machine-facing server instructions that enumerate all seven verified paths.

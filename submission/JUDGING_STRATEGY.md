@@ -10,9 +10,9 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Design and user experience
 
-**Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits in both the public simulation and an inline MCP App.
+**Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits in both the public simulation and an inline MCP App. The zero-install build now exports the same versioned evidence schema and fingerprint as a portable JSON file.
 
-**Judge should see:** start a case, save `Issue unchanged`, reload, resume, preview the handover, then use the four boundary shortcuts.
+**Judge should see:** start a case, save `Issue unchanged`, reload, resume, preview the fingerprinted handover, and download the evidence JSON before using the four boundary shortcuts.
 
 ## Potential impact
 

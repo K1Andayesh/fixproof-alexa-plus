@@ -10,9 +10,9 @@ function app(saved=new Map()){
  const elements=new Map();
  const element=()=>({value:'',children:[],hidden:false,disabled:false,textContent:'',append(...items){this.children.push(...items)},replaceChildren(...items){this.children=items},focus(){},scrollIntoView(){},showModal(){},close(){},classList:{add(){},remove(){}},setAttribute(){}});
  const get=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id)};
- const sandbox={document:{getElementById:get,createElement:element,querySelectorAll:()=>[]},window:{},localStorage:{getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v),removeItem:k=>saved.delete(k)},crypto:webcrypto,location:{reload(){}},setTimeout,URL,Blob};
+ const sandbox={document:{getElementById:get,createElement:element,querySelectorAll:()=>[]},window:{},localStorage:{getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v),removeItem:k=>saved.delete(k)},crypto:webcrypto,TextEncoder,Uint8Array,location:{reload(){}},setTimeout,URL,Blob};
  vm.createContext(sandbox);vm.runInContext(source,sandbox);
- return {get,saved,run:code=>vm.runInContext(code,sandbox),start:()=>sandbox.start('Plates are wet.'),ask:q=>{get('question').value=q;get('ask').onsubmit({preventDefault(){}})},record:(result,note='')=>{get('result').value=result;get('note').value=note;get('outcome').onsubmit({preventDefault(){}})},handover:()=>sandbox.handover()};
+ return {get,saved,run:code=>vm.runInContext(code,sandbox),start:()=>sandbox.start('Plates are wet.'),ask:q=>{get('question').value=q;get('ask').onsubmit({preventDefault(){}})},record:(result,note='')=>{get('result').value=result;get('note').value=note;get('outcome').onsubmit({preventDefault(){}})},handover:()=>sandbox.handover(),bundle:()=>sandbox.handoverBundle(),digest:value=>sandbox.evidenceSha256(value)};
 }
 test('a suggestion is not a performed check; next preserves the pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('next');
@@ -110,8 +110,18 @@ test('a cross-path request does not replace a pending check',()=>{
  const b=app();b.run("start('Food remnants remain on plates after the wash.','food')");b.ask('first check');b.ask('The dishes are also wet.');
  assert.equal(b.run('state.pending'),'food_spacing');assert.match(b.run('latest'),/Start a new fictional case/);
 });
-test('the public evaluation page links to the callable MCP deployment',()=>{
+test('the public evaluation exposes portable fingerprinted evidence and the callable MCP deployment',async()=>{
  assert.match(page,/https:\/\/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\//);
  assert.match(page,/fictional-only input/);
  assert.match(page,/official TypeScript SDK 2\.0\.0 plus D1 continuity/);
+ assert.match(page,/id="download-json"/);
+ const a=app();a.start();a.ask('first check');a.record('Issue unchanged','Fictional portable-evidence check.');
+ const bundle=await a.bundle();
+ assert.equal(bundle.evidence.schema_version,'fixproof-handover-1');
+ assert.equal(bundle.evidence.checks[0].observation,'Fictional portable-evidence check.');
+ assert.match(bundle.evidence_integrity.digest,/^[a-f0-9]{64}$/);
+ assert.equal(bundle.evidence_integrity.digest,await a.digest(bundle.evidence));
+ const changed=JSON.parse(JSON.stringify(bundle.evidence));changed.reported_issue='Changed after export.';
+ assert.notEqual(bundle.evidence_integrity.digest,await a.digest(changed));
+ assert.equal(bundle.evidence_integrity.authorship_proof,false);
 });
