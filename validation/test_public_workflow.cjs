@@ -85,6 +85,12 @@ test('removable-streak journey stays within its four cited checks',()=>{
  a.record('Issue unchanged','Streaks remain on the glasses.');
  assert.match(a.handover(),/Supported path: removable streaks/);assert.match(a.handover(),/Manual · p. 44|page=44/);
 });
+test('wash-noise journey stays within its three cited checks',()=>{
+ const a=app();a.run("start('There is a knocking or rattling noise during the wash.','noise','Bosch SMS6HCI02A/72')");a.ask('What should I check first?');
+ assert.equal(a.run('state.pending'),'noise_spray_arm');assert.match(a.get('progress').textContent,/0 of 3 wash-noise checks/);
+ a.record('Issue unchanged','The knocking remains.');
+ assert.match(a.handover(),/Supported path: knocking or rattling during the wash/);assert.match(a.handover(),/9002017246_A\.pdf#page=49/);
+});
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);

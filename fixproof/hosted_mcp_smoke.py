@@ -64,6 +64,22 @@ async def main() -> None:
         })
         assert stopped["status"] == "Handover ready"
         assert stopped["pending_check"] is None
+        noise_started = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()),
+            "reported_issue": "There is a knocking or rattling noise during the fictional wash.",
+            "model": "Bosch SMS6HCI02A/72",
+            "model_confirmed": True,
+            "fictional_demo": True,
+        })
+        noise_assessed = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": noise_started["case_id"],
+            "revision": noise_started["revision"], "user_message": "What should I check first?",
+        })
+        noise_pending = noise_assessed["pending_check"]
+        assert noise_pending["step_id"].startswith("noise_")
+        assert noise_pending["citations"]
+        assert all(item["page"] in {49, 50} for item in noise_pending["citations"])
+        assert all("9002017246_A.pdf" in item["url"] for item in noise_pending["citations"])
 
     evidence = {
         "captured_at": datetime.now(timezone.utc).isoformat(),
@@ -71,10 +87,12 @@ async def main() -> None:
         "protocol_version": protocol_version,
         "tools": names,
         "exact_models": 3,
-        "source_backed_paths": 4,
+        "source_backed_paths": 5,
         "case_id": started["case_id"],
         "selected_step": pending["step_id"],
         "selected_citations": [item["url"] for item in pending["citations"]],
+        "noise_path_selected_step": noise_pending["step_id"],
+        "noise_path_citations": [item["url"] for item in noise_pending["citations"]],
         "recorded_observation_preserved_after_reconnect": True,
         "next_check_not_repeated": True,
         "safety_stop_cleared_pending_check": True,

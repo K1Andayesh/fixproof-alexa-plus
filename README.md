@@ -4,11 +4,11 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:14 walkthrough of the current four-path release with Australian neural narration.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:15 walkthrough of the current five-path release with Australian neural narration.
 
 ## 90-second judge tour
 
-1. Read the impact card, choose a verified Bosch reference model, then start a fictional drying case. The selector also exposes separate food-remnant, detergent-residue and removable-streak paths.
+1. Read the impact card, choose a verified Bosch reference model, then start a fictional drying case. The selector also exposes separate food-remnant, detergent-residue, removable-streak and wash-noise paths.
 2. Ask **What should I check first?** and open the cited manual page.
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
@@ -43,7 +43,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 76/80 fields with zero critical errors from handovers versus 71/80 fields and two critical errors from equal-fact transcripts across two local model families |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
-| Current judge walkthrough | Embedded captioned 2:14 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V4_QA.md) |
+| Current judge walkthrough | Embedded captioned 2:15 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V5_QA.md) |
 | Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
 
 The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).
@@ -64,7 +64,7 @@ Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_P
 
 ## Run the MCP server
 
-For immediate judge testing, use `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. It runs the same bounded three-model, four-path catalog as a separate public TypeScript MCP service with D1 continuity. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data. Its landing page lists all five calls and the required fields.
+For immediate judge testing, use `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. It runs the same bounded three-model, five-path catalog as a separate public TypeScript MCP service with D1 continuity. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data. Its landing page lists all five calls and the required fields.
 
 The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow. The handover tool also exposes `ui://fixproof/handover.html` through the official MCP Apps extension, allowing a compatible host to render the evidence inside the conversation.
 
@@ -84,7 +84,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 
 ## Implemented
 
-- Three exact reference models, Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72. The same fourteen application-owned checks across drying, food-remnant, detergent-residue and removable-streak paths are independently mapped to visually checked pages in each model's official manual.
+- Three exact reference models, Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72. The same seventeen application-owned checks across drying, food-remnant, detergent-residue, removable-streak and wash-noise paths are independently mapped to visually checked pages in each model's official manual.
 - Local AI classifies symptoms, then selects from remaining source-backed checks. Server supplies instruction text and citations. Unsupported/unconfirmed models do not receive model-specific checks.
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
 - Reload/resume, model traces, manufacturer links, handover preview and Markdown download.
@@ -110,7 +110,7 @@ Live workflow evaluations use the local model and write `validation/LOCAL_AI_EVA
 
 ## Boundaries
 
-Local, single-user MVP: no authentication, encrypted storage, remote sharing, physical inspection, Alexa device execution or customer validation. Do not expose either development server publicly. AI can misclassify novel phrasing; the evaluated set is small. Fourteen checks across four issue paths do not cover the whole manual or prove a repair is needed.
+Local, single-user MVP: no authentication, encrypted storage, remote sharing, physical inspection, Alexa device execution or customer validation. Do not expose either development server publicly. AI can misclassify novel phrasing; the evaluated set is small. Seventeen checks across five issue paths do not cover the whole manual or prove a repair is needed.
 
 Chrome provides speech recognition and may use its online service; spoken transcripts can therefore leave the computer before FixProof receives them. The UI states this before the microphone control. Speech input never submits automatically. The microphone permission path has not been accepted or end-to-end tested; typed input and spoken playback were browser-tested.
 
@@ -120,4 +120,4 @@ The `dist/` folder is the transparent hosted evaluation build. It uses a fixed s
 
 The revised browser flow keeps the question available while a check is pending. A hazard report cancels the pending check, stops troubleshooting, persists the warning, and includes the report in the handover. See [recorded verification](validation/VIDEO_V2_QA.md).
 
-The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, exposes a versioned structured handover, and publishes client-planning annotations for every tool. A cross-connection test and real HTTP run verify that recorded evidence survives a new client and the recorded check is not suggested again. The latest breadth revision adds separately bounded food-remnant, detergent-residue and removable-streak paths without mixing their evidence with drying cases. The current MCP Apps revision gives the handover a secure inline interface while preserving the same five-tool contract and text fallback. Its 26 Python regression tests, twelve public-interface logic tests and thirteen live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.
+The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, exposes a versioned structured handover, and publishes client-planning annotations for every tool. A cross-connection test and real HTTP run verify that recorded evidence survives a new client and the recorded check is not suggested again. The latest breadth revision adds separately bounded food-remnant, detergent-residue, removable-streak and wash-noise paths without mixing their evidence with drying cases. The current MCP Apps revision gives the handover a secure inline interface while preserving the same five-tool contract and text fallback. Its 27 Python regression tests, thirteen public-interface logic tests and fourteen live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.

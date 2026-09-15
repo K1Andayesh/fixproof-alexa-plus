@@ -167,6 +167,26 @@ async def main() -> None:
             assert streaks_pending is not None and streaks_pending['step_id'].startswith('streaks_')
             streaks_citations = streaks_pending.get('citations', [])
             assert streaks_citations and all(citation['url'].startswith('https://') for citation in streaks_citations)
+            noise_case_result = await final_client.call_tool('start_case', {
+                'request_id': str(uuid.uuid4()),
+                'reported_issue': 'There is a knocking or rattling noise during the wash.',
+                'model': 'Bosch SMS6HCI02A/72',
+                'model_confirmed': True,
+                'fictional_demo': True,
+            })
+            noise_case = noise_case_result.structured_content
+            noise_assessed_result = await final_client.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': noise_case['case_id'],
+                'revision': noise_case['revision'], 'user_message': 'What should I check first?'
+            })
+            noise_assessed = noise_assessed_result.structured_content
+            noise_pending = noise_assessed['pending_check']
+            assert noise_pending is not None and noise_pending['step_id'].startswith('noise_')
+            noise_citations = noise_pending.get('citations', [])
+            assert noise_citations
+            assert all(citation['url'].startswith('https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=') for citation in noise_citations)
+            assert all(citation['page'] in {49, 50} for citation in noise_citations)
+            assert all(citation['content_sha256'] == 'b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476' for citation in noise_citations)
             second_model_result = await final_client.call_tool('start_case', {
                 'request_id': str(uuid.uuid4()),
                 'reported_issue': 'Detergent residue remains inside the appliance after the wash.',
@@ -337,7 +357,7 @@ async def main() -> None:
                     "continued_step": next_pending['step_id'],
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
-                    "source_backed_paths": 4,
+                    "source_backed_paths": 5,
                     "exact_models": 3,
                     "food_path_selected_step": food_pending['step_id'],
                     "food_path_citations": [citation['url'] for citation in food_citations],
@@ -345,6 +365,8 @@ async def main() -> None:
                     "detergent_path_citations": [citation['url'] for citation in detergent_citations],
                     "streaks_path_selected_step": streaks_pending['step_id'],
                     "streaks_path_citations": [citation['url'] for citation in streaks_citations],
+                    "noise_path_selected_step": noise_pending['step_id'],
+                    "noise_path_citations": [citation['url'] for citation in noise_citations],
                     "second_model": second_model_evidence['model']['reported'],
                     "second_model_selected_step": second_model_pending['step_id'],
                     "second_model_citations": [citation['url'] for citation in second_model_citations],

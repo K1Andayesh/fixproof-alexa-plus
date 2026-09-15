@@ -1,133 +1,100 @@
 WEBVTT
 
-1
 00:00:00.050 --> 00:00:03.926
 If a dishwasher problem survives one conversation the evidence should
 
-2
 00:00:03.926 --> 00:00:09.027
 too FixProof keeps the symptom the source and the user's confirmed outcomes
 
-3
 00:00:09.027 --> 00:00:11.287
 together Here's the current build
 
-4
 00:00:12.364 --> 00:00:16.671
 I'll start a fictional drying case and ask what to check first FixProof
 
-5
 00:00:16.671 --> 00:00:20.854
 suggests waiting for drying to finish then links directly to page forty-one
 
-6
 00:00:20.854 --> 00:00:25.718
 of the manufacturer's manual The model chooses a bounded check The application
 
-7
 00:00:25.718 --> 00:00:27.550
 owns the instruction and citation
 
-8
 00:00:28.566 --> 00:00:32.753
 Here's the key rule A suggestion is not evidence that someone performed
 
-9
 00:00:32.753 --> 00:00:37.341
 a check The user records what actually happened In this fictional case
 
-10
 00:00:37.591 --> 00:00:42.016
 the glasses remain wet after thirty minutes That outcome is saved but
 
-11
 00:00:42.016 --> 00:00:43.854
 the problem is not declared fixed
 
-12
 00:00:44.888 --> 00:00:49.826
 Now reload and resume The observation is still here Ask what to check
 
-13
 00:00:49.826 --> 00:00:53.712
 next and FixProof moves to rinse aid instead of repeating the recorded
 
-14
 00:00:53.712 --> 00:00:56.608
 check The case changes the next interaction
 
-15
-00:00:57.634 --> 00:01:01.671
-The current release goes beyond one scripted symptom It maps fourteen
+00:00:57.634 --> 00:01:01.696
+The current release goes beyond one scripted symptom It maps seventeen
 
-16
-00:01:01.671 --> 00:01:05.046
-source-backed checks across four issue paths and three exact dishwasher
+00:01:01.696 --> 00:01:05.209
+source-backed checks across five issue paths and three exact dishwasher
 
-17
-00:01:05.046 --> 00:01:09.596
+00:01:05.209 --> 00:01:09.759
 models Each catalog stays separate and every supported step points back
 
-18
-00:01:09.596 --> 00:01:11.459
+00:01:09.759 --> 00:01:11.622
 to that model's official manual page
 
-19
-00:01:12.492 --> 00:01:16.854
+00:01:12.660 --> 00:01:17.022
 The handover carries the exact model the recorded outcome the observation
 
-20
-00:01:17.017 --> 00:01:21.479
+00:01:17.185 --> 00:01:21.648
 and the source page It also states what is still unknown Someone can
 
-21
-00:01:21.479 --> 00:01:24.867
+00:01:21.648 --> 00:01:25.035
 pick up the case without treating an assistant's suggestion as a fact
 
-22
-00:01:25.910 --> 00:01:30.335
+00:01:26.078 --> 00:01:30.503
 If a burning smell is reported troubleshooting stops The pending check
 
-23
-00:01:30.335 --> 00:01:34.910
+00:01:30.503 --> 00:01:35.078
 disappears the warning remains after reload and the original report stays
 
-24
-00:01:34.910 --> 00:01:37.935
+00:01:35.078 --> 00:01:38.103
 in the handover No diagnosis is invented
 
-25
-00:01:38.968 --> 00:01:43.634
-Judges can now call the public M C P endpoint directly An official client
+00:01:39.136 --> 00:01:43.567
+Judges can call the public M C P endpoint directly An official client
 
-26
-00:01:43.634 --> 00:01:47.409
-discovered five tools preserved the fictional case across new connections
+00:01:43.567 --> 00:01:47.428
+discovered five tools and all five supported paths preserved the fictional
 
-27
-00:01:47.681 --> 00:01:51.121
-avoided repeating the recorded check and returned the selected model's
+00:01:47.428 --> 00:01:51.228
+case across new connections avoided repeating the recorded check and
 
-28
-00:01:51.121 --> 00:01:54.933
-exact source pages The endpoint and evidence are linked from the live
+00:01:51.228 --> 00:01:55.349
+returned the selected model's exact source pages The endpoint and evidence
 
-29
-00:01:54.933 --> 00:01:55.404
-site
+00:01:55.349 --> 00:01:56.710
+are linked from the live site
 
-30
-00:01:56.442 --> 00:02:01.051
+00:01:57.762 --> 00:02:02.371
 FixProof has not run on an Alexa device or proven a repair outcome It
 
-31
-00:02:01.051 --> 00:02:04.914
-does demonstrate a narrower result across three exact models and four
+00:02:02.371 --> 00:02:06.259
+does demonstrate a narrower result across three exact models and five
 
-32
-00:02:04.914 --> 00:02:09.106
+00:02:06.259 --> 00:02:10.439
 sourced paths a stateful assistant can keep user-confirmed evidence intact
 
-33
-00:02:09.447 --> 00:02:12.654
+00:02:10.780 --> 00:02:13.987
 So the next repair conversation does not start from zero

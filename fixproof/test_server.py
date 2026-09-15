@@ -193,6 +193,23 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(reply['pages'],[44])
         self.assertEqual(set(seen[0]),{'streaks_rinse_setting','streaks_add_rinse_aid','streaks_tray','streaks_prerinse'})
 
+    def test_wash_noise_flow_uses_only_visually_verified_noise_steps(self):
+        c=self.create(issue='There is a knocking or rattling noise during the wash.')
+        seen=[]
+        def choose_noise(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'noise'},raw
+            seen.append(context['available_checks'])
+            return {'step':'noise_spray_arm'},raw
+        with patch.object(server,'infer',side_effect=choose_noise):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'noise_spray_arm')
+        self.assertEqual(reply['pages'],[48])
+        self.assertEqual(set(seen[0]),{'noise_spray_arm','noise_load_distribution','noise_light_items'})
+        third=server.steps_for('Bosch SMS6HCI02A/72')
+        self.assertEqual(third['noise_spray_arm']['pages'],[49])
+        self.assertEqual(third['noise_light_items']['pages'],[50])
+
     def test_switching_supported_path_does_not_erase_pending_check(self):
         c=self.create();c['pending']='waiting'
         with patch.object(server,'infer',return_value=({'category':'food'},{'model':'stub'})) as infer:

@@ -26,6 +26,9 @@ STEP_DEFINITIONS = {
     'streaks_add_rinse_aid': {'workflow': 'streaks', 'title': 'Check for rinse aid', 'text': 'If no rinse aid has been added, fill the rinse aid dispenser as described in the manual.', 'pages': [44, 23]},
     'streaks_tray': {'workflow': 'streaks', 'title': 'Clear the tablet collecting tray', 'text': 'Arrange the top basket so tableware does not block the detergent dispenser lid, and keep tableware and fragrance dispensers out of the tablet collecting tray.', 'pages': [44, 27]},
     'streaks_prerinse': {'workflow': 'streaks', 'title': 'Avoid intensive pre-rinsing', 'text': 'Remove only large food remnants before loading; do not pre-rinse the tableware.', 'pages': [45]},
+    'noise_spray_arm': {'workflow': 'noise', 'title': 'Check spray-arm clearance', 'text': 'Arrange tableware so the spray arms do not strike it during the wash.', 'pages': [48]},
+    'noise_load_distribution': {'workflow': 'noise', 'title': 'Distribute a small load', 'text': 'If a small load lets water jets strike the tub directly, distribute the tableware evenly or add more tableware for the next wash.', 'pages': [48]},
+    'noise_light_items': {'workflow': 'noise', 'title': 'Secure light items', 'text': 'Position light items of tableware securely so they do not move about during the wash cycle.', 'pages': [48]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -58,6 +61,7 @@ CATALOGS = {
             'food_programme': [45], 'detergent_tray': [46, 28], 'detergent_position': [46],
             'streaks_rinse_setting': [48, 25], 'streaks_add_rinse_aid': [48, 24],
             'streaks_tray': [48, 28], 'streaks_prerinse': [48],
+            'noise_spray_arm': [52], 'noise_load_distribution': [52], 'noise_light_items': [52],
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
@@ -79,6 +83,7 @@ CATALOGS = {
             'food_programme': [43], 'detergent_tray': [43, 27, 28], 'detergent_position': [43],
             'streaks_rinse_setting': [45, 24], 'streaks_add_rinse_aid': [45, 23],
             'streaks_tray': [45, 27, 28], 'streaks_prerinse': [46],
+            'noise_spray_arm': [49], 'noise_load_distribution': [49], 'noise_light_items': [50],
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },

@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-15T11:49:47.726423+00:00",
+  "captured_at": "2026-09-15T14:54:07.295400+00:00",
   "capture_scope": "Fictional local transport verification; no household or customer data.",
   "transport": "Streamable HTTP",
   "protocol_version": "2026-07-28",
@@ -54,7 +54,7 @@
     "device_permissions_declared": false,
     "text_fallback_contains_observation": true
   },
-  "case_id": "9e24e596-238f-4b04-81c1-fc2379f3725d",
+  "case_id": "4aa68b48-0502-4714-8c0a-77fb80248d3e",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -71,7 +71,7 @@
   "continued_step": "rinse_aid",
   "safety_stop_survives_client_reconnect": true,
   "safety_report_in_handover": true,
-  "source_backed_paths": 4,
+  "source_backed_paths": 5,
   "exact_models": 3,
   "food_path_selected_step": "food_spacing",
   "food_path_citations": [
@@ -84,6 +84,10 @@
   "streaks_path_selected_step": "streaks_rinse_setting",
   "streaks_path_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=44"
+  ],
+  "noise_path_selected_step": "noise_load_distribution",
+  "noise_path_citations": [
+    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=49"
   ],
   "second_model": "Bosch SMS6HCI01A/38",
   "second_model_selected_step": "detergent_tray",
@@ -136,7 +140,7 @@
         "fictional_demo": true
       },
       "observed": {
-        "case_id": "9e24e596-238f-4b04-81c1-fc2379f3725d",
+        "case_id": "4aa68b48-0502-4714-8c0a-77fb80248d3e",
         "revision": 0,
         "status": "Open"
       }

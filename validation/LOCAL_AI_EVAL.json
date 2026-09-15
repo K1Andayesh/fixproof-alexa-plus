@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-15T06:45:38+00:00",
+  "at": "2026-09-15T14:53:38+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,8 +15,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 5.33,
-          "input_tokens": 655,
+          "seconds": 4.25,
+          "input_tokens": 682,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -39,8 +39,8 @@
         "step": "food_spacing",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.34,
-          "input_tokens": 653,
+          "seconds": 0.3,
+          "input_tokens": 681,
           "output_tokens": 20,
           "decision": {
             "category": "food",
@@ -63,9 +63,9 @@
         "step": "detergent_tray",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.34,
-          "input_tokens": 574,
-          "output_tokens": 25,
+          "seconds": 0.31,
+          "input_tokens": 602,
+          "output_tokens": 20,
           "decision": {
             "category": "detergent",
             "step": "detergent_tray"
@@ -87,12 +87,36 @@
         "step": "streaks_rinse_setting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.36,
-          "input_tokens": 737,
-          "output_tokens": 27,
+          "seconds": 0.31,
+          "input_tokens": 765,
+          "output_tokens": 22,
           "decision": {
             "category": "streaks",
             "step": "streaks_rinse_setting"
+          }
+        }
+      }
+    },
+    {
+      "name": "wash_noise",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "If a small load lets water jets strike the tub directly, distribute the tableware evenly or add more tableware for the next wash.",
+        "workflow": "noise",
+        "title": "Distribute a small load",
+        "pages": [
+          48
+        ],
+        "step": "noise_load_distribution",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.31,
+          "input_tokens": 647,
+          "output_tokens": 16,
+          "decision": {
+            "category": "noise",
+            "step": "noise_load_distribution"
           }
         }
       }
@@ -102,11 +126,11 @@
       "passed": true,
       "result": {
         "kind": "clarify",
-        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue or removable streaks remain, or another problem occurred, and whether the programme finished.",
+        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue, removable streaks, or knocking or rattling during the wash, or whether another problem occurred.",
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.15,
-          "input_tokens": 313,
+          "input_tokens": 341,
           "output_tokens": 8,
           "decision": {
             "category": "unclear",
@@ -127,8 +151,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.17,
-          "input_tokens": 321,
+          "seconds": 0.15,
+          "input_tokens": 349,
           "output_tokens": 13,
           "decision": {
             "category": "plastic",
@@ -149,8 +173,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.12,
-          "input_tokens": 325,
+          "seconds": 0.13,
+          "input_tokens": 353,
           "output_tokens": 8,
           "decision": {
             "category": "interior",
@@ -164,12 +188,12 @@
       "passed": true,
       "result": {
         "kind": "scope",
-        "text": "The verified reference set here covers drying, food-remnant, detergent-residue and removable-streak results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
+        "text": "The verified reference set here covers drying, food-remnant, detergent-residue, removable-streak and wash-cycle knocking or rattling results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.14,
-          "input_tokens": 323,
-          "output_tokens": 12,
+          "seconds": 0.12,
+          "input_tokens": 351,
+          "output_tokens": 7,
           "decision": {
             "category": "other",
             "step": "none"
@@ -201,9 +225,9 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.32,
-          "input_tokens": 645,
-          "output_tokens": 20,
+          "seconds": 0.24,
+          "input_tokens": 672,
+          "output_tokens": 15,
           "decision": {
             "category": "drying",
             "step": "waiting"
@@ -225,8 +249,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.35,
-          "input_tokens": 665,
+          "seconds": 0.3,
+          "input_tokens": 692,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -240,7 +264,7 @@
       "passed": true,
       "result": {
         "kind": "step",
-        "text": "Check the rinse aid indicator and dosage. Follow page 23 for filling or adjusting it; use only domestic dishwasher rinse aid.",
+        "text": "Check the rinse aid indicator and dosage. Use the cited pages for filling or adjusting it; use only domestic dishwasher rinse aid.",
         "workflow": "drying",
         "title": "Check rinse aid",
         "pages": [
@@ -250,8 +274,8 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.33,
-          "input_tokens": 684,
+          "seconds": 0.32,
+          "input_tokens": 711,
           "output_tokens": 23,
           "decision": {
             "category": "drying",
@@ -269,7 +293,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.18,
-          "input_tokens": 323,
+          "input_tokens": 351,
           "output_tokens": 13,
           "decision": {
             "category": "drying",
