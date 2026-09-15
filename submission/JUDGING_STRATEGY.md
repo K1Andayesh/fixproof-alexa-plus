@@ -4,7 +4,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Technical implementation
 
-**Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK and D1 continuity, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and an official MCP App.
+**Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK and D1 continuity, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, an official MCP App, and a cross-runtime SHA-256 fingerprint over each structured handover.
 
 **Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 44 passing automated checks and sixteen live local-AI scenarios. The 2:15 video shows the public MCP endpoint and current three-model, seven-path scope; the five-block trace shows the deeper local MCP Apps path.
 
@@ -24,7 +24,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Quality of the idea
 
-**Lead distinction:** the product is a persistent evidence workflow, not another troubleshooting answer. AI chooses only an approved step ID; application code owns the instruction and citation; only the user records an outcome. The result becomes a portable, human-readable MCP App inside the conversation while retaining machine-readable evidence and a text fallback.
+**Lead distinction:** the product is a persistent evidence workflow, not another troubleshooting answer. AI chooses only an approved step ID; application code owns the instruction and citation; only the user records an outcome. The result becomes a portable, human-readable MCP App inside the conversation while retaining machine-readable evidence, a text fallback and a reproducible fingerprint that detects later field changes without claiming authorship.
 
 **Memorable line:** The next repair conversation starts with evidence.
 
