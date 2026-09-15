@@ -99,6 +99,30 @@ function handoverEvidence(){
 function sortForDigest(value){if(Array.isArray(value))return value.map(sortForDigest);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).sort(([a],[b])=>a<b?-1:a>b?1:0).map(([key,item])=>[key,sortForDigest(item)]));return value;}
 async function evidenceSha256(evidence){const bytes=new TextEncoder().encode(JSON.stringify(sortForDigest(evidence)));const hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,'0')).join('');}
 async function handoverBundle(){const evidence=handoverEvidence();const digest=await evidenceSha256(evidence);const markdown=handover().trimEnd()+'\n\n## Evidence fingerprint\nSHA-256 (fixproof-sorted-json-v1): '+digest+'\nRecomputing this fingerprint can detect changed evidence fields. It does not prove who created the record.\n';return{case_id:state.id,status:state.status,markdown,evidence,evidence_integrity:{algorithm:'sha256',canonicalization:'fixproof-sorted-json-v1',covers:'evidence',digest,authorship_proof:false}};}
+async function verifyEvidenceBundle(input){
+ let bundle;
+ try{bundle=typeof input==='string'?JSON.parse(input):input;}catch{return{valid:false,reason:'The file is not valid JSON.'};}
+ const evidence=bundle?.evidence,integrity=bundle?.evidence_integrity;
+ if(!evidence||typeof evidence!=='object'||Array.isArray(evidence)||!integrity||typeof integrity!=='object')return{valid:false,reason:'This is not a FixProof evidence bundle.'};
+ if(evidence.schema_version!=='fixproof-handover-1'||!Array.isArray(evidence.checks)||!Array.isArray(evidence.limits)||!evidence.model||!evidence.reference)return{valid:false,reason:'The FixProof evidence schema is missing required fields.'};
+ if(integrity.algorithm!=='sha256'||integrity.canonicalization!=='fixproof-sorted-json-v1'||integrity.covers!=='evidence'||!/^[a-f0-9]{64}$/.test(integrity.digest||''))return{valid:false,reason:'The fingerprint declaration is missing or unsupported.'};
+ const recomputed=await evidenceSha256(evidence),valid=recomputed===integrity.digest;
+ return{valid,reason:valid?'Fingerprint matches the evidence fields.':'Fingerprint mismatch: one or more evidence fields changed after export.',expected:integrity.digest,recomputed,evidence};
+}
+function renderVerification(result){
+ const target=$('verify-result');target.replaceChildren();
+ const verdict=document.createElement('p');verdict.className='verdict '+(result.valid?'verified':'mismatch');verdict.textContent=result.valid?'✓ '+result.reason:'! '+result.reason;target.append(verdict);
+ if(result.expected){const digest=document.createElement('p');digest.className='digest';digest.textContent='Exported: '+result.expected+'\nRecomputed: '+result.recomputed;target.append(digest);}
+ if(result.valid){
+  const e=result.evidence,performed=e.checks.filter(check=>check.evidence_status==='user_reports_performed').length,deferred=e.checks.filter(check=>check.evidence_status==='deferred_or_skipped').length;
+  for(const text of ['Case: '+e.case_id+' · '+e.case_status,'Reported issue: '+e.reported_issue,'Model: '+e.model.reported+(e.model.fictional_demo?' · fictional demonstration':''),'Evidence: '+performed+' reported performed · '+deferred+' deferred or skipped','Reference: '+e.reference.title+' · '+e.reference.document]){const p=document.createElement('p');p.textContent=text;target.append(p);}
+ }
+ const boundary=document.createElement('p');boundary.className='fine';boundary.textContent='Authorship, identity and physical inspection are not proven by this fingerprint.';target.append(boundary);
+}
+function openVerifier(){$('evidence-verifier').showModal();}
+$('verify-json-intro').onclick=openVerifier;$('verify-json').onclick=openVerifier;$('close-verifier').onclick=()=>$('evidence-verifier').close();
+$('verify-pasted').onclick=async()=>{const text=$('verify-paste').value.trim();renderVerification(text?await verifyEvidenceBundle(text):{valid:false,reason:'Paste or choose a FixProof evidence file first.'});};
+$('verify-file').onchange=async event=>{const file=event.target.files?.[0];if(!file)return;if(file.size>1048576){renderVerification({valid:false,reason:'The evidence file is larger than 1 MB.'});return;}renderVerification(await verifyEvidenceBundle(await file.text()));};
 $('handover').onclick=async()=>{$('handover-text').textContent=(await handoverBundle()).markdown;$('preview').showModal();};$('close').onclick=()=>$('preview').close();
 function download(name,text,type='text/markdown'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
 $('download').onclick=async()=>download('fixproof-handover.md',(await handoverBundle()).markdown);

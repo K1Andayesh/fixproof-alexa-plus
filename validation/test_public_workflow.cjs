@@ -12,7 +12,7 @@ function app(saved=new Map()){
  const get=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id)};
  const sandbox={document:{getElementById:get,createElement:element,querySelectorAll:()=>[]},window:{},localStorage:{getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v),removeItem:k=>saved.delete(k)},crypto:webcrypto,TextEncoder,Uint8Array,location:{reload(){}},setTimeout,URL,Blob};
  vm.createContext(sandbox);vm.runInContext(source,sandbox);
- return {get,saved,run:code=>vm.runInContext(code,sandbox),start:()=>sandbox.start('Plates are wet.'),ask:q=>{get('question').value=q;get('ask').onsubmit({preventDefault(){}})},record:(result,note='')=>{get('result').value=result;get('note').value=note;get('outcome').onsubmit({preventDefault(){}})},handover:()=>sandbox.handover(),bundle:()=>sandbox.handoverBundle(),digest:value=>sandbox.evidenceSha256(value)};
+ return {get,saved,run:code=>vm.runInContext(code,sandbox),start:()=>sandbox.start('Plates are wet.'),ask:q=>{get('question').value=q;get('ask').onsubmit({preventDefault(){}})},record:(result,note='')=>{get('result').value=result;get('note').value=note;get('outcome').onsubmit({preventDefault(){}})},handover:()=>sandbox.handover(),bundle:()=>sandbox.handoverBundle(),digest:value=>sandbox.evidenceSha256(value),verify:value=>sandbox.verifyEvidenceBundle(value)};
 }
 test('a suggestion is not a performed check; next preserves the pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('next');
@@ -115,6 +115,8 @@ test('the public evaluation exposes portable fingerprinted evidence and the call
  assert.match(page,/fictional-only input/);
  assert.match(page,/official TypeScript SDK 2\.0\.0 plus D1 continuity/);
  assert.match(page,/id="download-json"/);
+ assert.match(page,/id="verify-json-intro"/);
+ assert.match(page,/id="evidence-verifier"/);
  const a=app();a.start();a.ask('first check');a.record('Issue unchanged','Fictional portable-evidence check.');
  const bundle=await a.bundle();
  assert.equal(bundle.evidence.schema_version,'fixproof-handover-1');
@@ -124,4 +126,10 @@ test('the public evaluation exposes portable fingerprinted evidence and the call
  const changed=JSON.parse(JSON.stringify(bundle.evidence));changed.reported_issue='Changed after export.';
  assert.notEqual(bundle.evidence_integrity.digest,await a.digest(changed));
  assert.equal(bundle.evidence_integrity.authorship_proof,false);
+ const verified=await a.verify(JSON.stringify(bundle));
+ assert.equal(verified.valid,true);assert.equal(verified.evidence.reported_issue,'Plates are wet.');
+ const changedBundle=JSON.parse(JSON.stringify(bundle));changedBundle.evidence.reported_issue='Changed after export.';
+ assert.equal((await a.verify(changedBundle)).valid,false);
+ const wrongSchema=JSON.parse(JSON.stringify(bundle));wrongSchema.evidence.schema_version='unknown-schema';
+ assert.match((await a.verify(wrongSchema)).reason,/schema/);
 });

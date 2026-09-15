@@ -4,7 +4,7 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:15 walkthrough of the current seven-path release with Australian neural narration.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The same page can export and independently verify a handover JSON file entirely in the browser, including changed-field detection and the explicit no-authorship boundary. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:15 walkthrough of the current seven-path release with Australian neural narration.
 
 ## 90-second judge tour
 
@@ -12,8 +12,8 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 2. Ask **What should I check first?** and open the cited manual page.
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
-5. Preview the handover and confirm that it contains the observation, exact-model provenance, page-level source, and unresolved limits.
-6. Use the scenario shortcuts to inspect the plastic, safety, unsupported-issue, and unclear-report boundaries.
+5. Preview the handover, download its evidence JSON, then open **Verify evidence JSON** and paste or choose the file. Confirm that the recomputed fingerprint matches and the bounded case facts remain readable.
+6. Change one evidence field in a copy and verify that the receiver reports a fingerprint mismatch, then use the scenario shortcuts to inspect the plastic, safety, unsupported-issue, and unclear-report boundaries.
 
 ## Runtime architecture
 
@@ -39,7 +39,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | State survives retries and reloads | SQLite, stable request IDs, case revisions, and automated stale-write tests |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
-| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object, a reproducible SHA-256 fingerprint over that object, and a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review; the zero-install browser build exports the same evidence schema as JSON |
+| Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object, a reproducible SHA-256 fingerprint over that object, and a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review; the zero-install browser build exports the same evidence schema as JSON and locally verifies an unchanged or edited copy |
 | Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 133/140 fields with zero critical errors from handovers versus 127/140 fields and two critical errors from equal-fact transcripts across two local model families and all seven issue paths |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
@@ -87,7 +87,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 - Three exact reference models, Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72. The same twenty-three application-owned checks across drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust and irreversible-glass-clouding paths are independently mapped to visually checked pages in each model's official manual.
 - Local AI classifies symptoms, then selects from remaining source-backed checks. Server supplies instruction text and citations. Unsupported/unconfirmed models do not receive model-specific checks.
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
-- Reload/resume, model traces, manufacturer links, handover preview, Markdown download and portable structured-JSON download.
+- Reload/resume, model traces, manufacturer links, handover preview, Markdown download and portable structured-JSON download. The public receiver accepts a file or pasted bundle, recomputes its fingerprint locally, rejects changed evidence and renders the bounded case facts without uploading the file.
 - Optional Chrome speech input fills the question for review without submitting it. Browser speech output can read the latest FixProof response aloud. The typed path remains available throughout.
 - Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum. Supported step and informational results carry self-contained page citations plus the verified source hash.
 - Public judge-callable TypeScript MCP SDK 2.0.0 deployment over Streamable HTTP, with D1-backed state across connections, an enforced fictional-only input boundary, and machine-facing server instructions that enumerate all seven verified paths.

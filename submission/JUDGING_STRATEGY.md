@@ -10,9 +10,9 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Design and user experience
 
-**Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits in both the public simulation and an inline MCP App. The zero-install build now exports the same versioned evidence schema and fingerprint as a portable JSON file.
+**Lead proof:** one action at a time, exact-model source links, explicit outcome choices, reload/resume, spoken playback, typed fallback, and a handover that separates recorded facts from unresolved limits in both the public simulation and an inline MCP App. The zero-install build exports the same versioned evidence schema and fingerprint as a portable JSON file, then verifies and renders that file for the receiving person entirely in the browser.
 
-**Judge should see:** start a case, save `Issue unchanged`, reload, resume, preview the fingerprinted handover, and download the evidence JSON before using the four boundary shortcuts.
+**Judge should see:** start a case, save `Issue unchanged`, reload, resume, preview the fingerprinted handover, download the evidence JSON, then use **Verify evidence JSON** to confirm an unchanged copy and reject a changed field before using the four boundary shortcuts.
 
 ## Potential impact
 
@@ -24,7 +24,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Quality of the idea
 
-**Lead distinction:** the product is a persistent evidence workflow, not another troubleshooting answer. AI chooses only an approved step ID; application code owns the instruction and citation; only the user records an outcome. The result becomes a portable, human-readable MCP App inside the conversation while retaining machine-readable evidence, a text fallback and a reproducible fingerprint that detects later field changes without claiming authorship.
+**Lead distinction:** the product is a persistent evidence workflow, not another troubleshooting answer. AI chooses only an approved step ID; application code owns the instruction and citation; only the user records an outcome. The result becomes a portable, human-readable MCP App inside the conversation while retaining machine-readable evidence, a text fallback and a reproducible fingerprint. The public receiving surface closes the loop by recomputing that fingerprint and showing whether the exact evidence still matches, without claiming authorship.
 
 **Memorable line:** The next repair conversation starts with evidence.
 
