@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-15T15:04:20.453132+00:00",
+  "captured_at": "2026-09-15T16:00:28.170496+00:00",
   "endpoint": "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
   "protocol_version": "2026-07-28",
   "tools": [
@@ -10,8 +10,8 @@
     "prepare_handover"
   ],
   "exact_models": 3,
-  "source_backed_paths": 5,
-  "case_id": "852b170d-a5aa-4fb3-9a58-77b8655dfa9f",
+  "source_backed_paths": 6,
+  "case_id": "bd9db67e-6b21-49ed-9af6-25ee1d912ed8",
   "selected_step": "streaks_rinse_setting",
   "selected_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
@@ -20,6 +20,10 @@
   "noise_path_selected_step": "noise_spray_arm",
   "noise_path_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=49"
+  ],
+  "rust_path_selected_step": "rust_resistant_tableware",
+  "rust_path_citations": [
+    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=46"
   ],
   "recorded_observation_preserved_after_reconnect": true,
   "next_check_not_repeated": true,

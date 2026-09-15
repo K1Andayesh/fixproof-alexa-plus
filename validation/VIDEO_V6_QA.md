@@ -13,4 +13,4 @@ Verified 16 September 2026.
 - Visual inspection: opening, catalog breadth, public MCP and closing frames were checked at 1920 by 1080. Text remained inside the frame; the catalog scene's elements animate into their settled positions.
 - Evidence boundary: every case shown is fictional. The closing frame says that Alexa device testing and customer validation remain ahead.
 
-Production playback, caption and console evidence will be appended to the reliability review after deployment.
+Production Chrome loaded the 1920 by 1080 v6 media, showed the English caption track, visibly advanced playback beyond one second, and reported no browser warnings or errors. See `RELIABILITY_REVIEW.md` for the Site-version receipt.
