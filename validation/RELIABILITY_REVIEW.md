@@ -21,6 +21,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - A second, separately bounded food-remnant path adds four checks grounded in manual pages 36, 37 and 42. Cross-path questions do not replace an awaiting check or mix the two evidence sequences.
 - A third detergent-residue path adds two checks grounded in the manual's page-42 dispenser guidance and remains isolated from the other evidence sequences.
 - A public impact card now connects official Australian repair and e-waste context to the demonstrated handover mechanism, while naming the product outcomes that remain unmeasured. The sources and claim boundary are recorded in `IMPACT_EVIDENCE.md`.
+- The executable MCP smoke probe now emits a timestamped, fictional, seven-exchange judge trace. An identical public copy lets judges inspect tools, citations, evidence status, reconnection continuity and the safety stop without installing the server.
 
 ## Evidence collected
 
@@ -30,6 +31,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 | Public application-logic regression suite | 10 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
 | Local AI evaluation | 12/12 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
 | Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for drying, food-remnant and detergent-residue cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
 | Chrome UI exercise | Passed | Production detergent-residue path selected a page-42 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; no console warnings or errors |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
@@ -47,7 +49,7 @@ python fixproof/evaluate.py
 
 The lexical hazard preflight is conservative and incomplete. It now excludes tested explicit no-hazard statements such as "no smoke" and technical phrases such as "smoke test", while still stopping when another hazard remains in the same report. This narrow context handling does not establish full language understanding. Unrecognised phrasing still depends on the model and may be missed. The policy is not a medical, legal or appliance-safety authority.
 
-The revised interface was exercised and visually inspected in Chrome from the production Site version 15. This is developer QA, not an independent user or repair-professional evaluation.
+The revised interface was exercised and visually inspected in Chrome from the production Site version 16. This is developer QA, not an independent user or repair-professional evaluation.
 
 ## Release evidence
 
@@ -55,10 +57,13 @@ The revised interface was exercised and visually inspected in Chrome from the pr
 - The exact archive from that commit was saved as Site version 14 and production deployment `appgdep_6aa8bf21cc308191b4ac8defd3d72439` succeeded on 15 September 2026.
 - Impact-evidence commit `ba138c4638bcfb5102955278fe8068dc6c91d7a8` was pushed to the public GitHub repository and the Sites source repository.
 - The exact archive from that commit was saved as Site version 15 and production deployment `appgdep_6aa8ccc2bedc81918ed2762d17b57ef5` succeeded on 15 September 2026.
+- MCP-evidence commit `c71ac271f339df51c6982a4e7fa2ed3f2e8985cf` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 16 and production deployment `appgdep_6aa8db7074ac8191b8225170642551ae` succeeded on 15 September 2026.
 - The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining drying check, included exact-page citations and the source hash, preserved a later safety stop through another connection, and selected `food_spacing` and `detergent_tray` with page-42 citations for two additional cases.
 - The production page showed three source-backed paths, 35 automated checks and 12/12 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, cross-connection continuity and three-path MCP evidence.
 - Production Chrome QA exercised the detergent-residue path from selection through page-42 guidance, the `Issue unchanged` outcome and a readable handover carrying the detergent-path label, observation and source. The browser console reported no warnings or errors.
 - Site-version-15 Chrome QA verified the impact card at a 1920 × 911 desktop viewport and a 390 × 844 phone viewport. Its three-part argument stacked correctly on mobile, produced no horizontal overflow, exposed the exact Productivity Commission and DCCEEW links, and clearly separated the demonstrated handover from unmeasured outcomes. The detergent-residue case still started correctly and the console reported no warnings or errors.
+- Site-version-16 Chrome QA started the detergent-residue case, expanded the complete five-stage MCP trace, and opened the hosted JSON in a browser tab. The trace rendered without horizontal overflow at its 388-pixel sidebar width and the console reported no warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
