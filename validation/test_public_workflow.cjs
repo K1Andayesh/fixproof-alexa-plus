@@ -105,7 +105,9 @@ test('irreversible-glass-clouding journey stays distinct from removable streaks'
 });
 
 test('unpleasant-interior-odour journey stays within its three care checks',()=>{
- const a=app();a.run("start('There is an unpleasant odour inside the dishwasher.','odour','Bosch SMS6HCI01A/38')");a.ask('What should I check first?');
+ const a=app();a.get('pathway').value='odour';a.get('pathway').onchange();
+ assert.equal(a.get('issue').value,'There is an unpleasant odour inside the dishwasher.');
+ a.run("start('There is an unpleasant odour inside the dishwasher.','odour','Bosch SMS6HCI01A/38')");a.ask('What should I check first?');
  assert.equal(a.run('state.pending'),'odour_wipe_interior');assert.match(a.get('progress').textContent,/0 of 3 unpleasant-interior-odour checks/);
  a.record('Issue unchanged','The odour remains after wiping the interior.');
  assert.match(a.handover(),/Supported path: unpleasant odour inside the appliance/);assert.match(a.handover(),/9001720311_B\.pdf#page=38/);
