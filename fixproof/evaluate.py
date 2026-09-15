@@ -13,6 +13,7 @@ cases=[
  ('wash_noise',case('There is a knocking or rattling noise during the wash.'),'What should I check first?',{'step'}),
  ('cutlery_rust',case('Rust spots appear on the cutlery after the wash.'),'What should I check first?',{'step'}),
  ('irreversible_glass_clouding',case('Clouding on the glassware does not wipe off after the wash.'),'What should I check first?',{'step'}),
+ ('unpleasant_odour',case('There is an unpleasant odour inside the dishwasher.'),'What should I check first?',{'step'}),
  ('unclear',case('Something is wrong.'),'Can you help?',{'clarify'}),
  ('plastic',case('Only plastic boxes stay wet. Everything else is dry.'),'Is this a fault?',{'info'}),
  ('interior',case('Only the inside walls of the dishwasher have water droplets; dishes are dry.'),'Is this expected?',{'info'}),

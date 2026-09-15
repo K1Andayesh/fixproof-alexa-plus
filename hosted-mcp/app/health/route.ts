@@ -4,7 +4,7 @@ export function GET() {
   return Response.json({
     status: "ok",
     service: "FixProof MCP",
-    version: "0.5.0",
+    version: "0.8.0",
     transport: "Streamable HTTP",
     protocol_minimum: "2025-11-25",
     endpoint: "/api/mcp",

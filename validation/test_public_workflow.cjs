@@ -104,6 +104,13 @@ test('irreversible-glass-clouding journey stays distinct from removable streaks'
  assert.match(a.handover(),/Supported path: irreversible clouding of glassware/);assert.match(a.handover(),/9002017246_A\.pdf#page=46/);
 });
 
+test('unpleasant-interior-odour journey stays within its three care checks',()=>{
+ const a=app();a.run("start('There is an unpleasant odour inside the dishwasher.','odour','Bosch SMS6HCI01A/38')");a.ask('What should I check first?');
+ assert.equal(a.run('state.pending'),'odour_wipe_interior');assert.match(a.get('progress').textContent,/0 of 3 unpleasant-interior-odour checks/);
+ a.record('Issue unchanged','The odour remains after wiping the interior.');
+ assert.match(a.handover(),/Supported path: unpleasant odour inside the appliance/);assert.match(a.handover(),/9001720311_B\.pdf#page=38/);
+});
+
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);

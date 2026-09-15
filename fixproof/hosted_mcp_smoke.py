@@ -34,6 +34,7 @@ async def main() -> None:
         for path in (
             "drying", "food-remnant", "detergent-residue", "removable-streak",
             "wash-noise", "cutlery-rust", "irreversible-glass-clouding",
+            "unpleasant-interior-odour",
         ):
             assert path in server_instructions
         listed = await client.list_tools()
@@ -134,6 +135,20 @@ async def main() -> None:
         assert clouding_pending["step_id"].startswith("clouding_")
         assert clouding_pending["citations"]
         assert all(item["page"] == 46 for item in clouding_pending["citations"])
+        odour_started = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()),
+            "reported_issue": "There is an unpleasant odour inside the fictional dishwasher.",
+            "model": "Bosch SMS6HCI01A/38",
+            "model_confirmed": True,
+            "fictional_demo": True,
+        })
+        odour_assessed = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": odour_started["case_id"],
+            "revision": odour_started["revision"], "user_message": "What should I check first?",
+        })
+        odour_pending = odour_assessed["pending_check"]
+        assert odour_pending["step_id"] == "odour_wipe_interior"
+        assert [item["page"] for item in odour_pending["citations"]] == [38]
 
     evidence = {
         "captured_at": datetime.now(timezone.utc).isoformat(),
@@ -147,7 +162,7 @@ async def main() -> None:
         "authorship_proof_claimed": False,
         "tools": names,
         "exact_models": 3,
-        "source_backed_paths": 7,
+        "source_backed_paths": 8,
         "case_id": started["case_id"],
         "selected_step": pending["step_id"],
         "selected_citations": [item["url"] for item in pending["citations"]],
@@ -157,6 +172,8 @@ async def main() -> None:
         "rust_path_citations": [item["url"] for item in rust_pending["citations"]],
         "clouding_path_selected_step": clouding_pending["step_id"],
         "clouding_path_citations": [item["url"] for item in clouding_pending["citations"]],
+        "odour_path_selected_step": odour_pending["step_id"],
+        "odour_path_citations": [item["url"] for item in odour_pending["citations"]],
         "recorded_observation_preserved_after_reconnect": True,
         "next_check_not_repeated": True,
         "safety_stop_cleared_pending_check": True,

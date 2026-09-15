@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-15T17:00:48+00:00",
+  "at": "2026-09-15T23:01:54+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,8 +15,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 6.17,
-          "input_tokens": 731,
+          "seconds": 6.04,
+          "input_tokens": 761,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -39,8 +39,8 @@
         "step": "food_spacing",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.31,
-          "input_tokens": 730,
+          "seconds": 0.34,
+          "input_tokens": 760,
           "output_tokens": 20,
           "decision": {
             "category": "food",
@@ -63,9 +63,9 @@
         "step": "detergent_tray",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.4,
-          "input_tokens": 651,
-          "output_tokens": 25,
+          "seconds": 0.34,
+          "input_tokens": 681,
+          "output_tokens": 20,
           "decision": {
             "category": "detergent",
             "step": "detergent_tray"
@@ -87,8 +87,8 @@
         "step": "streaks_rinse_setting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.42,
-          "input_tokens": 814,
+          "seconds": 0.37,
+          "input_tokens": 844,
           "output_tokens": 27,
           "decision": {
             "category": "streaks",
@@ -112,7 +112,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.35,
-          "input_tokens": 696,
+          "input_tokens": 726,
           "output_tokens": 21,
           "decision": {
             "category": "noise",
@@ -135,8 +135,8 @@
         "step": "rust_resistant_tableware",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.31,
-          "input_tokens": 637,
+          "seconds": 0.32,
+          "input_tokens": 667,
           "output_tokens": 18,
           "decision": {
             "category": "rust",
@@ -159,12 +159,36 @@
         "step": "clouding_steam_phase",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.35,
-          "input_tokens": 751,
-          "output_tokens": 19,
+          "seconds": 0.37,
+          "input_tokens": 781,
+          "output_tokens": 24,
           "decision": {
             "category": "clouding",
             "step": "clouding_steam_phase"
+          }
+        }
+      }
+    },
+    {
+      "name": "unpleasant_odour",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "Check the filters for residue and clean them under running water as described in the manual.",
+        "workflow": "odour",
+        "title": "Clean the filters",
+        "pages": [
+          36
+        ],
+        "step": "odour_clean_filters",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.31,
+          "input_tokens": 732,
+          "output_tokens": 18,
+          "decision": {
+            "category": "odour",
+            "step": "odour_clean_filters"
           }
         }
       }
@@ -174,11 +198,11 @@
       "passed": true,
       "result": {
         "kind": "clarify",
-        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible clouding that does not wipe off, or another problem.",
+        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible clouding that does not wipe off, an unpleasant interior odour, or another problem.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.16,
-          "input_tokens": 390,
+          "seconds": 0.18,
+          "input_tokens": 420,
           "output_tokens": 8,
           "decision": {
             "category": "unclear",
@@ -199,8 +223,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.17,
-          "input_tokens": 398,
+          "seconds": 0.16,
+          "input_tokens": 428,
           "output_tokens": 13,
           "decision": {
             "category": "plastic",
@@ -221,8 +245,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.12,
-          "input_tokens": 402,
+          "seconds": 0.14,
+          "input_tokens": 432,
           "output_tokens": 8,
           "decision": {
             "category": "interior",
@@ -236,11 +260,11 @@
       "passed": true,
       "result": {
         "kind": "scope",
-        "text": "The verified reference set here covers drying, food-remnant, detergent-residue, removable-streak, wash-cycle knocking or rattling, cutlery-rust and irreversible-glass-clouding results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
+        "text": "The verified reference set here covers drying, food-remnant, detergent-residue, removable-streak, wash-cycle knocking or rattling, cutlery-rust, irreversible-glass-clouding and unpleasant-interior-odour results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.14,
-          "input_tokens": 400,
+          "seconds": 0.12,
+          "input_tokens": 430,
           "output_tokens": 7,
           "decision": {
             "category": "other",
@@ -273,8 +297,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.29,
-          "input_tokens": 721,
+          "seconds": 0.3,
+          "input_tokens": 751,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -297,8 +321,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.31,
-          "input_tokens": 741,
+          "seconds": 0.34,
+          "input_tokens": 771,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -322,8 +346,8 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.34,
-          "input_tokens": 760,
+          "seconds": 0.35,
+          "input_tokens": 790,
           "output_tokens": 23,
           "decision": {
             "category": "drying",
@@ -341,7 +365,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.19,
-          "input_tokens": 400,
+          "input_tokens": 430,
           "output_tokens": 13,
           "decision": {
             "category": "drying",

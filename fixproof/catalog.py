@@ -35,6 +35,9 @@ STEP_DEFINITIONS = {
     'clouding_steam_phase': {'workflow': 'clouding', 'title': 'Avoid a lengthy steam phase', 'text': 'Avoid leaving glassware standing in the appliance for a long time after the wash cycle ends.', 'pages': [45]},
     'clouding_lower_temperature': {'workflow': 'clouding', 'title': 'Use a lower-temperature programme', 'text': 'Use a programme with a lower washing temperature.', 'pages': [45]},
     'clouding_glass_protection': {'workflow': 'clouding', 'title': 'Use glass-protection detergent', 'text': 'Use detergent with a glass protection component.', 'pages': [45]},
+    'odour_wipe_interior': {'workflow': 'odour', 'title': 'Remove coarse interior soiling', 'text': 'Remove coarse soiling from the appliance interior with a damp cloth.', 'pages': [36]},
+    'odour_clean_filters': {'workflow': 'odour', 'title': 'Clean the filters', 'text': 'Check the filters for residue and clean them under running water as described in the manual.', 'pages': [36]},
+    'odour_machine_care': {'workflow': 'odour', 'title': 'Run Machine Care', 'text': 'Run Machine Care without tableware. Use only products designed for dishwashers and follow the product packaging safety instructions.', 'pages': [35, 36]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -71,6 +74,7 @@ CATALOGS = {
             'rust_resistant_tableware': [49], 'rust_remove_rusting_items': [49],
             'clouding_dishwasher_proof': [49], 'clouding_steam_phase': [49],
             'clouding_lower_temperature': [49], 'clouding_glass_protection': [49],
+            'odour_wipe_interior': [38], 'odour_clean_filters': [38], 'odour_machine_care': [37, 38],
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
@@ -96,6 +100,7 @@ CATALOGS = {
             'rust_resistant_tableware': [46], 'rust_remove_rusting_items': [46],
             'clouding_dishwasher_proof': [46], 'clouding_steam_phase': [46],
             'clouding_lower_temperature': [46], 'clouding_glass_protection': [46],
+            'odour_wipe_interior': [36], 'odour_clean_filters': [36], 'odour_machine_care': [35, 36],
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },

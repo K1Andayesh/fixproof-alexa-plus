@@ -249,6 +249,22 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(reply['kind'],'clarify');self.assertNotIn('step',reply)
         self.assertEqual(c['pending'],'waiting');self.assertEqual(infer.call_count,1)
 
+    def test_unpleasant_odour_flow_uses_only_visually_verified_care_steps(self):
+        c=self.create(issue='There is an unpleasant odour inside the dishwasher.')
+        seen=[]
+        def choose_odour(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'odour'},raw
+            seen.append(context['available_checks'])
+            return {'step':'odour_wipe_interior'},raw
+        with patch.object(server,'infer',side_effect=choose_odour):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'odour_wipe_interior')
+        self.assertEqual(reply['pages'],[36])
+        self.assertEqual(set(seen[0]),{'odour_wipe_interior','odour_clean_filters','odour_machine_care'})
+        self.assertEqual(server.steps_for('Bosch SMS6HCI01A/38')['odour_machine_care']['pages'],[37,38])
+        self.assertEqual(server.steps_for('Bosch SMS6HCI02A/72')['odour_clean_filters']['pages'],[36])
+
     def test_handover_separates_performed_deferred_and_pending(self):
         c=self.create();c['pending']='loading'
         for step,outcome in [('waiting','Still wet'),('rinse_aid','Not yet tested'),('programme','Skipped')]:

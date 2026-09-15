@@ -2,7 +2,7 @@
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across seven source-backed issue paths and three independently verified exact-model catalogs, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns the selected model's exact page URLs and verified content hash, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across eight source-backed issue paths and three independently verified exact-model catalogs, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns the selected model's exact page URLs and verified content hash, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -25,17 +25,18 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - A fifth wash-noise path adds three user-level checks grounded in the manuals' knocking-and-rattling guidance: keep spray arms clear of tableware, distribute small loads evenly, and secure light items.
 - A sixth cutlery-rust path adds two user-level checks grounded in each exact model's manual: use rust-resistant tableware and keep rusting items out of the wash.
 - A seventh irreversible-glass-clouding path adds four user-level checks grounded in each exact model's manual: use dishwasher-proof glasses, avoid a lengthy steam phase, use a lower-temperature programme and use glass-protection detergent.
+- An eighth unpleasant-interior-odour path adds three routine-care checks grounded in visually inspected Machine Care and filter pages for every exact model: wipe coarse interior soiling, clean the filters, and run Machine Care without tableware while following product safety instructions.
 - A public impact card now connects official Australian repair and e-waste context to the demonstrated handover mechanism, while naming the product outcomes that remain unmeasured. The sources and claim boundary are recorded in `IMPACT_EVIDENCE.md`.
-- The executable MCP smoke probe now emits a timestamped, fictional, seven-exchange judge trace. An identical public copy lets judges inspect tools, citations, evidence status, reconnection continuity and the safety stop without installing the server.
-- Each of three exact Bosch models has its own official service page, manual identity, verified hash and page map for all twenty-three checks. Browser and MCP handovers carry the selected catalog without mixing citations.
+- The executable MCP smoke probe emits a timestamped, fictional judge trace. An identical public copy lets judges inspect tools, citations, evidence status, reconnection continuity and the safety stop without installing the server.
+- Each of three exact Bosch models has its own official service page, manual identity, verified hash and page map for all twenty-six checks. Browser and MCP handovers carry the selected catalog without mixing citations.
 
 ## Evidence collected
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 29 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 15 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 16/16 scenarios passed | Running local Qwen model, including all seven source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
+| Python HTTP/MCP regression suite | 30 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 16 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 17/17 scenarios passed | Running local Qwen model, including all eight source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
 | Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for seven paths and three exact models, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | Public Streamable HTTP MCP deployment | Passed | An official client called the anonymous HTTPS endpoint, negotiated protocol 2026-07-28, discovered five tools, exercised D1 continuity across fresh connections, retained an observation and safety stop, and returned third-model pages 45 and 24 plus wash-noise page 49, cutlery-rust page 46 and irreversible-glass-clouding page 46; see HOSTED_MCP.json |
 | MCP App rendering | Passed | The exact `ui://fixproof/handover.html` resource rendered a fictional result in a browser with evidence counts, recorded and pending checks, page citations and limits; the resource itself emitted no browser warnings or errors |

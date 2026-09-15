@@ -26,10 +26,10 @@ function result(value: Record<string, unknown>, text?: string) {
 
 function buildServer() {
   const server = new McpServer(
-    { name: "FixProof", version: "0.7.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
+    { name: "FixProof", version: "0.8.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
     {
       capabilities: { tools: {} },
-      instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust and irreversible-glass-clouding paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
+      instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding and unpleasant-interior-odour paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
     },
   );
 
