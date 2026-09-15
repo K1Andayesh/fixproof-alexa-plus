@@ -251,7 +251,7 @@ mcp = MCPServer(
         "Carry an appliance issue through source-linked checks and a repair handover. "
         "Only user-confirmed outcomes count as attempted. Never claim a diagnosis, a "
         "physical inspection, or a verified repair. The current reference catalog covers "
-        "two exact Bosch models with drying, food-remnant, detergent-residue and removable-streak guidance."
+        "three exact Bosch models with drying, food-remnant, detergent-residue and removable-streak guidance."
     ),
     extensions=[apps],
 )

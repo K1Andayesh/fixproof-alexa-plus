@@ -8,7 +8,7 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 
 ## 90-second judge tour
 
-1. Read the impact card, choose either verified Bosch reference model, then start a fictional drying case. The selector also exposes separate food-remnant, detergent-residue and removable-streak paths.
+1. Read the impact card, choose a verified Bosch reference model, then start a fictional drying case. The selector also exposes separate food-remnant, detergent-residue and removable-streak paths.
 2. Ask **What should I check first?** and open the cited manual page.
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
@@ -82,7 +82,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 
 ## Implemented
 
-- Two exact reference models, Bosch SMS6HAI02A/01 and SMS6HCI01A/38. The same fourteen application-owned checks across drying, food-remnant, detergent-residue and removable-streak paths are independently mapped to visually checked pages in each model's official manual.
+- Three exact reference models, Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72. The same fourteen application-owned checks across drying, food-remnant, detergent-residue and removable-streak paths are independently mapped to visually checked pages in each model's official manual.
 - Local AI classifies symptoms, then selects from remaining source-backed checks. Server supplies instruction text and citations. Unsupported/unconfirmed models do not receive model-specific checks.
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
 - Reload/resume, model traces, manufacturer links, handover preview and Markdown download.

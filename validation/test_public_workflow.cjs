@@ -53,6 +53,8 @@ test('explicit no-hazard statements and technical phrases do not false stop',()=
 test('information and clarification preserve a pending suggestion',()=>{
  const a=app();a.start();a.ask('first check');
  for(const q of ['Help me.','Only plastic stays wet.','E24 error']){a.ask(q);assert.equal(a.run('state.pending'),'waiting');}
+ const b=app();b.run("start('Plates are wet.','drying','Bosch SMS6HCI02A/72')");b.ask('Only plastic stays wet.');
+ assert.match(b.run('latest'),/page 42/);
 });
 test('all deferred outcomes never become performed checks or a diagnosis',()=>{
  const a=app();a.start();
@@ -73,6 +75,8 @@ test('detergent-residue journey stays within its two cited checks',()=>{
  assert.match(a.handover(),/Supported path: detergent residue/);assert.match(a.handover(),/Manual · p. 42|page=42/);
  const b=app();b.run("start('Detergent residue remains inside the appliance.','detergent','Bosch SMS6HCI01A/38')");b.ask('What should I check first?');b.record('Issue unchanged','Residue remains.');
  assert.match(b.handover(),/9001720311_B\.pdf#page=46/);assert.doesNotMatch(b.handover(),/9001676154_A\.pdf/);
+ const c=app();c.run("start('Detergent residue remains inside the appliance.','detergent','Bosch SMS6HCI02A/72')");c.ask('What should I check first?');c.record('Issue unchanged','Residue remains.');
+ assert.match(c.handover(),/9002017246_A\.pdf#page=43/);assert.doesNotMatch(c.handover(),/9001720311_B\.pdf/);
 });
 test('removable-streak journey stays within its four cited checks',()=>{
  const a=app();a.run("start('Removable streaks remain on glasses and cutlery.','streaks')");a.ask('What should I check first?');

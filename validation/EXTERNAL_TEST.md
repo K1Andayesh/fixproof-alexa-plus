@@ -6,7 +6,7 @@ Use this only after a willing appliance owner or repair professional is availabl
 
 Give the tester the local URL without explaining the interface. Ask them to use a fictional issue if they prefer. Observe without coaching:
 
-1. Can they tell that the experience is simulated and supports only one model?
+1. Can they tell that the experience is simulated and supports only the three listed exact models?
 2. Can they find the exact-model requirement and understand why it matters?
 3. Can they ask for a check, inspect the source, and distinguish a suggestion from an attempted check?
 4. After recording an outcome and reloading, can they identify what happened and what remains?

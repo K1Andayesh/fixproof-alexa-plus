@@ -20,6 +20,12 @@ Bosch SMS6HCI01A/38 was added on 15 September 2026 as an independent catalog ent
 
 Pages 24-25, 28, 38-39, 44-46 and 48 were extracted and visually inspected. They support the same fourteen application-owned check summaries, with model-specific page mappings. SHA-256: `b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9`. Each case now carries its selected model's manual URL, service URL, page citations and source hash through the browser and MCP handover.
 
+### Third exact-model reference
+
+Bosch SMS6HCI02A/72 was added on 15 September 2026 as another independent catalog entry. The [exact service page](https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72) User Manual link opened [9002017246_A.pdf](https://media3.bsh-group.com/Documents/9002017246_A.pdf). Its cover names SMS6HCI02A and Australian information for use; its document footer is 9002017246 (050605) 650 V1, 56 pages. The /72 applicability is established by the exact service-page link.
+
+Pages 23-24, 27-28, 36-37 and 41-46 were extracted and visually inspected. They support the same fourteen check summaries and both informational results with a third independent page map. SHA-256: `b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476`.
+
 ## Ordered work
 
 1. Retrieve the linked manufacturer manual, verify its model coverage and record document version, language, source URL and page references. Use original concise summaries; do not bundle copyrighted manuals without permission.

@@ -193,6 +193,32 @@ async def main() -> None:
             second_model_evidence = second_model_handover_result.structured_content['evidence']
             assert second_model_evidence['model']['reported'] == 'Bosch SMS6HCI01A/38'
             assert second_model_evidence['reference']['service_url'] == 'https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38'
+            third_model_result = await final_client.call_tool('start_case', {
+                'request_id': str(uuid.uuid4()),
+                'reported_issue': 'Removable streaks remain on glasses and cutlery after the wash.',
+                'model': 'Bosch SMS6HCI02A/72',
+                'model_confirmed': True,
+                'fictional_demo': True,
+            })
+            third_model_case = third_model_result.structured_content
+            third_model_assessed_result = await final_client.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': third_model_case['case_id'],
+                'revision': third_model_case['revision'], 'user_message': 'What should I check first?'
+            })
+            third_model_assessed = third_model_assessed_result.structured_content
+            third_model_pending = third_model_assessed['pending_check']
+            assert third_model_pending is not None and third_model_pending['step_id'].startswith('streaks_')
+            third_model_citations = third_model_pending.get('citations', [])
+            assert third_model_citations
+            assert all(citation['url'].startswith('https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=') for citation in third_model_citations)
+            assert any(citation['url'].endswith('#page=45') or citation['url'].endswith('#page=46') for citation in third_model_citations)
+            assert all(citation['content_sha256'] == 'b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476' for citation in third_model_citations)
+            third_model_handover_result = await final_client.call_tool(
+                'prepare_handover', {'case_id': third_model_case['case_id']}
+            )
+            third_model_evidence = third_model_handover_result.structured_content['evidence']
+            assert third_model_evidence['model']['reported'] == 'Bosch SMS6HCI02A/72'
+            assert third_model_evidence['reference']['service_url'] == 'https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72'
         judge_trace = [
             {
                 'connection': 1,
@@ -312,7 +338,7 @@ async def main() -> None:
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
                     "source_backed_paths": 4,
-                    "exact_models": 2,
+                    "exact_models": 3,
                     "food_path_selected_step": food_pending['step_id'],
                     "food_path_citations": [citation['url'] for citation in food_citations],
                     "detergent_path_selected_step": detergent_pending['step_id'],
@@ -326,6 +352,14 @@ async def main() -> None:
                     "second_model_source_hash_verified": all(
                         citation['content_sha256'] == 'b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9'
                         for citation in second_model_citations
+                    ),
+                    "third_model": third_model_evidence['model']['reported'],
+                    "third_model_selected_step": third_model_pending['step_id'],
+                    "third_model_citations": [citation['url'] for citation in third_model_citations],
+                    "third_model_service_url": third_model_evidence['reference']['service_url'],
+                    "third_model_source_hash_verified": all(
+                        citation['content_sha256'] == 'b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476'
+                        for citation in third_model_citations
                     ),
                     "judge_trace": judge_trace,
                 },

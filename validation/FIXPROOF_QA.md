@@ -2,7 +2,7 @@
 
 ## Result
 
-Working local MVP at http://127.0.0.1:8768. Real Qwen 3.5 4B inference through the existing local Ollama service; no paid API or model downloads. Both exact-model source manuals are documented in [FIXPROOF.md](FIXPROOF.md). This is implementation evidence, not customer validation or a physical appliance test.
+Working local MVP at http://127.0.0.1:8768. Real Qwen 3.5 4B inference through the existing local Ollama service; no paid API or model downloads. All three exact-model source manuals are documented in [FIXPROOF.md](FIXPROOF.md). This is implementation evidence, not customer validation or a physical appliance test.
 
 ## Actual Chrome UI checks
 
@@ -35,7 +35,7 @@ The download link was clicked and the server served the attachment. Its actual n
 
 - Twenty-six Python workflow and MCP regression tests pass, including separate drying, food-remnant, detergent-residue and removable-streak selection, cross-path pending-check protection, retries, origin checks, explicit evidence recording, SQLite persistence, stale writes, model failure, invalid model output, and cross-client continuity.
 - Eleven public-interface logic tests pass against the actual hosted JavaScript, including all four source-backed journeys and cross-path protection.
-- A separate Apps-capable client connected to the running Streamable HTTP endpoint at `/mcp`, negotiated protocol `2026-07-28` and the official MCP Apps extension, discovered all five tools, read the handover's self-contained `ui://` resource, exercised all four source-backed paths and both exact models with real local AI, recorded an outcome, and verified that the handover retained its observation across new client connections. A request with an untrusted browser Origin was rejected with HTTP 403.
+- A separate Apps-capable client connected to the running Streamable HTTP endpoint at `/mcp`, negotiated protocol `2026-07-28` and the official MCP Apps extension, discovered all five tools, read the handover's self-contained `ui://` resource, exercised all four source-backed paths and three exact models with real local AI, recorded an outcome, and verified that the handover retained its observation across new client connections. A request with an untrusted browser Origin was rejected with HTTP 403.
 - Thirteen local-model scenarios pass: drying, food remnants, detergent residue, removable streaks, unclear symptom, plastic, inside-wall condensation, unsupported error/drainage issue, hazard, explicit no-hazard language, a technical phrase, already-recorded check and exhausted catalog. Full results and local latency/token observations: [LOCAL_AI_EVAL.json](LOCAL_AI_EVAL.json).
 - Python compilation and JavaScript syntax checks pass.
 - A source-only rehearsal copy under ignored `tmp/` passed the eight workflow tests and syntax checks. A focused scan found no email address, personal path or credential marker. Test-generated `__pycache__` remains excluded by the project `.gitignore`; the rehearsal intentionally contains no database or downloaded manual.

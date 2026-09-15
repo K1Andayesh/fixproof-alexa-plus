@@ -121,7 +121,7 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_informational_guidance_returns_page_citations(self):
         async with Client(mcp_server.mcp, raise_exceptions=True) as client:
-            for model,page in ((mcp_server.workflow.MODEL,41),("Bosch SMS6HCI01A/38",44)):
+            for model,page in ((mcp_server.workflow.MODEL,41),("Bosch SMS6HCI01A/38",44),("Bosch SMS6HCI02A/72",42)):
                 started = await self.call(client, "start_case", {
                     "request_id": str(uuid.uuid4()), "reported_issue": "Only plastic is wet.",
                     "model": model, "model_confirmed": True, "fictional_demo": True,

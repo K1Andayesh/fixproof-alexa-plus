@@ -61,6 +61,27 @@ CATALOGS = {
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
+    'SMS6HCI02A/72': {
+        'model': 'Bosch SMS6HCI02A/72',
+        'aliases': ('BOSCHSMS6HCI02A/72', 'SMS6HCI02A/72'),
+        'source': {
+            'title': 'Bosch SMS6HCI02A · Australian English user manual',
+            'url': 'https://media3.bsh-group.com/Documents/9002017246_A.pdf',
+            'service_url': 'https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72',
+            'document': '9002017246 (050605) 650 V1',
+            'verified': '2026-09-15',
+            'sha256': 'b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476',
+            'coverage': 'Exact /72 service page links to this manual; cover names SMS6HCI02A.',
+        },
+        'step_pages': {
+            'programme': [41], 'rinse_aid': [41, 23, 24], 'loading': [41, 28], 'waiting': [42],
+            'food_spacing': [42], 'food_spray_arm': [42, 37], 'food_filters': [43, 36, 37],
+            'food_programme': [43], 'detergent_tray': [43, 27, 28], 'detergent_position': [43],
+            'streaks_rinse_setting': [45, 24], 'streaks_add_rinse_aid': [45, 23],
+            'streaks_tray': [45, 27, 28], 'streaks_prerinse': [46],
+        },
+        'info_pages': {'plastic': [42], 'interior': [42]},
+    },
 }
 
 

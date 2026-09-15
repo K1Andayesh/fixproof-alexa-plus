@@ -59,15 +59,18 @@ class WorkflowTests(unittest.TestCase):
             with patch.object(server.urllib.request,'urlopen',side_effect=AssertionError('AI must not run')):
                 result=server.assess(c,'What should I do?')
             self.assertEqual(result['kind'],'scope');self.assertNotIn('step',result)
-        second='Bosch SMS6HCI01A/38';c=self.create(model=second)
         def choose_waiting(prompt,context,schema):
             value={'category':'drying'} if 'category' in schema['properties'] else {'step':'waiting'}
             return value,{'model':'stub','prompt_eval_count':1,'eval_count':1}
-        with patch.object(server,'infer',side_effect=choose_waiting): result=server.assess(c,'What should I check?')
-        self.assertEqual(result['pages'],[44]);c['pending']='waiting'
-        server.record_evidence(c,'waiting','Still wet','Still wet after waiting.')
-        export=server.handover(c)
-        self.assertIn('9001720311_B.pdf#page=44',export);self.assertNotIn('9001676154_A.pdf',export)
+        for model,pages,document,excluded in [
+            ('Bosch SMS6HCI01A/38',[44],'9001720311_B.pdf','9001676154_A.pdf'),
+            ('Bosch SMS6HCI02A/72',[42],'9002017246_A.pdf','9001720311_B.pdf')]:
+            c=self.create(model=model)
+            with patch.object(server,'infer',side_effect=choose_waiting): result=server.assess(c,'What should I check?')
+            self.assertEqual(result['pages'],pages);c['pending']='waiting'
+            server.record_evidence(c,'waiting','Still wet','Still wet after waiting.')
+            export=server.handover(c)
+            self.assertIn(document+'#page='+str(pages[0]),export);self.assertNotIn(excluded,export)
     def test_invalid_ai_output_not_executed(self):
         c=self.create()
         class Response:
