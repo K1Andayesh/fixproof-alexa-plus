@@ -64,7 +64,7 @@ Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_P
 
 ## Run the MCP server
 
-For immediate judge testing, use `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/mcp`. It runs the same bounded three-model, four-path catalog as a separate public TypeScript MCP service with D1 continuity. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data. Its landing page lists all five calls and the required fields.
+For immediate judge testing, use `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. It runs the same bounded three-model, four-path catalog as a separate public TypeScript MCP service with D1 continuity. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data. Its landing page lists all five calls and the required fields.
 
 The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow. The handover tool also exposes `ui://fixproof/handover.html` through the official MCP Apps extension, allowing a compatible host to render the evidence inside the conversation.
 

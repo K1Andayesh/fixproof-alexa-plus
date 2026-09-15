@@ -16,7 +16,7 @@ export default function Home() {
           </div>
           <div className="mt-12 rounded-2xl border border-[#c9d5cf] bg-white p-6 shadow-[0_18px_60px_rgba(18,57,47,.08)]">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Streamable HTTP endpoint</p>
-            <code className="mt-3 block break-all text-base font-semibold text-[#163a31]">https://fixproof-mcp.keyvan-andayesh.chatgpt.site/mcp</code>
+            <code className="mt-3 block break-all text-base font-semibold text-[#163a31]">https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp</code>
             <p className="mt-3 text-sm leading-6 text-[#61766e]">Protocol 2025-11-25 and later · JSON responses · no login · fictional evaluation cases only</p>
           </div>
         </div>

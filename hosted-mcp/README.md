@@ -14,7 +14,7 @@ node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1
 npm start -- --port 8790
 ```
 
-Connect an MCP client to `http://127.0.0.1:8790/mcp`. From the repository root, exercise the complete two-connection flow with:
+Connect an MCP client to `http://127.0.0.1:8790/api/mcp`. The `/mcp` route remains a local-compatible alias. From the repository root, exercise the complete two-connection flow with:
 
 ```powershell
 .\.venv\Scripts\python.exe fixproof\hosted_mcp_smoke.py

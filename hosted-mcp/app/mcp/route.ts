@@ -11,6 +11,8 @@ import {
   startCase,
 } from "../../lib/fixproof";
 
+export const dynamic = "force-dynamic";
+
 const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const localWrite = { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const outputSchema = z.looseObject({});
