@@ -48,11 +48,11 @@ The revised interface was exercised and visually inspected in Chrome from the lo
 
 ## Release evidence
 
-- Commit `21fc8a5cfa011c14e5ae484d250768847c1eb8d4` was pushed to the public GitHub repository and the Sites source repository.
-- The exact archive from that commit was saved as Site version 10 and production deployment `appgdep_6aa884cbe3948191bf99f9ae7155d8f6` succeeded on 15 September 2026.
-- The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved a deferred check as `deferred_or_skipped`, included its exact-page citation and source hash, then preserved a later safety stop across a new client connection.
-- The production page showed 28 automated checks and 10/10 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, the client-planning hints, and linked directly to the captured HTTP result and integration tests.
-- In production Chrome QA, **See the verified HTTP run** expanded to show the annotation evidence, the other three captured boundaries, and both GitHub evidence links.
+- Commit `7bbb4408828021c4a1db01f2afce4db49dedc0e0` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 11 and production deployment `appgdep_6aa8a2bae2b48191a43644d31ba08772` succeeded on 15 September 2026.
+- The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining check, included the exact-page citation and source hash, then preserved a later safety stop through another connection.
+- The production page showed 29 automated checks and 10/10 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, and cross-connection continuity, with direct links to the captured HTTP result and integration tests.
+- In production Chrome QA, **See the verified HTTP run** expanded to show all five evidence bullets and both GitHub evidence links. The browser console reported no warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
