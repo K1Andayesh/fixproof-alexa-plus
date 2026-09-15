@@ -5,7 +5,7 @@ SOURCE = {
     'url': 'https://media3.bsh-group.com/Documents/9001676154_A.pdf',
     'service_url': 'https://www.bosch-home.com.au/en/productservice/SMS6HAI02A-01',
     'document': '9001676154 (010805) 650 V1',
-    'verified': '2026-09-09',
+    'verified': '2026-09-15',
     'sha256': 'af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c',
     'coverage': 'Exact /01 service page links to this manual; cover names SMS6HAI02A.'
 }
@@ -20,6 +20,10 @@ STEPS = {
     'food_programme': {'workflow': 'food', 'title': 'Check wash intensity', 'text': 'Select a more intensive washing programme for stubborn food remnants.', 'pages': [42]},
     'detergent_tray': {'workflow': 'detergent', 'title': 'Clear the tablet collecting tray', 'text': 'Arrange the top basket so tableware does not obstruct the tablet collecting tray, and keep tableware and fragrance dispensers out of the tray.', 'pages': [42]},
     'detergent_position': {'workflow': 'detergent', 'title': 'Reposition the detergent tablet', 'text': 'Position the detergent tablet transversely in the dispenser rather than vertically.', 'pages': [42]},
+    'streaks_rinse_setting': {'workflow': 'streaks', 'title': 'Lower the rinse aid setting', 'text': 'If the rinse aid dosage is set too high, set the rinse aid system to a lower setting.', 'pages': [44]},
+    'streaks_add_rinse_aid': {'workflow': 'streaks', 'title': 'Check for rinse aid', 'text': 'If no rinse aid has been added, fill the rinse aid dispenser as described in the manual.', 'pages': [44, 23]},
+    'streaks_tray': {'workflow': 'streaks', 'title': 'Clear the tablet collecting tray', 'text': 'Arrange the top basket so tableware does not block the detergent dispenser lid, and keep tableware and fragrance dispensers out of the tablet collecting tray.', 'pages': [44, 27]},
+    'streaks_prerinse': {'workflow': 'streaks', 'title': 'Avoid intensive pre-rinsing', 'text': 'Remove only large food remnants before loading; do not pre-rinse the tableware.', 'pages': [45]},
 }
 INFO = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},

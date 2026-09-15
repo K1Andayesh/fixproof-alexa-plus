@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-15T05:42:41.054537+00:00",
+  "captured_at": "2026-09-15T06:45:58.272977+00:00",
   "capture_scope": "Fictional local transport verification; no household or customer data.",
   "transport": "Streamable HTTP",
   "protocol_version": "2026-07-28",
@@ -42,7 +42,7 @@
       "openWorldHint": false
     }
   },
-  "case_id": "a8744891-0cd5-4ebe-b79b-b3341efc7e3f",
+  "case_id": "36a070df-3f68-44db-bc2d-f293d07a58d6",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -59,7 +59,7 @@
   "continued_step": "rinse_aid",
   "safety_stop_survives_client_reconnect": true,
   "safety_report_in_handover": true,
-  "source_backed_paths": 3,
+  "source_backed_paths": 4,
   "food_path_selected_step": "food_spacing",
   "food_path_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=42"
@@ -67,6 +67,10 @@
   "detergent_path_selected_step": "detergent_tray",
   "detergent_path_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=42"
+  ],
+  "streaks_path_selected_step": "streaks_rinse_setting",
+  "streaks_path_citations": [
+    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=44"
   ],
   "judge_trace": [
     {
@@ -100,7 +104,7 @@
         "fictional_demo": true
       },
       "observed": {
-        "case_id": "a8744891-0cd5-4ebe-b79b-b3341efc7e3f",
+        "case_id": "36a070df-3f68-44db-bc2d-f293d07a58d6",
         "revision": 0,
         "status": "Open"
       }

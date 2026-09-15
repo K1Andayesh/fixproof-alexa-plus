@@ -1,8 +1,8 @@
-# FixProof reliability improvement — 14 September 2026
+# FixProof reliability improvement — 15 September 2026
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across three source-backed issue paths, the real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across four source-backed issue paths, the real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -20,6 +20,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - A new MCP client can resume the case, retain the issue and explicit outcome, and obtain a different remaining check without repeating the recorded one.
 - A second, separately bounded food-remnant path adds four checks grounded in manual pages 36, 37 and 42. Cross-path questions do not replace an awaiting check or mix the two evidence sequences.
 - A third detergent-residue path adds two checks grounded in the manual's page-42 dispenser guidance and remains isolated from the other evidence sequences.
+- A fourth removable-streak path adds four checks grounded in the manual's page-23 and pages-44–45 guidance, with page 27 supporting tableware arrangement, and remains isolated from the other evidence sequences.
 - A public impact card now connects official Australian repair and e-waste context to the demonstrated handover mechanism, while naming the product outcomes that remain unmeasured. The sources and claim boundary are recorded in `IMPACT_EVIDENCE.md`.
 - The executable MCP smoke probe now emits a timestamped, fictional, seven-exchange judge trace. An identical public copy lets judges inspect tools, citations, evidence status, reconnection continuity and the safety stop without installing the server.
 
@@ -27,10 +28,10 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 25 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 10 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 12/12 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for drying, food-remnant and detergent-residue cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Python HTTP/MCP regression suite | 26 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 11 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 13/13 scenarios passed | Running local Qwen model, including all four source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for drying, food-remnant, detergent-residue and removable-streak cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
 | Chrome UI exercise | Passed | Production detergent-residue path selected a page-42 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; no console warnings or errors |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |

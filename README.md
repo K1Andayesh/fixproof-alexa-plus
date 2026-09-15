@@ -8,7 +8,7 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 
 ## 90-second judge tour
 
-1. Read the impact card, then start the fictional Bosch SMS6HAI02A/01 drying case. The selector also exposes separate food-remnant and detergent-residue paths.
+1. Read the impact card, then start the fictional Bosch SMS6HAI02A/01 drying case. The selector also exposes separate food-remnant, detergent-residue and removable-streak paths.
 2. Ask **What should I check first?** and open the cited manual page.
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
@@ -79,7 +79,7 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 
 ## Implemented
 
-- Exact reference model Bosch SMS6HAI02A/01; ten application-owned checks across drying, food-remnant and detergent-residue paths, grounded in visually checked manufacturer manual pages 23, 36, 37, 40, 41 and 42.
+- Exact reference model Bosch SMS6HAI02A/01; fourteen application-owned checks across drying, food-remnant, detergent-residue and removable-streak paths, grounded in visually checked manufacturer manual pages 23, 27, 36, 37, 40, 41, 42, 44 and 45.
 - Local AI classifies symptoms, then selects from remaining source-backed checks. Server supplies instruction text and citations. Unsupported/unconfirmed models do not receive model-specific checks.
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
 - Reload/resume, model traces, manufacturer links, handover preview and Markdown download.
@@ -102,7 +102,7 @@ Live evaluations use the local model and write `validation/LOCAL_AI_EVAL.json`. 
 
 ## Boundaries
 
-Local, single-user MVP: no authentication, encrypted storage, remote sharing, physical inspection, Alexa device execution or customer validation. Do not expose either development server publicly. AI can misclassify novel phrasing; the evaluated set is small. Ten checks across three issue paths do not cover the whole manual or prove a repair is needed.
+Local, single-user MVP: no authentication, encrypted storage, remote sharing, physical inspection, Alexa device execution or customer validation. Do not expose either development server publicly. AI can misclassify novel phrasing; the evaluated set is small. Fourteen checks across four issue paths do not cover the whole manual or prove a repair is needed.
 
 Chrome provides speech recognition and may use its online service; spoken transcripts can therefore leave the computer before FixProof receives them. The UI states this before the microphone control. Speech input never submits automatically. The microphone permission path has not been accepted or end-to-end tested; typed input and spoken playback were browser-tested.
 
@@ -112,4 +112,4 @@ The `dist/` folder is the transparent hosted evaluation build. It uses a fixed s
 
 The revised browser flow keeps the question available while a check is pending. A hazard report cancels the pending check, stops troubleshooting, persists the warning, and includes the report in the handover. See [recorded verification](validation/VIDEO_V2_QA.md).
 
-The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, exposes a versioned structured handover, and publishes client-planning annotations for every tool. A cross-connection test and real HTTP run verify that recorded evidence survives a new client and the recorded check is not suggested again. The latest breadth revision adds separately bounded food-remnant and detergent-residue paths without mixing their evidence with drying cases. Its 25 Python regression tests, ten public-interface logic tests and twelve live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.
+The reliability revision extends that stop to the real HTTP/MCP workflow and outcome observations, separates performed and deferred evidence, preserves pending checks through informational replies, avoids tested false stops for explicit no-hazard statements and technical phrases, returns self-contained citations in MCP guidance, exposes a versioned structured handover, and publishes client-planning annotations for every tool. A cross-connection test and real HTTP run verify that recorded evidence survives a new client and the recorded check is not suggested again. The latest breadth revision adds separately bounded food-remnant, detergent-residue and removable-streak paths without mixing their evidence with drying cases. Its 26 Python regression tests, eleven public-interface logic tests and thirteen live local-AI scenarios passed. See the [reliability review](validation/RELIABILITY_REVIEW.md) for exact evidence, limitations and release status. The lexical hazard preflight is conservative and incomplete; it is not a comprehensive safety detector.

@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-15T03:41:16+00:00",
+  "at": "2026-09-15T06:45:38+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,8 +15,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 3.46,
-          "input_tokens": 626,
+          "seconds": 5.33,
+          "input_tokens": 655,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -39,8 +39,8 @@
         "step": "food_spacing",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.57,
-          "input_tokens": 624,
+          "seconds": 0.34,
+          "input_tokens": 653,
           "output_tokens": 20,
           "decision": {
             "category": "food",
@@ -63,8 +63,8 @@
         "step": "detergent_tray",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.56,
-          "input_tokens": 545,
+          "seconds": 0.34,
+          "input_tokens": 574,
           "output_tokens": 25,
           "decision": {
             "category": "detergent",
@@ -74,15 +74,39 @@
       }
     },
     {
+      "name": "removable_streaks",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "If the rinse aid dosage is set too high, set the rinse aid system to a lower setting.",
+        "workflow": "streaks",
+        "title": "Lower the rinse aid setting",
+        "pages": [
+          44
+        ],
+        "step": "streaks_rinse_setting",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.36,
+          "input_tokens": 737,
+          "output_tokens": 27,
+          "decision": {
+            "category": "streaks",
+            "step": "streaks_rinse_setting"
+          }
+        }
+      }
+    },
+    {
       "name": "unclear",
       "passed": true,
       "result": {
         "kind": "clarify",
-        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue remains, or another problem occurred, and whether the programme finished.",
+        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue or removable streaks remain, or another problem occurred, and whether the programme finished.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.26,
-          "input_tokens": 284,
+          "seconds": 0.15,
+          "input_tokens": 313,
           "output_tokens": 8,
           "decision": {
             "category": "unclear",
@@ -103,8 +127,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.25,
-          "input_tokens": 292,
+          "seconds": 0.17,
+          "input_tokens": 321,
           "output_tokens": 13,
           "decision": {
             "category": "plastic",
@@ -125,9 +149,9 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.26,
-          "input_tokens": 296,
-          "output_tokens": 13,
+          "seconds": 0.12,
+          "input_tokens": 325,
+          "output_tokens": 8,
           "decision": {
             "category": "interior",
             "step": "none"
@@ -140,11 +164,11 @@
       "passed": true,
       "result": {
         "kind": "scope",
-        "text": "The verified reference set here covers drying, food-remnant and detergent-residue results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
+        "text": "The verified reference set here covers drying, food-remnant, detergent-residue and removable-streak results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.26,
-          "input_tokens": 294,
+          "seconds": 0.14,
+          "input_tokens": 323,
           "output_tokens": 12,
           "decision": {
             "category": "other",
@@ -177,8 +201,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.54,
-          "input_tokens": 616,
+          "seconds": 0.32,
+          "input_tokens": 645,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -201,8 +225,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.55,
-          "input_tokens": 636,
+          "seconds": 0.35,
+          "input_tokens": 665,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -226,8 +250,8 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.62,
-          "input_tokens": 655,
+          "seconds": 0.33,
+          "input_tokens": 684,
           "output_tokens": 23,
           "decision": {
             "category": "drying",
@@ -244,8 +268,8 @@
         "text": "Every check in this supported path has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.31,
-          "input_tokens": 294,
+          "seconds": 0.18,
+          "input_tokens": 323,
           "output_tokens": 13,
           "decision": {
             "category": "drying",

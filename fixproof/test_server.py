@@ -167,6 +167,20 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(reply['pages'],[42])
         self.assertEqual(set(seen[0]),{'detergent_tray','detergent_position'})
 
+    def test_removable_streak_flow_uses_only_source_backed_streak_steps(self):
+        c=self.create(issue='Removable streaks remain on glasses and cutlery.')
+        seen=[]
+        def choose_streaks(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'streaks'},raw
+            seen.append(context['available_checks'])
+            return {'step':'streaks_rinse_setting'},raw
+        with patch.object(server,'infer',side_effect=choose_streaks):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'streaks_rinse_setting')
+        self.assertEqual(reply['pages'],[44])
+        self.assertEqual(set(seen[0]),{'streaks_rinse_setting','streaks_add_rinse_aid','streaks_tray','streaks_prerinse'})
+
     def test_switching_supported_path_does_not_erase_pending_check(self):
         c=self.create();c['pending']='waiting'
         with patch.object(server,'infer',return_value=({'category':'food'},{'model':'stub'})) as infer:

@@ -12,7 +12,7 @@ The core question is whether recording and carrying the evidence forward is more
 
 Bosch SMS6HAI02A/01, chosen as a public demonstration model rather than a claim about Keyvan's appliance. On 9 September 2026, the [exact service page](https://www.bosch-home.com.au/en/productservice/SMS6HAI02A-01) User Manual link opened [9001676154_A.pdf](https://media3.bsh-group.com/Documents/9001676154_A.pdf). Its cover names SMS6HAI02A; its document footer is 9001676154 (010805) 650 V1, Australian English, 56 pages. The /01 applicability is established by the exact service-page link, not a suffix printed on the cover.
 
-Pages 23, 36, 37, 40, 41 and 42 were extracted and visually inspected. Pages 36–37 show filter maintenance and page 42 lists causes and checks for food remnants and detergent residue; pages 23, 40 and 41 support the drying path. SHA-256: `af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c`. The public-facing catalog contains original short summaries and page links, not the full manual. Downloaded PDF and rendered pages remain under ignored `tmp/pdfs/`.
+Pages 23, 27, 36, 37, 40, 41, 42, 44 and 45 were extracted and visually inspected. Pages 36–37 show filter maintenance; page 42 lists causes and checks for food remnants and detergent residue; pages 23, 40 and 41 support the drying path; and pages 23, 27, 44 and 45 support the removable-streak path. SHA-256: `af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c`. The public-facing catalog contains original short summaries and page links, not the full manual. Downloaded PDF and rendered pages remain under ignored `tmp/`.
 
 ## Ordered work
 
@@ -31,6 +31,6 @@ Pages 23, 36, 37, 40, 41 and 42 were extracted and visually inspected. Pages 36�
 - Export contains only recorded facts and identified uncertainties.
 - A reviewer can understand the handover without reading the whole chat.
 
-The ordered technical work above is implemented in `fixproof/`; see [QA evidence](FIXPROOF_QA.md). Local Qwen 3.5 4B classifies user symptoms and selects from ten source-backed checks across drying, food-remnant and detergent-residue paths after excluding recorded checks. The server supplies instructions and references. User actions alone record outcomes and status. Explicit revisiting preserves prior history. Markdown export contains recorded facts and identified uncertainties.
+The ordered technical work above is implemented in `fixproof/`; see [QA evidence](FIXPROOF_QA.md). Local Qwen 3.5 4B classifies user symptoms and selects from fourteen source-backed checks across drying, food-remnant, detergent-residue and removable-streak paths after excluding recorded checks. The server supplies instructions and references. User actions alone record outcomes and status. Explicit revisiting preserves prior history. Markdown export contains recorded facts and identified uncertainties.
 
 Customer comparison with a manual-and-notes baseline remains open. No appliance owner or repair professional has tested the product. CareRelay is parked; the earlier `prototype/` remains a historical intake/persistence spike.

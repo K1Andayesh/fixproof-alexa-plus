@@ -72,6 +72,12 @@ test('detergent-residue journey stays within its two cited checks',()=>{
  a.record('Issue unchanged','Detergent residue remains.');
  assert.match(a.handover(),/Supported path: detergent residue/);assert.match(a.handover(),/Manual · p. 42|page=42/);
 });
+test('removable-streak journey stays within its four cited checks',()=>{
+ const a=app();a.run("start('Removable streaks remain on glasses and cutlery.','streaks')");a.ask('What should I check first?');
+ assert.equal(a.run('state.pending'),'streaks_rinse_setting');assert.match(a.get('progress').textContent,/0 of 4 removable-streak checks/);
+ a.record('Issue unchanged','Streaks remain on the glasses.');
+ assert.match(a.handover(),/Supported path: removable streaks/);assert.match(a.handover(),/Manual · p. 44|page=44/);
+});
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);

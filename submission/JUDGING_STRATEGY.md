@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, and Origin rejection.
 
-**Judge should see:** the MCP transport output in the video, then expand **Inspect the captured agent run** in the public implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 35 passing automated checks and twelve live local-AI scenarios.
+**Judge should see:** the MCP transport output in the video, then expand **Inspect the captured agent run** in the public implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 37 passing automated checks and thirteen live local-AI scenarios.
 
 ## Design and user experience
 
@@ -16,7 +16,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Potential impact
 
-**Lead story:** the Australian Productivity Commission found significant and unnecessary barriers to repair for some products and identified restricted access to repair information among them. DCCEEW reports that Australia created 511,000 tonnes of e-waste in 2019. FixProof tests a narrow response: keep verified instructions and user-confirmed outcomes portable between the household, assistant and technician. Three source-backed paths demonstrate that evidence pattern beyond one scripted symptom while remaining bounded to one exact model.
+**Lead story:** the Australian Productivity Commission found significant and unnecessary barriers to repair for some products and identified restricted access to repair information among them. DCCEEW reports that Australia created 511,000 tonnes of e-waste in 2019. FixProof tests a narrow response: keep verified instructions and user-confirmed outcomes portable between the household, assistant and technician. Four source-backed paths demonstrate that evidence pattern beyond one scripted symptom while remaining bounded to one exact model.
 
 **Judge should see:** the public impact card first, then complete one check and open the handover. The card connects the documented problem to the product mechanism and names the outcomes still to measure.
 
@@ -38,4 +38,4 @@ The entry was submitted on 14 September 2026, with the revised public demo at ht
 
 ## Current release evidence
 
-The reliability changes in validation/RELIABILITY_REVIEW.md have 25 Python tests, ten public-interface logic tests and twelve passing live local-AI scenarios. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
+The reliability changes in validation/RELIABILITY_REVIEW.md have 26 Python tests, eleven public-interface logic tests and thirteen passing live local-AI scenarios. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
