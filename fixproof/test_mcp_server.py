@@ -165,6 +165,15 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(evidence["checks"][0]["citations"][0]["page"], 41)
             self.assertEqual(evidence["reference"]["content_sha256"], mcp_server.workflow.SOURCE["sha256"])
             self.assertIn("No fault or repair requirement was diagnosed.", evidence["limits"])
+            integrity = handover["evidence_integrity"]
+            self.assertEqual(integrity["algorithm"], "sha256")
+            self.assertEqual(integrity["canonicalization"], "fixproof-sorted-json-v1")
+            self.assertEqual(integrity["digest"], mcp_server._evidence_sha256(evidence))
+            self.assertFalse(integrity["authorship_proof"])
+            self.assertIn(integrity["digest"], handover["markdown"])
+            changed = dict(evidence)
+            changed["reported_issue"] = "Changed after handover."
+            self.assertNotEqual(integrity["digest"], mcp_server._evidence_sha256(changed))
 
     async def test_tools_publish_client_planning_annotations(self):
         app_support = advertise(EXTENSION_ID, {"mimeTypes": [APP_MIME_TYPE]})
@@ -201,6 +210,8 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             loaded = await client.read_resource(mcp_server.HANDOVER_APP_URI)
             self.assertEqual(loaded.contents[0].mime_type, APP_MIME_TYPE)
             self.assertIn("FixProof repair handover", loaded.contents[0].text)
+            self.assertIn("Evidence fingerprint", loaded.contents[0].text)
+            self.assertIn("does not prove who created", loaded.contents[0].text)
             self.assertNotIn("innerHTML", loaded.contents[0].text)
 
     async def test_new_client_resumes_without_repeating_recorded_check(self):

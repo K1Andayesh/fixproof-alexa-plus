@@ -212,7 +212,25 @@ export async function recordOutcome(input: { request_id: string; case_id: string
   return view(await saveUpdated(caseRecord, requestId, input.revision));
 }
 
-export function handover(caseRecord: FixProofCase) {
+function sortForDigest(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sortForDigest);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
+        .map(([key, item]) => [key, sortForDigest(item)]),
+    );
+  }
+  return value;
+}
+
+async function evidenceSha256(evidence: Record<string, unknown>) {
+  const canonical = JSON.stringify(sortForDigest(evidence));
+  const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
+  return Array.from(new Uint8Array(hash), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+export async function handover(caseRecord: FixProofCase) {
   const entry = catalog(caseRecord.model)!;
   const steps = stepsFor(caseRecord.model);
   const checks = Object.entries(caseRecord.attempts).map(([stepId, attempt]) => ({
@@ -220,15 +238,21 @@ export function handover(caseRecord: FixProofCase) {
     evidence_status: ["Issue unchanged", "Still wet", "Improved, not resolved"].includes(attempt.outcome) ? "user_reports_performed" : "deferred_or_skipped",
     outcome: attempt.outcome, observation: attempt.observation, recorded_at: attempt.recorded_at, citations: citationsFor(caseRecord.model, steps[stepId].pages),
   }));
-  const lines = ["# FixProof repair handover", "", "Public MCP evaluation · fictional data only · no diagnosis.", "", `Case: ${caseRecord.id}`, `Status: ${caseRecord.status}`, `Model: ${caseRecord.model}`, "", "## Reported issue", caseRecord.issue, "", "## Recorded checks", ...(checks.length ? checks.flatMap((check) => [`- ${check.title}: ${check.outcome}${check.observation ? ` — ${check.observation}` : ""}`, ...check.citations.map((citation) => `  Source: ${citation.url}`)]) : ["None recorded."]), "", "## Reference provenance", entry[1].source.title, entry[1].source.document, entry[1].source.url, entry[1].source.service_url, ...(caseRecord.safety_report ? ["", "## Safety report", caseRecord.safety_report] : []), "", "## Limits", "No physical inspection was performed. No fault or repair requirement was diagnosed. Deferred or skipped checks do not establish performed work."];
+  const evidence = {
+    schema_version: "fixproof-handover-1", case_id: caseRecord.id, case_status: caseRecord.status, reported_issue: caseRecord.issue,
+    model: { reported: caseRecord.model, user_confirmed: caseRecord.verified, fictional_demo: caseRecord.demo, catalog_match: true }, reference: { ...entry[1].source }, checks,
+    suggested_awaiting_outcome: caseRecord.pending ? { step_id: caseRecord.pending, title: steps[caseRecord.pending].title, citations: citationsFor(caseRecord.model, steps[caseRecord.pending].pages) } : null,
+    safety_report: caseRecord.safety_report ?? null,
+    limits: ["No physical inspection was performed.", "No fault or repair requirement was diagnosed.", "Deferred or skipped checks do not establish performed work."],
+  };
+  const digest = await evidenceSha256(evidence);
+  const lines = ["# FixProof repair handover", "", "Public MCP evaluation · fictional data only · no diagnosis.", "", `Case: ${caseRecord.id}`, `Status: ${caseRecord.status}`, `Model: ${caseRecord.model}`, "", "## Reported issue", caseRecord.issue, "", "## Recorded checks", ...(checks.length ? checks.flatMap((check) => [`- ${check.title}: ${check.outcome}${check.observation ? ` — ${check.observation}` : ""}`, ...check.citations.map((citation) => `  Source: ${citation.url}`)]) : ["None recorded."]), "", "## Reference provenance", entry[1].source.title, entry[1].source.document, entry[1].source.url, entry[1].source.service_url, ...(caseRecord.safety_report ? ["", "## Safety report", caseRecord.safety_report] : []), "", "## Evidence fingerprint", `SHA-256 (fixproof-sorted-json-v1): ${digest}`, "Recomputing this fingerprint can detect changed evidence fields. It does not prove who created the record.", "", "## Limits", ...evidence.limits];
   return {
     case_id: caseRecord.id, revision: caseRecord.revision, status: caseRecord.status, markdown: lines.join("\n"),
-    evidence: {
-      schema_version: "fixproof-handover-1", case_id: caseRecord.id, case_status: caseRecord.status, reported_issue: caseRecord.issue,
-      model: { reported: caseRecord.model, user_confirmed: caseRecord.verified, fictional_demo: caseRecord.demo, catalog_match: true }, reference: { ...entry[1].source }, checks,
-      suggested_awaiting_outcome: caseRecord.pending ? { step_id: caseRecord.pending, title: steps[caseRecord.pending].title, citations: citationsFor(caseRecord.model, steps[caseRecord.pending].pages) } : null,
-      safety_report: caseRecord.safety_report ?? null,
-      limits: ["No physical inspection was performed.", "No fault or repair requirement was diagnosed.", "Deferred or skipped checks do not establish performed work."],
+    evidence,
+    evidence_integrity: {
+      algorithm: "sha256", canonicalization: "fixproof-sorted-json-v1", covers: "evidence",
+      digest, authorship_proof: false,
     },
   };
 }

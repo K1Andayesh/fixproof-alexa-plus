@@ -8,7 +8,7 @@ export default function Home() {
           <p className="mb-5 text-sm font-bold uppercase tracking-[0.18em] text-[#547267]">FixProof · Alexa+ track</p>
           <h1 className="max-w-3xl text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-7xl">A live MCP endpoint judges can call.</h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-[#425f56]">
-            The public FixProof server carries a fictional dishwasher issue through exact-model, page-cited checks and a structured repair handover. Its state survives new client connections.
+            The public FixProof server carries a fictional dishwasher issue through exact-model, page-cited checks and a structured repair handover. Its state survives new client connections, and every handover includes a reproducible evidence fingerprint.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a className="rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white" href="https://fixproof-alexa.keyvan-andayesh.chatgpt.site">Try the browser experience</a>
@@ -32,7 +32,7 @@ export default function Home() {
             ))}
           </ol>
           <div className="mt-7 border-t border-white/15 pt-6 text-sm leading-6 text-[#d3e1db]">
-            Three exact Bosch models · seven source-backed paths · revision checks · idempotent request IDs · D1 persistence · explicit evidence status
+            Three exact Bosch models · seven source-backed paths · revision checks · idempotent request IDs · D1 persistence · SHA-256 evidence fingerprint
           </div>
           <div className="mt-5 rounded-xl bg-[#dff1b7] p-4 text-sm font-semibold leading-6 text-[#163a31]">
             This endpoint refuses non-fictional cases. It does not diagnose faults, inspect appliances, or claim repair success.

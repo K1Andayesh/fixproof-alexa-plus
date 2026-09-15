@@ -8,6 +8,7 @@ Clients connect to http://127.0.0.1:8771/mcp by default.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import uuid
@@ -216,6 +217,14 @@ def _handover_evidence(case: dict) -> dict[str, Any]:
     }
 
 
+def _evidence_sha256(evidence: dict[str, Any]) -> str:
+    """Hash the evidence using the cross-runtime FixProof sorted-JSON convention."""
+    canonical = json.dumps(
+        evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
 @apps.tool(
     resource_uri=HANDOVER_APP_URI,
     title="Prepare a repair handover",
@@ -226,12 +235,27 @@ def prepare_handover(case_id: str) -> dict[str, Any]:
     """Return a readable fallback and structured evidence for the inline handover app."""
     workflow.init()
     case = workflow.read_case(workflow.clean(case_id, 80))
+    evidence = _handover_evidence(case)
+    digest = _evidence_sha256(evidence)
+    markdown = workflow.handover(case).rstrip() + (
+        "\n\n## Evidence fingerprint\n"
+        f"SHA-256 (fixproof-sorted-json-v1): {digest}\n"
+        "Recomputing this fingerprint can detect changed evidence fields. "
+        "It does not prove who created the record.\n"
+    )
     return {
         "case_id": case["id"],
         "revision": case["revision"],
         "status": case["status"],
-        "markdown": workflow.handover(case),
-        "evidence": _handover_evidence(case),
+        "markdown": markdown,
+        "evidence": evidence,
+        "evidence_integrity": {
+            "algorithm": "sha256",
+            "canonicalization": "fixproof-sorted-json-v1",
+            "covers": "evidence",
+            "digest": digest,
+            "authorship_proof": False,
+        },
     }
 
 

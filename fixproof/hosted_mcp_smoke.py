@@ -1,6 +1,7 @@
 """Exercise the public, fictional-only FixProof MCP endpoint end to end."""
 
 import asyncio
+import hashlib
 import json
 import os
 import uuid
@@ -8,6 +9,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from mcp import Client
+
+
+def evidence_sha256(evidence: dict) -> str:
+    canonical = json.dumps(
+        evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
 
 
 async def call(client: Client, name: str, arguments: dict) -> dict:
@@ -60,6 +68,15 @@ async def main() -> None:
         handover = await call(reconnected, "prepare_handover", {"case_id": started["case_id"]})
         assert "Fictional hosted MCP verification." in handover["markdown"]
         assert handover["evidence"]["reference"]["service_url"].endswith("SMS6HCI02A-72")
+        integrity = handover["evidence_integrity"]
+        assert integrity["algorithm"] == "sha256"
+        assert integrity["canonicalization"] == "fixproof-sorted-json-v1"
+        assert integrity["digest"] == evidence_sha256(handover["evidence"])
+        assert integrity["authorship_proof"] is False
+        assert integrity["digest"] in handover["markdown"]
+        changed_evidence = dict(handover["evidence"])
+        changed_evidence["reported_issue"] = "Changed after handover."
+        assert integrity["digest"] != evidence_sha256(changed_evidence)
         continued = await call(reconnected, "ask_fixproof", {
             "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
             "revision": restored["revision"], "user_message": "What should I check next?",
@@ -124,6 +141,10 @@ async def main() -> None:
         "protocol_version": protocol_version,
         "server_version": server_version,
         "server_instructions": server_instructions,
+        "evidence_fingerprint": integrity["digest"],
+        "evidence_fingerprint_verified_by_client": True,
+        "changed_evidence_detected": True,
+        "authorship_proof_claimed": False,
         "tools": names,
         "exact_models": 3,
         "source_backed_paths": 7,

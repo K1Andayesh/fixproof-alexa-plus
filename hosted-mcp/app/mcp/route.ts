@@ -26,7 +26,7 @@ function result(value: Record<string, unknown>, text?: string) {
 
 function buildServer() {
   const server = new McpServer(
-    { name: "FixProof", version: "0.6.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
+    { name: "FixProof", version: "0.7.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
     {
       capabilities: { tools: {} },
       instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust and irreversible-glass-clouding paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
@@ -103,13 +103,13 @@ function buildServer() {
     "prepare_handover",
     {
       title: "Prepare a repair handover",
-      description: "Return a readable Markdown handover and versioned machine-readable evidence with exact-model provenance and limits.",
+      description: "Return readable Markdown, versioned machine-readable evidence, exact-model provenance, limits, and a reproducible SHA-256 evidence fingerprint.",
       inputSchema: z.object({ case_id: z.string().uuid() }),
       outputSchema,
       annotations: readOnly,
     },
     async ({ case_id }) => {
-      const value = handover(await readCase(case_id));
+      const value = await handover(await readCase(case_id));
       return result(value, value.markdown);
     },
   );

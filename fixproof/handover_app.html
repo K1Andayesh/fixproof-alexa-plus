@@ -32,9 +32,11 @@
     .check span { margin-top: 3px; color: light-dark(#52645b, #adbbb4); font-size: .84rem; }
     a { color: light-dark(#15613d, #8de0b1); }
     .safety { border-color: light-dark(#e0ae6e, #926d39); background: light-dark(#fff8ed, #2a2117); }
+    .fingerprint { display: block; overflow-wrap: anywhere; font-size: .78rem; }
+    .integrity-note { margin: 8px 0 0; color: light-dark(#52645b, #adbbb4); font-size: .82rem; }
     .limits { color: light-dark(#52645b, #adbbb4); font-size: .84rem; }
     #loading { text-align: center; padding: 46px 18px; color: light-dark(#52645b, #adbbb4); }
-    #handover[hidden], #safety[hidden], #checks[hidden], #pending[hidden] { display: none; }
+    #handover[hidden], #safety[hidden], #checks[hidden], #pending[hidden], #integrity[hidden] { display: none; }
     @media (max-width: 520px) { main { padding: 17px; } header { display: block; } .badge { display: inline-block; margin-top: 12px; } .summary { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -55,6 +57,7 @@
       <section id="checks" hidden><h2>Recorded checks</h2><ol id="check-list"></ol></section>
       <section id="pending" hidden><h2>Suggested, awaiting outcome</h2><p id="pending-title"></p></section>
       <section id="safety" class="safety" hidden><h2>Safety report</h2><p id="safety-text"></p></section>
+      <section id="integrity" hidden><h2>Evidence fingerprint</h2><code class="fingerprint" id="fingerprint"></code><p class="integrity-note">Recompute this SHA-256 value to detect changed evidence fields. It does not prove who created the record.</p></section>
       <section class="limits"><h2>Evidence boundary</h2><ul id="limits"></ul></section>
     </article>
   </main>
@@ -96,6 +99,10 @@
       const pending = evidence.suggested_awaiting_outcome;
       if (pending) { put("pending-title", pending.title); byId("pending").hidden = false; }
       if (evidence.safety_report) { put("safety-text", evidence.safety_report); byId("safety").hidden = false; }
+      const integrity = handover.evidence_integrity;
+      if (integrity?.algorithm === "sha256" && typeof integrity.digest === "string") {
+        put("fingerprint", integrity.digest); byId("integrity").hidden = false;
+      }
       const limits = byId("limits"); limits.replaceChildren();
       (evidence.limits || []).forEach((text) => { const li = document.createElement("li"); li.textContent = text; limits.append(li); });
       byId("loading").hidden = true; byId("handover").hidden = false;
