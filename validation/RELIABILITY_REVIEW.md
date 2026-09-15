@@ -1,8 +1,8 @@
-# FixProof reliability improvement — 15 September 2026
+# FixProof reliability improvement — 16 September 2026
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across six source-backed issue paths and three independently verified exact-model catalogs, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns the selected model's exact page URLs and verified content hash, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across seven source-backed issue paths and three independently verified exact-model catalogs, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns the selected model's exact page URLs and verified content hash, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -24,23 +24,24 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - A fourth removable-streak path adds four checks grounded in the manual's page-23 and pages-44–45 guidance, with page 27 supporting tableware arrangement, and remains isolated from the other evidence sequences.
 - A fifth wash-noise path adds three user-level checks grounded in the manuals' knocking-and-rattling guidance: keep spray arms clear of tableware, distribute small loads evenly, and secure light items.
 - A sixth cutlery-rust path adds two user-level checks grounded in each exact model's manual: use rust-resistant tableware and keep rusting items out of the wash.
+- A seventh irreversible-glass-clouding path adds four user-level checks grounded in each exact model's manual: use dishwasher-proof glasses, avoid a lengthy steam phase, use a lower-temperature programme and use glass-protection detergent.
 - A public impact card now connects official Australian repair and e-waste context to the demonstrated handover mechanism, while naming the product outcomes that remain unmeasured. The sources and claim boundary are recorded in `IMPACT_EVIDENCE.md`.
 - The executable MCP smoke probe now emits a timestamped, fictional, seven-exchange judge trace. An identical public copy lets judges inspect tools, citations, evidence status, reconnection continuity and the safety stop without installing the server.
-- Each of three exact Bosch models has its own official service page, manual identity, verified hash and page map for all nineteen checks. Browser and MCP handovers carry the selected catalog without mixing citations.
+- Each of three exact Bosch models has its own official service page, manual identity, verified hash and page map for all twenty-three checks. Browser and MCP handovers carry the selected catalog without mixing citations.
 
 ## Evidence collected
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 28 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 14 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 15/15 scenarios passed | Running local Qwen model, including all six source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for six paths and three exact models, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Python HTTP/MCP regression suite | 29 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 15 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 16/16 scenarios passed | Running local Qwen model, including all seven source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for seven paths and three exact models, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | Public Streamable HTTP MCP deployment | Passed | An official client called the anonymous HTTPS endpoint, negotiated protocol 2026-07-28, discovered five tools, exercised D1 continuity across fresh connections, retained an observation and safety stop, and returned third-model pages 45 and 24 plus wash-noise page 49 and cutlery-rust page 46; see HOSTED_MCP.json |
 | MCP App rendering | Passed | The exact `ui://fixproof/handover.html` resource rendered a fictional result in a browser with evidence counts, recorded and pending checks, page citations and limits; the resource itself emitted no browser warnings or errors |
 | Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
 | Controlled handover retrieval | 76/80 fields; 0 critical errors | Eight blind reads of structured handovers across two local model families, versus 71/80 fields and two critical errors from equal-fact transcripts; synthetic, not user research |
-| Chrome UI exercise | Passed | Production cutlery-rust path selected a third-model page-46 check, recorded `Issue unchanged`, produced a sourced handover, and restored the evidence after reload; no console warnings or errors |
+| Chrome UI exercise | Passed | Local release Chrome selected the third model and irreversible-glass-clouding path, returned page 46, recorded `Issue unchanged`, produced a sourced handover, restored the evidence after reload, and played the captioned v7 video |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
 Reproduce:

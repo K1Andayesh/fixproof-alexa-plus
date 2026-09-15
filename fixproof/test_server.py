@@ -226,6 +226,22 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(server.steps_for('Bosch SMS6HCI01A/38')['rust_resistant_tableware']['pages'],[49])
         self.assertEqual(server.steps_for('Bosch SMS6HCI02A/72')['rust_remove_rusting_items']['pages'],[46])
 
+    def test_irreversible_clouding_flow_is_distinct_from_removable_streaks(self):
+        c=self.create(issue='Clouding on the glassware does not wipe off after the wash.')
+        seen=[]
+        def choose_clouding(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'clouding'},raw
+            seen.append(context['available_checks'])
+            return {'step':'clouding_dishwasher_proof'},raw
+        with patch.object(server,'infer',side_effect=choose_clouding):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'clouding_dishwasher_proof')
+        self.assertEqual(reply['pages'],[45])
+        self.assertEqual(set(seen[0]),{'clouding_dishwasher_proof','clouding_steam_phase','clouding_lower_temperature','clouding_glass_protection'})
+        self.assertEqual(server.steps_for('Bosch SMS6HCI01A/38')['clouding_lower_temperature']['pages'],[49])
+        self.assertEqual(server.steps_for('Bosch SMS6HCI02A/72')['clouding_glass_protection']['pages'],[46])
+
     def test_switching_supported_path_does_not_erase_pending_check(self):
         c=self.create();c['pending']='waiting'
         with patch.object(server,'infer',return_value=({'category':'food'},{'model':'stub'})) as infer:

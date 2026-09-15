@@ -95,6 +95,21 @@ async def main() -> None:
         assert rust_pending["step_id"].startswith("rust_")
         assert rust_pending["citations"]
         assert all(item["page"] == 46 for item in rust_pending["citations"])
+        clouding_started = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()),
+            "reported_issue": "Clouding on the fictional glassware does not wipe off.",
+            "model": "Bosch SMS6HCI02A/72",
+            "model_confirmed": True,
+            "fictional_demo": True,
+        })
+        clouding_assessed = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": clouding_started["case_id"],
+            "revision": clouding_started["revision"], "user_message": "What should I check first?",
+        })
+        clouding_pending = clouding_assessed["pending_check"]
+        assert clouding_pending["step_id"].startswith("clouding_")
+        assert clouding_pending["citations"]
+        assert all(item["page"] == 46 for item in clouding_pending["citations"])
 
     evidence = {
         "captured_at": datetime.now(timezone.utc).isoformat(),
@@ -102,7 +117,7 @@ async def main() -> None:
         "protocol_version": protocol_version,
         "tools": names,
         "exact_models": 3,
-        "source_backed_paths": 6,
+        "source_backed_paths": 7,
         "case_id": started["case_id"],
         "selected_step": pending["step_id"],
         "selected_citations": [item["url"] for item in pending["citations"]],
@@ -110,6 +125,8 @@ async def main() -> None:
         "noise_path_citations": [item["url"] for item in noise_pending["citations"]],
         "rust_path_selected_step": rust_pending["step_id"],
         "rust_path_citations": [item["url"] for item in rust_pending["citations"]],
+        "clouding_path_selected_step": clouding_pending["step_id"],
+        "clouding_path_citations": [item["url"] for item in clouding_pending["citations"]],
         "recorded_observation_preserved_after_reconnect": True,
         "next_check_not_repeated": True,
         "safety_stop_cleared_pending_check": True,

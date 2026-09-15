@@ -97,6 +97,13 @@ test('cutlery-rust journey stays within its two cited checks',()=>{
  a.record('Issue unchanged','Rust spots remain.');
  assert.match(a.handover(),/Supported path: rust spots on cutlery/);assert.match(a.handover(),/9002017246_A\.pdf#page=46/);
 });
+test('irreversible-glass-clouding journey stays distinct from removable streaks',()=>{
+ const a=app();a.run("start('Clouding on glassware does not wipe off.','clouding','Bosch SMS6HCI02A/72')");a.ask('What should I check first?');
+ assert.equal(a.run('state.pending'),'clouding_dishwasher_proof');assert.match(a.get('progress').textContent,/0 of 4 irreversible-glass-clouding checks/);
+ a.record('Issue unchanged','The clouding does not wipe off.');
+ assert.match(a.handover(),/Supported path: irreversible clouding of glassware/);assert.match(a.handover(),/9002017246_A\.pdf#page=46/);
+});
+
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);

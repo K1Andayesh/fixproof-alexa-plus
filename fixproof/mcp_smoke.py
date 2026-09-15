@@ -205,6 +205,24 @@ async def main() -> None:
             rust_citations = rust_pending.get('citations', [])
             assert rust_citations and all(citation['page'] == 46 for citation in rust_citations)
             assert all(citation['url'].startswith('https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=') for citation in rust_citations)
+            clouding_case_result = await final_client.call_tool('start_case', {
+                'request_id': str(uuid.uuid4()),
+                'reported_issue': 'Clouding on the glassware does not wipe off after the wash.',
+                'model': 'Bosch SMS6HCI02A/72',
+                'model_confirmed': True,
+                'fictional_demo': True,
+            })
+            clouding_case = clouding_case_result.structured_content
+            clouding_assessed_result = await final_client.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': clouding_case['case_id'],
+                'revision': clouding_case['revision'], 'user_message': 'What should I check first?'
+            })
+            clouding_assessed = clouding_assessed_result.structured_content
+            clouding_pending = clouding_assessed['pending_check']
+            assert clouding_pending is not None and clouding_pending['step_id'].startswith('clouding_')
+            clouding_citations = clouding_pending.get('citations', [])
+            assert clouding_citations and all(citation['page'] == 46 for citation in clouding_citations)
+            assert all(citation['url'].startswith('https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=') for citation in clouding_citations)
             second_model_result = await final_client.call_tool('start_case', {
                 'request_id': str(uuid.uuid4()),
                 'reported_issue': 'Detergent residue remains inside the appliance after the wash.',
@@ -375,7 +393,7 @@ async def main() -> None:
                     "continued_step": next_pending['step_id'],
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
-                    "source_backed_paths": 6,
+                    "source_backed_paths": 7,
                     "exact_models": 3,
                     "food_path_selected_step": food_pending['step_id'],
                     "food_path_citations": [citation['url'] for citation in food_citations],
@@ -387,6 +405,8 @@ async def main() -> None:
                     "noise_path_citations": [citation['url'] for citation in noise_citations],
                     "rust_path_selected_step": rust_pending['step_id'],
                     "rust_path_citations": [citation['url'] for citation in rust_citations],
+                    "clouding_path_selected_step": clouding_pending['step_id'],
+                    "clouding_path_citations": [citation['url'] for citation in clouding_citations],
                     "second_model": second_model_evidence['model']['reported'],
                     "second_model_selected_step": second_model_pending['step_id'],
                     "second_model_citations": [citation['url'] for citation in second_model_citations],

@@ -31,6 +31,10 @@ STEP_DEFINITIONS = {
     'noise_light_items': {'workflow': 'noise', 'title': 'Secure light items', 'text': 'Position light items of tableware securely so they do not move about during the wash cycle.', 'pages': [48]},
     'rust_resistant_tableware': {'workflow': 'rust', 'title': 'Use rust-resistant tableware', 'text': 'Use rust-resistant tableware when rust spots appear on cutlery.', 'pages': [45]},
     'rust_remove_rusting_items': {'workflow': 'rust', 'title': 'Keep rusting items out', 'text': 'Do not wash rusting items together with the cutlery.', 'pages': [45]},
+    'clouding_dishwasher_proof': {'workflow': 'clouding', 'title': 'Use dishwasher-proof glasses', 'text': 'Use glasses that are dishwasher-proof; long-term wear can otherwise be expected.', 'pages': [45]},
+    'clouding_steam_phase': {'workflow': 'clouding', 'title': 'Avoid a lengthy steam phase', 'text': 'Avoid leaving glassware standing in the appliance for a long time after the wash cycle ends.', 'pages': [45]},
+    'clouding_lower_temperature': {'workflow': 'clouding', 'title': 'Use a lower-temperature programme', 'text': 'Use a programme with a lower washing temperature.', 'pages': [45]},
+    'clouding_glass_protection': {'workflow': 'clouding', 'title': 'Use glass-protection detergent', 'text': 'Use detergent with a glass protection component.', 'pages': [45]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -65,6 +69,8 @@ CATALOGS = {
             'streaks_tray': [48, 28], 'streaks_prerinse': [48],
             'noise_spray_arm': [52], 'noise_load_distribution': [52], 'noise_light_items': [52],
             'rust_resistant_tableware': [49], 'rust_remove_rusting_items': [49],
+            'clouding_dishwasher_proof': [49], 'clouding_steam_phase': [49],
+            'clouding_lower_temperature': [49], 'clouding_glass_protection': [49],
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
@@ -88,6 +94,8 @@ CATALOGS = {
             'streaks_tray': [45, 27, 28], 'streaks_prerinse': [46],
             'noise_spray_arm': [49], 'noise_load_distribution': [49], 'noise_light_items': [50],
             'rust_resistant_tableware': [46], 'rust_remove_rusting_items': [46],
+            'clouding_dishwasher_proof': [46], 'clouding_steam_phase': [46],
+            'clouding_lower_temperature': [46], 'clouding_glass_protection': [46],
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },
