@@ -39,7 +39,7 @@
       "openWorldHint": false
     }
   },
-  "case_id": "474a0c0c-4ab0-40be-9f2a-8899a213b229",
+  "case_id": "fa70f8db-1a23-4adf-9d4d-832438a94454",
   "selected_step": "waiting",
   "selected_step_citations": [
     "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
@@ -50,6 +50,10 @@
   "machine_readable_handover": "fixproof-handover-1",
   "handover_preserves_evidence_status": "deferred_or_skipped",
   "deferred_not_counted_as_performed": true,
+  "cross_connection_issue_preserved": true,
+  "cross_connection_outcome_preserved": true,
+  "recorded_check_not_repeated": true,
+  "continued_step": "rinse_aid",
   "safety_stop_survives_client_reconnect": true,
   "safety_report_in_handover": true
 }

@@ -177,6 +177,52 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
                 self.assertFalse(listed[name].annotations.destructive_hint)
                 self.assertFalse(listed[name].annotations.open_world_hint)
 
+    async def test_new_client_resumes_without_repeating_recorded_check(self):
+        def deterministic_infer(prompt, context, schema):
+            raw = {
+                "model": "continuity-test",
+                "prompt_eval_count": 1,
+                "eval_count": 1,
+            }
+            if "Classify the dishwasher issue" in prompt:
+                return {"category": "drying"}, raw
+            available = context["available_checks"]
+            self.assertNotIn("waiting", available)
+            return {"step": "rinse_aid"}, raw
+
+        async with Client(mcp_server.mcp, raise_exceptions=True) as first_client:
+            started = await self.call(first_client, "start_case", {
+                "request_id": str(uuid.uuid4()), "reported_issue": "Plates are wet.",
+                "model": mcp_server.workflow.MODEL, "model_confirmed": True,
+                "fictional_demo": True,
+            })
+            first_reply = {"kind": "step", "step": "waiting", **mcp_server.workflow.STEPS["waiting"]}
+            with patch.object(mcp_server.workflow, "assess", return_value=first_reply):
+                assessed = await self.call(first_client, "ask_fixproof", {
+                    "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                    "revision": started["revision"], "user_message": "What should I check first?",
+                })
+            recorded = await self.call(first_client, "record_outcome", {
+                "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                "revision": assessed["revision"], "step_id": "waiting",
+                "outcome": "Still wet", "observation": "Waited 30 minutes; still wet.",
+            })
+
+        async with Client(mcp_server.mcp, raise_exceptions=True) as next_client:
+            restored = await self.call(next_client, "read_case", {"case_id": started["case_id"]})
+            self.assertEqual(restored["revision"], recorded["revision"])
+            self.assertEqual(restored["recorded_outcomes"]["waiting"]["outcome"], "Still wet")
+            with patch.object(mcp_server.workflow, "infer", side_effect=deterministic_infer):
+                continued = await self.call(next_client, "ask_fixproof", {
+                    "request_id": str(uuid.uuid4()), "case_id": started["case_id"],
+                    "revision": restored["revision"], "user_message": "What should I check next?",
+                })
+            self.assertEqual(continued["pending_check"]["step_id"], "rinse_aid")
+            self.assertNotEqual(continued["pending_check"]["step_id"], "waiting")
+            handover = await self.call(next_client, "prepare_handover", {"case_id": started["case_id"]})
+            self.assertIn("Waited 30 minutes; still wet.", handover["markdown"])
+            self.assertEqual(handover["evidence"]["checks"][0]["step_id"], "waiting")
+
 
 if __name__ == "__main__":
     unittest.main()

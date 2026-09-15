@@ -17,15 +17,16 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - Supported MCP checks and informational guidance return self-contained citations containing document identity, exact page URL, source-verification date and content hash.
 - MCP handovers expose the evidence boundary directly in a versioned object: every recorded check carries its performed or deferred status, observation and citations alongside the readable Markdown.
 - Every MCP tool declares client-planning annotations for read-only access, retry-safe idempotency, non-destructive writes and closed-world operation.
+- A new MCP client can resume the case, retain the issue and explicit outcome, and obtain a different remaining check without repeating the recorded one.
 
 ## Evidence collected
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 21 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Python HTTP/MCP regression suite | 22 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
 | Public application-logic regression suite | 7 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
 | Local AI evaluation | 10/10 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI, explicit deferred outcome, handover, safety stop and read through another client connection; see RELIABILITY_MCP.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | Chrome UI exercise | Passed | Explicit no-hazard and technical phrases continued to a supported check; a mixed report containing a leak stopped the workflow and cleared the pending outcome |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 

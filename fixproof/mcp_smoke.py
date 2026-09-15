@@ -70,16 +70,28 @@ async def main() -> None:
         assert evidence['schema_version'] == 'fixproof-handover-1'
         assert evidence['checks'][0]['evidence_status'] == 'deferred_or_skipped'
         assert evidence['checks'][0]['citations'][0]['content_sha256']
-        safety_result = await client.call_tool('ask_fixproof', {
-            'request_id': str(uuid.uuid4()), 'case_id': case['case_id'],
-            'revision': restored['revision'], 'user_message': 'There is smoke from the door.'
-        })
-        stopped = safety_result.structured_content
-        assert stopped['status'] == 'Handover ready' and stopped['pending_check'] is None
         async with Client(url, raise_exceptions=True) as reconnected:
             reread = await reconnected.call_tool('read_case', {'case_id': case['case_id']})
+            carried = reread.structured_content
+            assert carried['reported_issue'] == 'Plates and glasses are still wet after a wash.'
+            assert carried['recorded_outcomes'][pending['step_id']]['outcome'] == 'Not yet tested'
+            continued_result = await reconnected.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': case['case_id'],
+                'revision': carried['revision'], 'user_message': 'What should I check next?'
+            })
+            continued = continued_result.structured_content
+            next_pending = continued['pending_check']
+            assert next_pending is not None and next_pending['step_id'] != pending['step_id']
+            safety_result = await reconnected.call_tool('ask_fixproof', {
+                'request_id': str(uuid.uuid4()), 'case_id': case['case_id'],
+                'revision': continued['revision'], 'user_message': 'There is smoke from the door.'
+            })
+            stopped = safety_result.structured_content
+            assert stopped['status'] == 'Handover ready' and stopped['pending_check'] is None
+        async with Client(url, raise_exceptions=True) as final_client:
+            reread = await final_client.call_tool('read_case', {'case_id': case['case_id']})
             assert reread.structured_content['safety_report'] == 'There is smoke from the door.'
-            safety_handover = await reconnected.call_tool('prepare_handover', {'case_id': case['case_id']})
+            safety_handover = await final_client.call_tool('prepare_handover', {'case_id': case['case_id']})
             assert '## Safety report' in safety_handover.structured_content['markdown']
         print(
             json.dumps(
@@ -96,6 +108,10 @@ async def main() -> None:
                     "machine_readable_handover": evidence["schema_version"],
                     "handover_preserves_evidence_status": evidence["checks"][0]["evidence_status"],
                     "deferred_not_counted_as_performed": True,
+                    "cross_connection_issue_preserved": True,
+                    "cross_connection_outcome_preserved": True,
+                    "recorded_check_not_repeated": next_pending['step_id'] != pending['step_id'],
+                    "continued_step": next_pending['step_id'],
                     "safety_stop_survives_client_reconnect": True,
                     "safety_report_in_handover": True,
                 },
