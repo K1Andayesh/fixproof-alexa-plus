@@ -1,13 +1,25 @@
 {
   "title": "FixProof controlled handover retrieval evaluation",
   "schema_version": 1,
-  "captured_at": "2026-09-15T09:51:58+00:00",
+  "captured_at": "2026-09-15T17:50:50+00:00",
   "reader_models": [
     "qwen3.5:9b",
     "gemma3:12b-it-qat"
   ],
+  "reader_model_details": [
+    {
+      "name": "qwen3.5:9b",
+      "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+      "size": 6594474711
+    },
+    {
+      "name": "gemma3:12b-it-qat",
+      "digest": "5d4fa005e7bb5931be8bc35224080a9b316c7e1c069c9481a6a51b607f4252e2",
+      "size": 8928675346
+    }
+  ],
   "method": {
-    "design": "Four fictional cases x two formats x two local model families",
+    "design": "7 fictional cases x two formats x two local model families",
     "same_facts": true,
     "format_blind": true,
     "temperature": 0,
@@ -148,20 +160,107 @@
           44
         ]
       }
+    },
+    {
+      "spec": {
+        "slug": "noise-performed",
+        "issue": "The dishwasher knocks and rattles during the wash.",
+        "attempt": [
+          "noise_spray_arm",
+          "Issue unchanged",
+          "I moved the tall plate clear of the spray arm; the knocking continues."
+        ],
+        "pending": "noise_load_distribution",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      }
+    },
+    {
+      "spec": {
+        "slug": "rust-deferred",
+        "issue": "Rust spots remain on the cutlery after washing.",
+        "attempt": [
+          "rust_resistant_tableware",
+          "Not yet tested",
+          "I have not confirmed whether every item is rust-resistant."
+        ],
+        "pending": "rust_remove_rusting_items",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      }
+    },
+    {
+      "spec": {
+        "slug": "clouding-skipped",
+        "issue": "The glass clouding does not wipe off.",
+        "attempt": [
+          "clouding_dishwasher_proof",
+          "Skipped",
+          "I do not have the glass packaging, so I could not verify the marking."
+        ],
+        "pending": "clouding_steam_phase",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      }
     }
   ],
   "aggregate": {
     "raw_transcript": {
-      "reads": 8,
-      "correct_fields": 71,
-      "total_fields": 80,
-      "field_accuracy_percent": 88.8,
+      "reads": 14,
+      "correct_fields": 127,
+      "total_fields": 140,
+      "field_accuracy_percent": 90.7,
       "critical_errors": 2
     },
     "structured_handover": {
-      "reads": 8,
-      "correct_fields": 76,
-      "total_fields": 80,
+      "reads": 14,
+      "correct_fields": 133,
+      "total_fields": 140,
       "field_accuracy_percent": 95.0,
       "critical_errors": 0
     }
@@ -217,7 +316,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 4.05,
+        "seconds": 5.68,
         "retries": 0,
         "prompt_tokens": 259,
         "output_tokens": 128
@@ -273,7 +372,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.5,
+        "seconds": 1.38,
         "retries": 0,
         "prompt_tokens": 584,
         "output_tokens": 124
@@ -331,7 +430,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 19.09,
+        "seconds": 6.51,
         "retries": 0,
         "prompt_tokens": 276,
         "output_tokens": 133
@@ -389,7 +488,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.58,
+        "seconds": 2.37,
         "retries": 0,
         "prompt_tokens": 613,
         "output_tokens": 135
@@ -451,7 +550,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.8,
+        "seconds": 5.52,
         "retries": 0,
         "prompt_tokens": 266,
         "output_tokens": 146
@@ -513,7 +612,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.62,
+        "seconds": 1.57,
         "retries": 0,
         "prompt_tokens": 643,
         "output_tokens": 142
@@ -575,7 +674,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.74,
+        "seconds": 6.6,
         "retries": 0,
         "prompt_tokens": 283,
         "output_tokens": 142
@@ -613,7 +712,7 @@
         "deferred_checks": [
           "Check spacing and contact"
         ],
-        "pending_check": null,
+        "pending_check": "Check spacing and contact",
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
@@ -629,20 +728,20 @@
         "reference_match_supported": true,
         "performed_checks": true,
         "deferred_checks": false,
-        "pending_check": false,
+        "pending_check": true,
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 8,
+      "correct_fields": 9,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.92,
+        "seconds": 2.7,
         "retries": 0,
         "prompt_tokens": 686,
-        "output_tokens": 150
+        "output_tokens": 154
       }
     },
     {
@@ -695,7 +794,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.71,
+        "seconds": 5.48,
         "retries": 0,
         "prompt_tokens": 262,
         "output_tokens": 129
@@ -753,7 +852,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.56,
+        "seconds": 1.47,
         "retries": 0,
         "prompt_tokens": 587,
         "output_tokens": 133
@@ -807,7 +906,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 7.12,
+        "seconds": 6.55,
         "retries": 0,
         "prompt_tokens": 279,
         "output_tokens": 130
@@ -865,10 +964,10 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.71,
+        "seconds": 2.37,
         "retries": 0,
         "prompt_tokens": 617,
-        "output_tokens": 137
+        "output_tokens": 136
       }
     },
     {
@@ -925,7 +1024,7 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 5.76,
+        "seconds": 5.96,
         "retries": 0,
         "prompt_tokens": 269,
         "output_tokens": 135
@@ -983,7 +1082,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.69,
+        "seconds": 1.56,
         "retries": 0,
         "prompt_tokens": 616,
         "output_tokens": 141
@@ -1043,7 +1142,7 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 6.92,
+        "seconds": 6.69,
         "retries": 0,
         "prompt_tokens": 283,
         "output_tokens": 139
@@ -1101,23 +1200,703 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.7,
+        "seconds": 2.56,
         "retries": 0,
         "prompt_tokens": 642,
         "output_tokens": 145
       }
-    }
-  ],
-  "reader_model_details": [
-    {
-      "name": "qwen3.5:9b",
-      "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
-      "size": 6594474711
     },
     {
-      "name": "gemma3:12b-it-qat",
-      "digest": "5d4fa005e7bb5931be8bc35224080a9b316c7e1c069c9481a6a51b607f4252e2",
-      "size": 8928675346
+      "scenario": "noise-performed",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 5.5,
+        "retries": 0,
+        "prompt_tokens": 265,
+        "output_tokens": 138
+      }
+    },
+    {
+      "scenario": "noise-performed",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.49,
+        "retries": 0,
+        "prompt_tokens": 589,
+        "output_tokens": 134
+      }
+    },
+    {
+      "scenario": "noise-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.62,
+        "retries": 0,
+        "prompt_tokens": 282,
+        "output_tokens": 136
+      }
+    },
+    {
+      "scenario": "noise-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [
+          "Distribute a small load"
+        ],
+        "pending_check": null,
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48,
+          48
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": false,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 7,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.6,
+        "retries": 0,
+        "prompt_tokens": 619,
+        "output_tokens": 149
+      }
+    },
+    {
+      "scenario": "rust-deferred",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 5.47,
+        "retries": 0,
+        "prompt_tokens": 264,
+        "output_tokens": 133
+      }
+    },
+    {
+      "scenario": "rust-deferred",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.57,
+        "retries": 0,
+        "prompt_tokens": 590,
+        "output_tokens": 137
+      }
+    },
+    {
+      "scenario": "rust-deferred",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.52,
+        "retries": 0,
+        "prompt_tokens": 279,
+        "output_tokens": 134
+      }
+    },
+    {
+      "scenario": "rust-deferred",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45,
+          0
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.47,
+        "retries": 0,
+        "prompt_tokens": 616,
+        "output_tokens": 140
+      }
+    },
+    {
+      "scenario": "clouding-skipped",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 5.72,
+        "retries": 0,
+        "prompt_tokens": 265,
+        "output_tokens": 129
+      }
+    },
+    {
+      "scenario": "clouding-skipped",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.55,
+        "retries": 0,
+        "prompt_tokens": 589,
+        "output_tokens": 133
+      }
+    },
+    {
+      "scenario": "clouding-skipped",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [],
+        "pending_check": "Avoid a lengthy steam phase.",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.71,
+        "retries": 0,
+        "prompt_tokens": 283,
+        "output_tokens": 130
+      }
+    },
+    {
+      "scenario": "clouding-skipped",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.37,
+        "retries": 0,
+        "prompt_tokens": 621,
+        "output_tokens": 137
+      }
     }
   ]
 }

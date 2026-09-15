@@ -33,6 +33,12 @@ SCENARIOS = [
     dict(slug="streaks-safety-stop", issue="Glasses have removable streaks and cutlery looks metallic.",
          attempt=("streaks_rinse_setting", "Improved, not resolved", "Lowering the rinse aid setting reduced the streaks."), pending=None,
          safety="There is smoke coming from the dishwasher now."),
+    dict(slug="noise-performed", issue="The dishwasher knocks and rattles during the wash.",
+         attempt=("noise_spray_arm", "Issue unchanged", "I moved the tall plate clear of the spray arm; the knocking continues."), pending="noise_load_distribution", safety=None),
+    dict(slug="rust-deferred", issue="Rust spots remain on the cutlery after washing.",
+         attempt=("rust_resistant_tableware", "Not yet tested", "I have not confirmed whether every item is rust-resistant."), pending="rust_remove_rusting_items", safety=None),
+    dict(slug="clouding-skipped", issue="The glass clouding does not wipe off.",
+         attempt=("clouding_dishwasher_proof", "Skipped", "I do not have the glass packaging, so I could not verify the marking."), pending="clouding_steam_phase", safety=None),
 ]
 
 FIELDS = ["reported_issue", "model", "reference_match_supported", "performed_checks",
@@ -181,7 +187,7 @@ def main() -> None:
     artifact = dict(title="FixProof controlled handover retrieval evaluation", schema_version=1,
         captured_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), reader_models=MODELS,
         reader_model_details=reader_model_details(),
-        method=dict(design="Four fictional cases x two formats x two local model families",
+        method=dict(design=f"{len(SCENARIOS)} fictional cases x two formats x two local model families",
                     same_facts=True, format_blind=True, temperature=0, seed=42,
                     limitations=["Synthetic cases, not user research.", "Measures fact retrieval, not repair success, time saved, or customer impact.", "Local model output can vary across runtime or model versions."]),
         fields=FIELDS, scenarios=[dict(spec=s, expected=expected_for(case_for(s))) for s in SCENARIOS],
