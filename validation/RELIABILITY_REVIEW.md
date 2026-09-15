@@ -20,6 +20,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - A new MCP client can resume the case, retain the issue and explicit outcome, and obtain a different remaining check without repeating the recorded one.
 - A second, separately bounded food-remnant path adds four checks grounded in manual pages 36, 37 and 42. Cross-path questions do not replace an awaiting check or mix the two evidence sequences.
 - A third detergent-residue path adds two checks grounded in the manual's page-42 dispenser guidance and remains isolated from the other evidence sequences.
+- A public impact card now connects official Australian repair and e-waste context to the demonstrated handover mechanism, while naming the product outcomes that remain unmeasured. The sources and claim boundary are recorded in `IMPACT_EVIDENCE.md`.
 
 ## Evidence collected
 
@@ -46,15 +47,18 @@ python fixproof/evaluate.py
 
 The lexical hazard preflight is conservative and incomplete. It now excludes tested explicit no-hazard statements such as "no smoke" and technical phrases such as "smoke test", while still stopping when another hazard remains in the same report. This narrow context handling does not establish full language understanding. Unrecognised phrasing still depends on the model and may be missed. The policy is not a medical, legal or appliance-safety authority.
 
-The revised interface was exercised and visually inspected in Chrome from the production Site version 14. This is developer QA, not an independent user or repair-professional evaluation.
+The revised interface was exercised and visually inspected in Chrome from the production Site version 15. This is developer QA, not an independent user or repair-professional evaluation.
 
 ## Release evidence
 
 - Product commit `9098de6d5ec122366222cc6329412a61813e981e` was pushed to the public GitHub repository and the Sites source repository.
 - The exact archive from that commit was saved as Site version 14 and production deployment `appgdep_6aa8bf21cc308191b4ac8defd3d72439` succeeded on 15 September 2026.
+- Impact-evidence commit `ba138c4638bcfb5102955278fe8068dc6c91d7a8` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 15 and production deployment `appgdep_6aa8ccc2bedc81918ed2762d17b57ef5` succeeded on 15 September 2026.
 - The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining drying check, included exact-page citations and the source hash, preserved a later safety stop through another connection, and selected `food_spacing` and `detergent_tray` with page-42 citations for two additional cases.
 - The production page showed three source-backed paths, 35 automated checks and 12/12 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, cross-connection continuity and three-path MCP evidence.
 - Production Chrome QA exercised the detergent-residue path from selection through page-42 guidance, the `Issue unchanged` outcome and a readable handover carrying the detergent-path label, observation and source. The browser console reported no warnings or errors.
+- Site-version-15 Chrome QA verified the impact card at a 1920 × 911 desktop viewport and a 390 × 844 phone viewport. Its three-part argument stacked correctly on mobile, produced no horizontal overflow, exposed the exact Productivity Commission and DCCEEW links, and clearly separated the demonstrated handover from unmeasured outcomes. The detergent-residue case still started correctly and the console reported no warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.

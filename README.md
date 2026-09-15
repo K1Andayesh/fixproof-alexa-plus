@@ -8,7 +8,7 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 
 ## 90-second judge tour
 
-1. Start the fictional Bosch SMS6HAI02A/01 drying case. The selector also exposes a separate food-remnant path.
+1. Read the impact card, then start the fictional Bosch SMS6HAI02A/01 drying case. The selector also exposes separate food-remnant and detergent-residue paths.
 2. Ask **What should I check first?** and open the cited manual page.
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
