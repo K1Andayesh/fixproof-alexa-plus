@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, and Origin rejection.
 
-**Judge should see:** the MCP transport output in the video, then expand **Inspect the captured agent run** in the public implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 37 passing automated checks and thirteen live local-AI scenarios.
+**Judge should see:** the MCP transport evidence in the current 2:14 video embedded on the public site, then expand **Inspect the captured agent run** in the implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records client-planning tool annotations, exact page URLs, versioned handover evidence, cross-connection continuity without repeating a recorded check, 37 passing automated checks and thirteen live local-AI scenarios.
 
 ## Design and user experience
 
@@ -34,7 +34,7 @@ Submit the friction log for the optional bonus. It documents two concrete develo
 
 ## Completed submission
 
-The entry was submitted on 14 September 2026, with the revised public demo at https://youtu.be/T-yjzCHgvus and the public project at https://devpost.com/software/fixproof. Eligibility attestations were confirmed before submission.
+The entry was submitted on 14 September 2026, with the public project at https://devpost.com/software/fixproof. The current 2:14 release walkthrough is embedded on the live evaluation page. Devpost still points to the earlier https://youtu.be/T-yjzCHgvus video until the new MP4 and captions are published on YouTube and the submission is updated. Eligibility attestations were confirmed before submission.
 
 ## Current release evidence
 

@@ -4,7 +4,7 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The hosted interface states that it is a simulation and does not run the local AI implementation.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The page also embeds a captioned 2:14 walkthrough of the current four-path release with Australian neural narration. The hosted interface states that it is a simulation and does not run the local AI implementation.
 
 ## 90-second judge tour
 
@@ -41,6 +41,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object with explicit check status and citations |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
+| Current judge walkthrough | Embedded captioned 2:14 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V3_QA.md) |
 | Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
 
 The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).
