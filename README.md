@@ -43,7 +43,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 76/80 fields with zero critical errors from handovers versus 71/80 fields and two critical errors from equal-fact transcripts across two local model families |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
-| Current judge walkthrough | Embedded captioned 2:14 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V3_QA.md) |
+| Current judge walkthrough | Embedded captioned 2:14 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V4_QA.md) |
 | Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
 
 The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).

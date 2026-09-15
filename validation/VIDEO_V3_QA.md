@@ -1,5 +1,7 @@
 # Current-release demo video verification — 15 September 2026
 
+Superseded by `VIDEO_V4_QA.md`; retained as release history.
+
 ## Purpose and evidence boundary
 
 This 2:14 walkthrough replaces the stale one-path closing claim in the earlier submitted video with the current four-path product state. It uses edited real browser captures, the production Site 17 start page, a compact excerpt derived from the fresh saved MCP smoke result, and a newly generated Australian neural narration track. It does not claim an uncut recording, Alexa device execution, customer validation, appliance inspection, diagnosis, repair success, time savings, or a winning probability.
