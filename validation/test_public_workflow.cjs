@@ -91,6 +91,12 @@ test('wash-noise journey stays within its three cited checks',()=>{
  a.record('Issue unchanged','The knocking remains.');
  assert.match(a.handover(),/Supported path: knocking or rattling during the wash/);assert.match(a.handover(),/9002017246_A\.pdf#page=49/);
 });
+test('cutlery-rust journey stays within its two cited checks',()=>{
+ const a=app();a.run("start('Rust spots appear on the cutlery after the wash.','rust','Bosch SMS6HCI02A/72')");a.ask('What should I check first?');
+ assert.equal(a.run('state.pending'),'rust_resistant_tableware');assert.match(a.get('progress').textContent,/0 of 2 cutlery-rust checks/);
+ a.record('Issue unchanged','Rust spots remain.');
+ assert.match(a.handover(),/Supported path: rust spots on cutlery/);assert.match(a.handover(),/9002017246_A\.pdf#page=46/);
+});
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);

@@ -29,6 +29,8 @@ STEP_DEFINITIONS = {
     'noise_spray_arm': {'workflow': 'noise', 'title': 'Check spray-arm clearance', 'text': 'Arrange tableware so the spray arms do not strike it during the wash.', 'pages': [48]},
     'noise_load_distribution': {'workflow': 'noise', 'title': 'Distribute a small load', 'text': 'If a small load lets water jets strike the tub directly, distribute the tableware evenly or add more tableware for the next wash.', 'pages': [48]},
     'noise_light_items': {'workflow': 'noise', 'title': 'Secure light items', 'text': 'Position light items of tableware securely so they do not move about during the wash cycle.', 'pages': [48]},
+    'rust_resistant_tableware': {'workflow': 'rust', 'title': 'Use rust-resistant tableware', 'text': 'Use rust-resistant tableware when rust spots appear on cutlery.', 'pages': [45]},
+    'rust_remove_rusting_items': {'workflow': 'rust', 'title': 'Keep rusting items out', 'text': 'Do not wash rusting items together with the cutlery.', 'pages': [45]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -62,6 +64,7 @@ CATALOGS = {
             'streaks_rinse_setting': [48, 25], 'streaks_add_rinse_aid': [48, 24],
             'streaks_tray': [48, 28], 'streaks_prerinse': [48],
             'noise_spray_arm': [52], 'noise_load_distribution': [52], 'noise_light_items': [52],
+            'rust_resistant_tableware': [49], 'rust_remove_rusting_items': [49],
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
@@ -84,6 +87,7 @@ CATALOGS = {
             'streaks_rinse_setting': [45, 24], 'streaks_add_rinse_aid': [45, 23],
             'streaks_tray': [45, 27, 28], 'streaks_prerinse': [46],
             'noise_spray_arm': [49], 'noise_load_distribution': [49], 'noise_light_items': [50],
+            'rust_resistant_tableware': [46], 'rust_remove_rusting_items': [46],
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },

@@ -2,7 +2,7 @@
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across five source-backed issue paths and three independently verified exact-model catalogs, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns the selected model's exact page URLs and verified content hash, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across six source-backed issue paths and three independently verified exact-model catalogs, the real MCP endpoint persists the evidence into readable Markdown, a versioned structured handover and a sandboxed inline MCP App, returns the selected model's exact page URLs and verified content hash, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -23,18 +23,19 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - A third detergent-residue path adds two checks grounded in the manual's page-42 dispenser guidance and remains isolated from the other evidence sequences.
 - A fourth removable-streak path adds four checks grounded in the manual's page-23 and pages-44–45 guidance, with page 27 supporting tableware arrangement, and remains isolated from the other evidence sequences.
 - A fifth wash-noise path adds three user-level checks grounded in the manuals' knocking-and-rattling guidance: keep spray arms clear of tableware, distribute small loads evenly, and secure light items.
+- A sixth cutlery-rust path adds two user-level checks grounded in each exact model's manual: use rust-resistant tableware and keep rusting items out of the wash.
 - A public impact card now connects official Australian repair and e-waste context to the demonstrated handover mechanism, while naming the product outcomes that remain unmeasured. The sources and claim boundary are recorded in `IMPACT_EVIDENCE.md`.
 - The executable MCP smoke probe now emits a timestamped, fictional, seven-exchange judge trace. An identical public copy lets judges inspect tools, citations, evidence status, reconnection continuity and the safety stop without installing the server.
-- Each of three exact Bosch models has its own official service page, manual identity, verified hash and page map for all seventeen checks. Browser and MCP handovers carry the selected catalog without mixing citations.
+- Each of three exact Bosch models has its own official service page, manual identity, verified hash and page map for all nineteen checks. Browser and MCP handovers carry the selected catalog without mixing citations.
 
 ## Evidence collected
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 27 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 13 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 14/14 scenarios passed | Running local Qwen model, including all five source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for five paths and three exact models, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Python HTTP/MCP regression suite | 28 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 14 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 15/15 scenarios passed | Running local Qwen model, including all six source-backed paths, explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, negotiated MCP Apps extension and handover resource, source-backed selection via real local AI for six paths and three exact models, explicit deferred outcome, cross-connection continuity, non-repetition, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
 | Public Streamable HTTP MCP deployment | Passed | An official client called the anonymous HTTPS endpoint, negotiated protocol 2026-07-28, discovered five tools, exercised D1 continuity across fresh connections, retained an observation and safety stop, and returned third-model pages 45 and 24 plus wash-noise page 49; see HOSTED_MCP.json |
 | MCP App rendering | Passed | The exact `ui://fixproof/handover.html` resource rendered a fictional result in a browser with evidence counts, recorded and pending checks, page citations and limits; the resource itself emitted no browser warnings or errors |
 | Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
@@ -97,7 +98,7 @@ The revised interface was exercised and visually inspected in a browser from the
 - Fifth-path commit `54376e31b6139059e1e5b4f366d2afc177c22df1` was pushed to the public GitHub repository and both Sites source repositories. It adds three user-level wash-noise checks, bringing the verified catalog to seventeen checks across five paths and three exact models.
 - The hosted MCP archive from that commit became FixProof MCP Site version 3; production deployment `appgdep_6aa95e2c19488191bac653f1b4d674a8` succeeded on 16 September 2026. An official client then exercised the new wash-noise path and returned only third-model manual page 49, alongside the existing continuity, non-repetition and safety checks.
 - The static archive from that commit became main Site version 25; production deployment `appgdep_6aa95ec5be7481919c2e34fd0d404679` succeeded on 16 September 2026. Production Chrome selected Bosch SMS6HCI02A/72 and the wash-noise path, displayed `Check spray-arm clearance` with page 49, recorded an explicit unchanged outcome, produced a handover with the observation and exact source, then restored the model, outcome and citation after reload.
-- The rebuilt 2:15 Australian-neural-voice walkthrough states the current three-model, five-path scope. Full decode passed at 1920 by 1080, measured -16.1 LUFS integrated loudness with -1.4 dBFS true peak, and its nine-scene contact sheet was visually checked. Production Chrome loaded the v5 media and caption files at ready state 4, enabled the English (Australia) track, began playback, and reported no browser warnings or errors.
+- The v5 2:15 Australian-neural-voice walkthrough stated the then-current three-model, five-path scope. Full decode passed at 1920 by 1080, measured -16.1 LUFS integrated loudness with -1.4 dBFS true peak, and its nine-scene contact sheet was visually checked. Production Chrome loaded the v5 media and caption files at ready state 4, enabled the English (Australia) track, began playback, and reported no browser warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
 The controlled retrieval evaluation provides mechanism evidence from synthetic cases: two local model families recovered more exact fields and made fewer critical errors from FixProof handovers than from equal-fact transcripts. The strongest next evidence remains an independent owner/professional assessment. This run cannot establish that FixProof saves time, improves repairs or increases the chance of winning.

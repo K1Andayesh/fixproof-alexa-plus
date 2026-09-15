@@ -20,4 +20,4 @@ Connect an MCP client to `http://127.0.0.1:8790/api/mcp`. The `/mcp` route remai
 .\.venv\Scripts\python.exe fixproof\hosted_mcp_smoke.py
 ```
 
-The server exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome`, and `prepare_handover`. It covers three exact Bosch models and five bounded, source-backed issue paths. Each selected check returns the official manual identity, exact page URL, verification date, and locally verified source hash.
+The server exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome`, and `prepare_handover`. It covers three exact Bosch models and six bounded, source-backed issue paths. Each selected check returns the official manual identity, exact page URL, verification date, and locally verified source hash.

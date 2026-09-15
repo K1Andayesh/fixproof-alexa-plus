@@ -210,6 +210,22 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(third['noise_spray_arm']['pages'],[49])
         self.assertEqual(third['noise_light_items']['pages'],[50])
 
+    def test_cutlery_rust_flow_uses_only_visually_verified_rust_steps(self):
+        c=self.create(issue='Rust spots appear on the cutlery after the wash.')
+        seen=[]
+        def choose_rust(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'rust'},raw
+            seen.append(context['available_checks'])
+            return {'step':'rust_resistant_tableware'},raw
+        with patch.object(server,'infer',side_effect=choose_rust):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'rust_resistant_tableware')
+        self.assertEqual(reply['pages'],[45])
+        self.assertEqual(set(seen[0]),{'rust_resistant_tableware','rust_remove_rusting_items'})
+        self.assertEqual(server.steps_for('Bosch SMS6HCI01A/38')['rust_resistant_tableware']['pages'],[49])
+        self.assertEqual(server.steps_for('Bosch SMS6HCI02A/72')['rust_remove_rusting_items']['pages'],[46])
+
     def test_switching_supported_path_does_not_erase_pending_check(self):
         c=self.create();c['pending']='waiting'
         with patch.object(server,'infer',return_value=({'category':'food'},{'model':'stub'})) as infer:

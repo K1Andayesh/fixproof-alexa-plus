@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 
 export type Source = { title: string; url: string; service_url: string; document: string; verified: string; sha256: string };
-export type Step = { workflow: "drying" | "food" | "detergent" | "streaks" | "noise"; title: string; text: string; pages: number[] };
+export type Step = { workflow: "drying" | "food" | "detergent" | "streaks" | "noise" | "rust"; title: string; text: string; pages: number[] };
 export type Attempt = { outcome: string; observation: string; recorded_at: string };
 export type Citation = { title: string; document: string; page: number; url: string; source_verified: string; content_sha256: string };
 export type FixProofCase = {
@@ -29,20 +29,22 @@ const definitions: Record<string, Omit<Step, "pages">> = {
   noise_spray_arm: { workflow: "noise", title: "Check spray-arm clearance", text: "Arrange tableware so the spray arms do not strike it during the wash." },
   noise_load_distribution: { workflow: "noise", title: "Distribute a small load", text: "If a small load lets water jets strike the tub directly, distribute the tableware evenly or add more tableware for the next wash." },
   noise_light_items: { workflow: "noise", title: "Secure light items", text: "Position light items of tableware securely so they do not move about during the wash cycle." },
+  rust_resistant_tableware: { workflow: "rust", title: "Use rust-resistant tableware", text: "Use rust-resistant tableware when rust spots appear on cutlery." },
+  rust_remove_rusting_items: { workflow: "rust", title: "Keep rusting items out", text: "Do not wash rusting items together with the cutlery." },
 };
 
 const catalogs = {
   "Bosch SMS6HAI02A/01": {
     source: { title: "Bosch SMS6HAI02A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9001676154_A.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HAI02A-01", document: "9001676154 (010805) 650 V1", verified: "2026-09-15", sha256: "af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c" },
-    pages: { programme:[40], rinse_aid:[40,23], loading:[41], waiting:[41], food_spacing:[42], food_spray_arm:[42], food_filters:[42,36,37], food_programme:[42], detergent_tray:[42], detergent_position:[42], streaks_rinse_setting:[44], streaks_add_rinse_aid:[44,23], streaks_tray:[44,27], streaks_prerinse:[45], noise_spray_arm:[48], noise_load_distribution:[48], noise_light_items:[48] },
+    pages: { programme:[40], rinse_aid:[40,23], loading:[41], waiting:[41], food_spacing:[42], food_spray_arm:[42], food_filters:[42,36,37], food_programme:[42], detergent_tray:[42], detergent_position:[42], streaks_rinse_setting:[44], streaks_add_rinse_aid:[44,23], streaks_tray:[44,27], streaks_prerinse:[45], noise_spray_arm:[48], noise_load_distribution:[48], noise_light_items:[48], rust_resistant_tableware:[45], rust_remove_rusting_items:[45] },
   },
   "Bosch SMS6HCI01A/38": {
     source: { title: "Bosch SMS6HCI01A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9001720311_B.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38", document: "9001720311 (050605) 650 A1", verified: "2026-09-15", sha256: "b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9" },
-    pages: { programme:[44], rinse_aid:[44,24,25], loading:[44], waiting:[44], food_spacing:[45], food_spray_arm:[45,39], food_filters:[45,38,39], food_programme:[45], detergent_tray:[46,28], detergent_position:[46], streaks_rinse_setting:[48,25], streaks_add_rinse_aid:[48,24], streaks_tray:[48,28], streaks_prerinse:[48], noise_spray_arm:[52], noise_load_distribution:[52], noise_light_items:[52] },
+    pages: { programme:[44], rinse_aid:[44,24,25], loading:[44], waiting:[44], food_spacing:[45], food_spray_arm:[45,39], food_filters:[45,38,39], food_programme:[45], detergent_tray:[46,28], detergent_position:[46], streaks_rinse_setting:[48,25], streaks_add_rinse_aid:[48,24], streaks_tray:[48,28], streaks_prerinse:[48], noise_spray_arm:[52], noise_load_distribution:[52], noise_light_items:[52], rust_resistant_tableware:[49], rust_remove_rusting_items:[49] },
   },
   "Bosch SMS6HCI02A/72": {
     source: { title: "Bosch SMS6HCI02A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9002017246_A.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72", document: "9002017246 (050605) 650 V1", verified: "2026-09-15", sha256: "b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476" },
-    pages: { programme:[41], rinse_aid:[41,23,24], loading:[41,28], waiting:[42], food_spacing:[42], food_spray_arm:[42,37], food_filters:[43,36,37], food_programme:[43], detergent_tray:[43,27,28], detergent_position:[43], streaks_rinse_setting:[45,24], streaks_add_rinse_aid:[45,23], streaks_tray:[45,27,28], streaks_prerinse:[46], noise_spray_arm:[49], noise_load_distribution:[49], noise_light_items:[50] },
+    pages: { programme:[41], rinse_aid:[41,23,24], loading:[41,28], waiting:[42], food_spacing:[42], food_spray_arm:[42,37], food_filters:[43,36,37], food_programme:[43], detergent_tray:[43,27,28], detergent_position:[43], streaks_rinse_setting:[45,24], streaks_add_rinse_aid:[45,23], streaks_tray:[45,27,28], streaks_prerinse:[46], noise_spray_arm:[49], noise_load_distribution:[49], noise_light_items:[50], rust_resistant_tableware:[46], rust_remove_rusting_items:[46] },
   },
 } satisfies Record<string, { source: Source; pages: Record<string, number[]> }>;
 
@@ -83,6 +85,7 @@ function classify(text: string): FixProofCase["workflow"] {
   if (/detergent|tablet|powder|residue/.test(value)) return "detergent";
   if (/streak|white coating|limescale/.test(value)) return "streaks";
   if (/knock|rattl|spray arm.*(?:hit|strik)|noise during/.test(value)) return "noise";
+  if (/rust|corrosion spot/.test(value)) return "rust";
   if (/wet|dry|water/.test(value)) return "drying";
   return null;
 }
@@ -174,7 +177,7 @@ export async function askFixProof(input: { request_id: string; case_id: string; 
   }
   caseRecord.workflow ??= classify(`${caseRecord.issue} ${message}`);
   if (!caseRecord.workflow) {
-    caseRecord.latest_event = { kind: "clarification", text: "Is the issue wet tableware, food remnants, detergent residue, removable streaks, or knocking or rattling during the wash?" };
+    caseRecord.latest_event = { kind: "clarification", text: "Is the issue wet tableware, food remnants, detergent residue, removable streaks, knocking or rattling during the wash, or rust spots on cutlery?" };
     return view(await saveUpdated(caseRecord, requestId, input.revision));
   }
   const steps = stepsFor(caseRecord.model);
