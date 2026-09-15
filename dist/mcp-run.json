@@ -1,91 +1,29 @@
 {
-  "captured_at": "2026-09-15T16:52:10.456904+00:00",
-  "capture_scope": "Fictional local transport verification; no household or customer data.",
-  "transport": "Streamable HTTP",
+  "captured_at": "2026-09-15T23:06:23.715798+00:00",
+  "endpoint": "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
   "protocol_version": "2026-07-28",
+  "server_version": "0.8.0",
+  "server_instructions": "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding and unpleasant-interior-odour paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
+  "evidence_fingerprint": "718ffd26f5570d6b3f93ca4c5806b6bfc6c70b082225415cee12e7df183b58be",
+  "evidence_fingerprint_verified_by_client": true,
+  "changed_evidence_detected": true,
+  "authorship_proof_claimed": false,
   "tools": [
-    "prepare_handover",
     "start_case",
     "read_case",
     "ask_fixproof",
-    "record_outcome"
+    "record_outcome",
+    "prepare_handover"
   ],
-  "tool_annotations": {
-    "prepare_handover": {
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "start_case": {
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "read_case": {
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "ask_fixproof": {
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "record_outcome": {
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  "mcp_app": {
-    "extension": "io.modelcontextprotocol/ui",
-    "advertised": true,
-    "tool": "prepare_handover",
-    "resource_uri": "ui://fixproof/handover.html",
-    "mime_type": "text/html;profile=mcp-app",
-    "prefers_border": true,
-    "self_contained": true,
-    "external_resource_csp_declared": false,
-    "device_permissions_declared": false,
-    "text_fallback_contains_observation": true
-  },
-  "case_id": "cecf459b-a8c1-44a5-a3df-270ecc412000",
-  "selected_step": "waiting",
-  "selected_step_citations": [
-    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
-  ],
-  "source_hash_in_tool_contract": true,
-  "recorded_outcome": "Not yet tested",
-  "handover_contains_observation": true,
-  "machine_readable_handover": "fixproof-handover-1",
-  "handover_preserves_evidence_status": "deferred_or_skipped",
-  "deferred_not_counted_as_performed": true,
-  "cross_connection_issue_preserved": true,
-  "cross_connection_outcome_preserved": true,
-  "recorded_check_not_repeated": true,
-  "continued_step": "rinse_aid",
-  "safety_stop_survives_client_reconnect": true,
-  "safety_report_in_handover": true,
-  "source_backed_paths": 7,
   "exact_models": 3,
-  "food_path_selected_step": "food_spacing",
-  "food_path_citations": [
-    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=42"
+  "source_backed_paths": 8,
+  "case_id": "dfa8b21a-33e2-44d9-b181-8f5346a4690e",
+  "selected_step": "streaks_rinse_setting",
+  "selected_citations": [
+    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
+    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=24"
   ],
-  "detergent_path_selected_step": "detergent_tray",
-  "detergent_path_citations": [
-    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=42"
-  ],
-  "streaks_path_selected_step": "streaks_rinse_setting",
-  "streaks_path_citations": [
-    "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=44"
-  ],
-  "noise_path_selected_step": "noise_load_distribution",
+  "noise_path_selected_step": "noise_spray_arm",
   "noise_path_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=49"
   ],
@@ -93,126 +31,16 @@
   "rust_path_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=46"
   ],
-  "clouding_path_selected_step": "clouding_steam_phase",
+  "clouding_path_selected_step": "clouding_dishwasher_proof",
   "clouding_path_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=46"
   ],
-  "second_model": "Bosch SMS6HCI01A/38",
-  "second_model_selected_step": "detergent_tray",
-  "second_model_citations": [
-    "https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=46",
-    "https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=28"
+  "odour_path_selected_step": "odour_wipe_interior",
+  "odour_path_citations": [
+    "https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=38"
   ],
-  "second_model_service_url": "https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38",
-  "second_model_source_hash_verified": true,
-  "third_model": "Bosch SMS6HCI02A/72",
-  "third_model_selected_step": "streaks_add_rinse_aid",
-  "third_model_citations": [
-    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
-    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=23"
-  ],
-  "third_model_service_url": "https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72",
-  "third_model_source_hash_verified": true,
-  "judge_trace": [
-    {
-      "connection": 1,
-      "operation": "tools/list",
-      "observed": {
-        "protocol_version": "2026-07-28",
-        "tools": [
-          "prepare_handover",
-          "start_case",
-          "read_case",
-          "ask_fixproof",
-          "record_outcome"
-        ],
-        "annotations_present": [
-          "ask_fixproof",
-          "prepare_handover",
-          "read_case",
-          "record_outcome",
-          "start_case"
-        ],
-        "mcp_apps_extension": true,
-        "handover_app_uri": "ui://fixproof/handover.html",
-        "handover_app_mime_type": "text/html;profile=mcp-app"
-      }
-    },
-    {
-      "connection": 1,
-      "operation": "start_case",
-      "request": {
-        "reported_issue": "Plates and glasses are still wet after a wash.",
-        "model": "Bosch SMS6HAI02A/01",
-        "model_confirmed": true,
-        "fictional_demo": true
-      },
-      "observed": {
-        "case_id": "cecf459b-a8c1-44a5-a3df-270ecc412000",
-        "revision": 0,
-        "status": "Open"
-      }
-    },
-    {
-      "connection": 1,
-      "operation": "ask_fixproof",
-      "request": {
-        "user_message": "What should I check first?"
-      },
-      "observed": {
-        "step_id": "waiting",
-        "citations": [
-          "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=41"
-        ],
-        "source_hash_present": true
-      }
-    },
-    {
-      "connection": 1,
-      "operation": "record_outcome + prepare_handover",
-      "request": {
-        "outcome": "Not yet tested",
-        "observation": "Fictional MCP transport verification."
-      },
-      "observed": {
-        "user_reports_performed": 0,
-        "deferred_or_skipped": 1,
-        "handover_schema": "fixproof-handover-1",
-        "recorded_evidence_status": "deferred_or_skipped"
-      }
-    },
-    {
-      "connection": 2,
-      "operation": "read_case + ask_fixproof",
-      "request": {
-        "user_message": "What should I check next?"
-      },
-      "observed": {
-        "issue_preserved": true,
-        "outcome_preserved": "Not yet tested",
-        "previous_step": "waiting",
-        "next_step": "rinse_aid",
-        "previous_step_not_repeated": true
-      }
-    },
-    {
-      "connection": 2,
-      "operation": "ask_fixproof",
-      "request": {
-        "user_message": "There is smoke from the door."
-      },
-      "observed": {
-        "status": "Handover ready",
-        "pending_check": null
-      }
-    },
-    {
-      "connection": 3,
-      "operation": "read_case + prepare_handover",
-      "observed": {
-        "safety_report_preserved": "There is smoke from the door.",
-        "handover_contains_safety_section": true
-      }
-    }
-  ]
+  "recorded_observation_preserved_after_reconnect": true,
+  "next_check_not_repeated": true,
+  "safety_stop_cleared_pending_check": true,
+  "fictional_only": true
 }
