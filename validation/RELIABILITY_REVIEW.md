@@ -2,7 +2,7 @@
 
 ## Defensible claim
 
-In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across two source-backed issue paths, the real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
+In the evaluated workflows, FixProof preserves the distinction between a suggestion, a deferred check and a user-reported performed check. Across three source-backed issue paths, the real MCP endpoint persists the evidence into both readable Markdown and a versioned structured handover, returns exact page URLs and a verified content hash with supported guidance, and preserves a safety stop across a new client connection. Tested lexical hazard reports stop the local workflow without relying on the AI provider.
 
 This is a prototype reliability claim, not a probability of winning, an appliance-safety certification, or evidence of customer impact.
 
@@ -19,16 +19,17 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 - Every MCP tool declares client-planning annotations for read-only access, retry-safe idempotency, non-destructive writes and closed-world operation.
 - A new MCP client can resume the case, retain the issue and explicit outcome, and obtain a different remaining check without repeating the recorded one.
 - A second, separately bounded food-remnant path adds four checks grounded in manual pages 36, 37 and 42. Cross-path questions do not replace an awaiting check or mix the two evidence sequences.
+- A third detergent-residue path adds two checks grounded in the manual's page-42 dispenser guidance and remains isolated from the other evidence sequences.
 
 ## Evidence collected
 
 | Verification | Result | Scope |
 | --- | --- | --- |
-| Python HTTP/MCP regression suite | 24 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
-| Public application-logic regression suite | 9 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
-| Local AI evaluation | 11/11 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
-| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for both drying and food-remnant cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
-| Chrome UI exercise | Passed | Production food-remnant path selected a page-42 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; implementation evidence expanded correctly |
+| Python HTTP/MCP regression suite | 25 tests passed | Real HTTP workflow tests and in-process MCP client tests; AI decisions are stubbed where specified |
+| Public application-logic regression suite | 10 tests passed | Real application JavaScript with a small DOM double; not browser or usability QA |
+| Local AI evaluation | 12/12 scenarios passed | Running local Qwen model, including explicit no-hazard and technical-phrase cases; see LOCAL_AI_EVAL.json |
+| Real Streamable HTTP MCP exercise | Passed | All five tools, source-backed selection via real local AI for drying, food-remnant and detergent-residue cases, explicit deferred outcome, cross-connection evidence continuity, non-repetition of the recorded check, handover and a safety stop preserved through another connection; see RELIABILITY_MCP.json |
+| Chrome UI exercise | Passed | Production detergent-residue path selected a page-42 check, recorded the path-neutral `Issue unchanged` outcome, and produced a readable handover with the observation and citation; no console warnings or errors |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
 Reproduce:
@@ -45,15 +46,15 @@ python fixproof/evaluate.py
 
 The lexical hazard preflight is conservative and incomplete. It now excludes tested explicit no-hazard statements such as "no smoke" and technical phrases such as "smoke test", while still stopping when another hazard remains in the same report. This narrow context handling does not establish full language understanding. Unrecognised phrasing still depends on the model and may be missed. The policy is not a medical, legal or appliance-safety authority.
 
-The revised interface was exercised and visually inspected in Chrome from the production Site version 13. This is developer QA, not an independent user or repair-professional evaluation.
+The revised interface was exercised and visually inspected in Chrome from the production Site version 14. This is developer QA, not an independent user or repair-professional evaluation.
 
 ## Release evidence
 
-- Product commit `9ce5e9b8da3e5262682b7c76a9e973f72752125c` was pushed to the public GitHub repository and the Sites source repository.
-- The exact archive from that commit was saved as Site version 13 and production deployment `appgdep_6aa8b36e8f308191bf6cd3ff218a77ca` succeeded on 15 September 2026.
-- The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining drying check, included exact-page citations and the source hash, preserved a later safety stop through another connection, and selected `food_spacing` with the page-42 citation for a second case.
-- The production page showed two source-backed paths, 33 automated checks and 11/11 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, cross-connection continuity and two-path MCP evidence.
-- Production Chrome QA exercised the food-remnant path from selection through page-42 guidance, the `Issue unchanged` outcome and a handover carrying the food-path label, observation and source. **See the verified HTTP run** expanded to show six evidence bullets and both GitHub evidence links. The browser console reported no warnings or errors.
+- Product commit `9098de6d5ec122366222cc6329412a61813e981e` was pushed to the public GitHub repository and the Sites source repository.
+- The exact archive from that commit was saved as Site version 14 and production deployment `appgdep_6aa8bf21cc308191b4ac8defd3d72439` succeeded on 15 September 2026.
+- The real HTTP MCP exercise returned all five tool-annotation objects alongside `fixproof-handover-1`, preserved the issue and deferred outcome through a new client connection, selected a different remaining drying check, included exact-page citations and the source hash, preserved a later safety stop through another connection, and selected `food_spacing` and `detergent_tray` with page-42 citations for two additional cases.
+- The production page showed three source-backed paths, 35 automated checks and 12/12 local-AI scenarios. Its implementation card described the Markdown plus structured-evidence handover contract, client-planning hints, cross-connection continuity and three-path MCP evidence.
+- Production Chrome QA exercised the detergent-residue path from selection through page-42 guidance, the `Issue unchanged` outcome and a readable handover carrying the detergent-path label, observation and source. The browser console reported no warnings or errors.
 - Devpost remained publicly accessible and submitted. Its public story still reflects the previous 25-check release and does not yet describe the structured handover or tool annotations.
 
 The strongest next evidence is an independent owner/professional assessment of the handover. Additional test counts alone cannot establish that it saves time or increases the chance of winning.
