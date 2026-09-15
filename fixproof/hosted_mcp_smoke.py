@@ -21,6 +21,13 @@ async def main() -> None:
     url = os.environ.get("FIXPROOF_HOSTED_MCP_URL", "http://127.0.0.1:8790/mcp")
     async with Client(url, raise_exceptions=True) as client:
         protocol_version = client.protocol_version
+        server_version = client.server_info.version
+        server_instructions = client.instructions or ""
+        for path in (
+            "drying", "food-remnant", "detergent-residue", "removable-streak",
+            "wash-noise", "cutlery-rust", "irreversible-glass-clouding",
+        ):
+            assert path in server_instructions
         listed = await client.list_tools()
         names = [tool.name for tool in listed.tools]
         assert names == ["start_case", "read_case", "ask_fixproof", "record_outcome", "prepare_handover"]
@@ -115,6 +122,8 @@ async def main() -> None:
         "captured_at": datetime.now(timezone.utc).isoformat(),
         "endpoint": url,
         "protocol_version": protocol_version,
+        "server_version": server_version,
+        "server_instructions": server_instructions,
         "tools": names,
         "exact_models": 3,
         "source_backed_paths": 7,

@@ -1,7 +1,9 @@
 {
-  "captured_at": "2026-09-15T17:05:20.485849+00:00",
+  "captured_at": "2026-09-15T18:54:21.775875+00:00",
   "endpoint": "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
   "protocol_version": "2026-07-28",
+  "server_version": "0.6.0",
+  "server_instructions": "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust and irreversible-glass-clouding paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
   "tools": [
     "start_case",
     "read_case",
@@ -11,7 +13,7 @@
   ],
   "exact_models": 3,
   "source_backed_paths": 7,
-  "case_id": "8014f5fb-e3b7-4ff9-b00b-7c13f7bfb218",
+  "case_id": "68f58aed-4391-49f9-a6fa-9c60b5e2bdfa",
   "selected_step": "streaks_rinse_setting",
   "selected_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
