@@ -29,4 +29,8 @@ The narrator is `en-AU-WilliamMultilingualNeural`, the newer Australian multilin
 
 ## Publication state
 
-The current video, poster and captions are embedded in the public Site build so they can be reviewed without changing the existing Devpost video. The Devpost submission and YouTube video still need to be updated together after the new YouTube upload is complete. Those browser actions require action-time confirmation under the Computer Use policy.
+The current video, poster and captions are embedded in production Site version 18 at https://fixproof-alexa.keyvan-andayesh.chatgpt.site. Deployment `appgdep_6aa8f91761588191817ba3f7f648a15c` succeeded from product commit `aa20c32d55d2cc6a301766313f830a7e475d0153`.
+
+Production Chrome loaded the media at ready state 4 with the expected 133.665-second duration, 1920 by 1080 dimensions and one enabled English (Australia) caption track. Clicking the visible player advanced playback beyond two seconds, and the browser console reported no warnings or errors. The desktop layout kept the poster and start-case form readable without overlap.
+
+The Devpost submission and YouTube video still need to be updated together after the new YouTube upload is complete. Those browser actions require action-time confirmation under the Computer Use policy.
