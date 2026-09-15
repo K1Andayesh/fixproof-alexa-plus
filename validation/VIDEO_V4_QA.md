@@ -30,6 +30,8 @@ The narrator remains `en-AU-WilliamMultilingualNeural`, with short sentences and
 
 ## Publication state
 
-The files are prepared for the public evaluation build. Production publication and browser media playback verification are recorded in `validation/RELIABILITY_REVIEW.md` after deployment.
+Video-alignment commit `63a261bd9312662ffa4b3380506ebf8b96e2bbc7` was pushed to the public GitHub and Sites source repositories. Its exact static archive became Site version 24; production deployment `appgdep_6aa94de4c7948191ab7488909e253fbc` succeeded on 15 September 2026.
+
+Production Chrome loaded the v4 video at ready state 4 with the expected 133.856-second duration, 1920 by 1080 dimensions, v4 poster, v4 media source and enabled English (Australia) caption track. Activating the visible player advanced playback beyond fourteen seconds before it was paused. The page and playback reported no browser warnings or errors.
 
 The Devpost submission and YouTube video still need to be updated together. Those browser actions require action-time confirmation under the Computer Use policy.
