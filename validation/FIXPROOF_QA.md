@@ -1,4 +1,4 @@
-# FixProof QA evidence — updated 14 September 2026
+# FixProof QA evidence — updated 15 September 2026
 
 ## Result
 
@@ -34,7 +34,8 @@ The download link was clicked and the server served the attachment. Its actual n
 ## Automated and live-model checks
 
 - Twenty-six Python workflow and MCP regression tests pass, including separate drying, food-remnant, detergent-residue and removable-streak selection, cross-path pending-check protection, retries, origin checks, explicit evidence recording, SQLite persistence, stale writes, model failure, invalid model output, and cross-client continuity.
-- Eleven public-interface logic tests pass against the actual hosted JavaScript, including all four source-backed journeys and cross-path protection.
+- Twelve public-interface logic tests pass against the actual hosted JavaScript, including all four source-backed journeys, cross-path protection and the live MCP proof link.
+- An official MCP client called the public `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp` deployment without local services, negotiated protocol `2026-07-28`, discovered all five tools, selected third-model pages 45 and 24, retained an explicit observation across a fresh connection, excluded the recorded check, and preserved a later safety stop. The production health route reports three exact models, four source-backed paths and a fictional-only data policy. See [HOSTED_MCP.json](HOSTED_MCP.json).
 - A separate Apps-capable client connected to the running Streamable HTTP endpoint at `/mcp`, negotiated protocol `2026-07-28` and the official MCP Apps extension, discovered all five tools, read the handover's self-contained `ui://` resource, exercised all four source-backed paths and three exact models with real local AI, recorded an outcome, and verified that the handover retained its observation across new client connections. A request with an untrusted browser Origin was rejected with HTTP 403.
 - Thirteen local-model scenarios pass: drying, food remnants, detergent residue, removable streaks, unclear symptom, plastic, inside-wall condensation, unsupported error/drainage issue, hazard, explicit no-hazard language, a technical phrase, already-recorded check and exhausted catalog. Full results and local latency/token observations: [LOCAL_AI_EVAL.json](LOCAL_AI_EVAL.json).
 - Python compilation and JavaScript syntax checks pass.

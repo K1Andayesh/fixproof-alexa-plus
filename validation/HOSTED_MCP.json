@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-09-15T13:17:11.736655+00:00",
+  "endpoint": "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
+  "protocol_version": "2026-07-28",
+  "tools": [
+    "start_case",
+    "read_case",
+    "ask_fixproof",
+    "record_outcome",
+    "prepare_handover"
+  ],
+  "exact_models": 3,
+  "source_backed_paths": 4,
+  "case_id": "e70a6392-59e2-4883-a79f-039b96512dfd",
+  "selected_step": "streaks_rinse_setting",
+  "selected_citations": [
+    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
+    "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=24"
+  ],
+  "recorded_observation_preserved_after_reconnect": true,
+  "next_check_not_repeated": true,
+  "safety_stop_cleared_pending_check": true,
+  "fictional_only": true
+}

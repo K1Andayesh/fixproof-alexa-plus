@@ -4,9 +4,9 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Technical implementation
 
-**Lead proof:** a real five-tool MCP workflow over Streamable HTTP, using the official Python SDK, revisioned SQLite state, bounded local-model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and an official MCP App that renders the handover inside a compatible host.
+**Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK and D1 continuity, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and an official MCP App.
 
-**Judge should see:** the MCP transport evidence in the current 2:14 video embedded on the public site, then expand **Inspect the captured agent run** in the implementation card. The five-block trace makes the real three-connection sequence readable in place and links to the complete hosted JSON, executable probe and integration tests. It records MCP Apps negotiation and the handover resource, client-planning tool annotations, exact page URLs, versioned evidence, cross-connection continuity without repeating a recorded check, 37 passing automated checks and thirteen live local-AI scenarios.
+**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 38 passing automated checks and thirteen live local-AI scenarios. The 2:14 video and five-block trace show the deeper local MCP Apps path.
 
 ## Design and user experience
 
@@ -38,4 +38,4 @@ The entry was submitted on 14 September 2026, with the public project at https:/
 
 ## Current release evidence
 
-The reliability changes in validation/RELIABILITY_REVIEW.md have 26 Python tests, eleven public-interface logic tests and thirteen passing live local-AI scenarios. The controlled retrieval evaluation adds 16 blind-format reads across two local model families. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
+The reliability changes in validation/RELIABILITY_REVIEW.md have 26 Python tests, twelve public-interface logic tests and thirteen passing live local-AI scenarios. The public MCP deployment adds a judge-callable five-tool HTTPS route with D1 continuity. The controlled retrieval evaluation adds 16 blind-format reads across two local model families. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
