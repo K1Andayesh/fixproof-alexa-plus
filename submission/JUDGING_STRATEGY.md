@@ -16,9 +16,11 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Potential impact
 
-**Lead story:** appliance support loses evidence between the household, manual, assistant, and technician. FixProof makes a user-confirmed observation portable to the next conversation. Three source-backed paths now demonstrate that this evidence pattern generalises beyond one scripted symptom while remaining bounded to one exact model.
+**Lead story:** the Australian Productivity Commission found significant and unnecessary barriers to repair for some products and identified restricted access to repair information among them. DCCEEW reports that Australia created 511,000 tonnes of e-waste in 2019. FixProof tests a narrow response: keep verified instructions and user-confirmed outcomes portable between the household, assistant and technician. Three source-backed paths demonstrate that evidence pattern beyond one scripted symptom while remaining bounded to one exact model.
 
-**Evidence boundary:** no customer validation or repair-cost claim. Explain the concrete information loss and show the complete handover artifact.
+**Judge should see:** the public impact card first, then complete one check and open the handover. The card connects the documented problem to the product mechanism and names the outcomes still to measure.
+
+**Evidence boundary:** official sources establish the repair and e-waste context; they do not establish FixProof's effect. There is no customer validation, time-saving, repair-success, cost or waste-reduction claim. See `validation/IMPACT_EVIDENCE.md`.
 
 ## Quality of the idea
 

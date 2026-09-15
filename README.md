@@ -40,6 +40,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
 | Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object with explicit check status and citations |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
+| Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
 | Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
 
 The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).
