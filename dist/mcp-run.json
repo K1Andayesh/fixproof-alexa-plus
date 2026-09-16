@@ -1,10 +1,10 @@
 {
-  "captured_at": "2026-09-16T16:22:46.392996+00:00",
+  "captured_at": "2026-09-16T17:17:15.032355+00:00",
   "endpoint": "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
   "protocol_version": "2026-07-28",
-  "server_version": "0.11.0",
-  "server_instructions": "Public judge endpoint for fictional FixProof evaluations. Use only the four listed exact Bosch or Electrolux models and fictional_demo=true. The three Bosch models cover drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour, door-related-starting and water-left-inside-after-programme paths. Electrolux ESF8735ROX covers drying, food-remnant, detergent-residue, removable-streak, unpleasant-interior-odour and door-related-starting paths only. Never offer a check lacking a citation for the selected exact model. Error codes, pump and hose work remain outside scope. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
-  "evidence_fingerprint": "e284bf80efff9788fc6fd8d688f574b1b30c5eaf13481fa28549eb55bf3e6094",
+  "server_version": "0.12.0",
+  "server_instructions": "Public judge endpoint for fictional FixProof evaluations. Use only the four listed exact Bosch or Electrolux models and fictional_demo=true. The three Bosch models cover drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour, door-related-starting and water-left-inside-after-programme paths. Electrolux ESF8735ROX covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, unpleasant-interior-odour and door-related-starting paths only. Never offer a check lacking a citation for the selected exact model. Error codes, pump and hose work remain outside scope. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
+  "evidence_fingerprint": "6b89a2385bcd9bfe047c447ac50f216ef15432b9b37a23fc80dedefaac5e8874",
   "evidence_fingerprint_verified_by_client": true,
   "changed_evidence_detected": true,
   "authorship_proof_claimed": false,
@@ -41,12 +41,18 @@
       "https://resource.electrolux.com.au/Public/File/?Id=33277#page=16",
       "https://resource.electrolux.com.au/Public/File/?Id=33277#page=18"
     ],
+    "noise": [
+      "https://resource.electrolux.com.au/Public/File/?Id=33277#page=19"
+    ],
+    "rust": [
+      "https://resource.electrolux.com.au/Public/File/?Id=33277#page=20"
+    ],
     "starting": [
       "https://resource.electrolux.com.au/Public/File/?Id=33277#page=18"
     ]
   },
   "electrolux_unmapped_path_rejected_without_check": true,
-  "case_id": "c6b69215-b1b3-4d97-bbb8-fadb6bc0a385",
+  "case_id": "2e0a179b-8ba0-424d-b9b4-e69a654ce061",
   "selected_step": "streaks_rinse_setting",
   "selected_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
