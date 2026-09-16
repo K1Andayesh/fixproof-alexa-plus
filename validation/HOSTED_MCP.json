@@ -1,10 +1,10 @@
 {
-  "captured_at": "2026-09-16T09:14:52.139849+00:00",
+  "captured_at": "2026-09-16T13:23:57.286138+00:00",
   "endpoint": "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
   "protocol_version": "2026-07-28",
   "server_version": "0.10.0",
-  "server_instructions": "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour and door-related-starting paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
-  "evidence_fingerprint": "92979088c2a319987ddd82b472540980b2d7c65e0622156aa55e191b9feb90ba",
+  "server_instructions": "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour, door-related-starting and water-left-inside-after-programme paths. Error codes, pump and hose work remain outside scope. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
+  "evidence_fingerprint": "56a183ec190ccec6f171dd779a42b083ca13ffecdc451d5890e2e6899646d3cd",
   "evidence_fingerprint_verified_by_client": true,
   "changed_evidence_detected": true,
   "authorship_proof_claimed": false,
@@ -23,8 +23,8 @@
     "safe_dom_rendering": true
   },
   "exact_models": 3,
-  "source_backed_paths": 9,
-  "case_id": "67301312-b9ba-41ae-9843-8a644cd1bb94",
+  "source_backed_paths": 10,
+  "case_id": "580c85fd-5f20-4dc4-8e16-a5f863885401",
   "selected_step": "streaks_rinse_setting",
   "selected_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=45",
@@ -50,10 +50,21 @@
   "starting_path_citations": [
     "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=48"
   ],
+  "water_retention_citations_by_model": {
+    "Bosch SMS6HAI02A/01": [
+      "https://media3.bsh-group.com/Documents/9001676154_A.pdf#page=46"
+    ],
+    "Bosch SMS6HCI01A/38": [
+      "https://media3.bsh-group.com/Documents/9001720311_B.pdf#page=50"
+    ],
+    "Bosch SMS6HCI02A/72": [
+      "https://media3.bsh-group.com/Documents/9002017246_A.pdf#page=48"
+    ]
+  },
   "recorded_observation_preserved_after_reconnect": true,
   "next_check_not_repeated": true,
   "safety_stop_cleared_pending_check": true,
-  "unsupported_drainage_rejected_without_check": true,
+  "unsupported_error_code_rejected_without_check": true,
   "later_error_report_cleared_pending_check": true,
   "fictional_only": true
 }

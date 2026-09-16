@@ -34,7 +34,7 @@ async def main() -> None:
         for path in (
             "drying", "food-remnant", "detergent-residue", "removable-streak",
             "wash-noise", "cutlery-rust", "irreversible-glass-clouding",
-            "unpleasant-interior-odour", "door-related-starting",
+            "unpleasant-interior-odour", "door-related-starting", "water-left-inside-after-programme",
         ):
             assert path in server_instructions
         listed = await client.list_tools()
@@ -179,23 +179,42 @@ async def main() -> None:
         starting_pending = starting_assessed["pending_check"]
         assert starting_pending["step_id"] == "starting_close_door"
         assert [item["page"] for item in starting_pending["citations"]] == [48]
-        drainage_issue = "Water remains at the bottom of this fictional dishwasher after the wash."
-        drainage_started = await call(reconnected, "start_case", {
-            "request_id": str(uuid.uuid4()), "reported_issue": drainage_issue,
+        water_pages = {}
+        for model, pages in (
+            ("Bosch SMS6HAI02A/01", [46]),
+            ("Bosch SMS6HCI01A/38", [50]),
+            ("Bosch SMS6HCI02A/72", [48]),
+        ):
+            water_started = await call(reconnected, "start_case", {
+                "request_id": str(uuid.uuid4()),
+                "reported_issue": "Water remains inside this fictional dishwasher after the programme ended.",
+                "model": model, "model_confirmed": True, "fictional_demo": True,
+            })
+            water_assessed = await call(reconnected, "ask_fixproof", {
+                "request_id": str(uuid.uuid4()), "case_id": water_started["case_id"],
+                "revision": water_started["revision"], "user_message": "What should I check first?",
+            })
+            water_pending = water_assessed["pending_check"]
+            assert water_pending["step_id"] == "water_cycle"
+            assert [item["page"] for item in water_pending["citations"]] == pages
+            water_pages[model] = [item["url"] for item in water_pending["citations"]]
+        error_issue = "This fictional dishwasher displays error code E:61-03 after the wash."
+        error_started = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()), "reported_issue": error_issue,
             "model": "Bosch SMS6HCI02A/72", "model_confirmed": True, "fictional_demo": True,
         })
-        drainage_assessed = await call(reconnected, "ask_fixproof", {
-            "request_id": str(uuid.uuid4()), "case_id": drainage_started["case_id"],
-            "revision": drainage_started["revision"], "user_message": "What should I check first?",
+        error_assessed = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": error_started["case_id"],
+            "revision": error_started["revision"], "user_message": "What should I check first?",
         })
-        assert drainage_assessed["status"] == "Handover ready"
-        assert drainage_assessed["pending_check"] is None
-        assert drainage_assessed["latest_event"]["kind"] == "scope"
-        drainage_handover = await call(reconnected, "prepare_handover", {"case_id": drainage_started["case_id"]})
-        assert drainage_handover["evidence"]["scope_report"] == drainage_issue
-        assert "No check was selected" in drainage_handover["markdown"]
-        assert drainage_handover["evidence"]["checks"] == []
-        assert drainage_handover["evidence_integrity"]["digest"] == evidence_sha256(drainage_handover["evidence"])
+        assert error_assessed["status"] == "Handover ready"
+        assert error_assessed["pending_check"] is None
+        assert error_assessed["latest_event"]["kind"] == "scope"
+        error_handover = await call(reconnected, "prepare_handover", {"case_id": error_started["case_id"]})
+        assert error_handover["evidence"]["scope_report"] == error_issue
+        assert "No check was selected" in error_handover["markdown"]
+        assert error_handover["evidence"]["checks"] == []
+        assert error_handover["evidence_integrity"]["digest"] == evidence_sha256(error_handover["evidence"])
         drying_started = await call(reconnected, "start_case", {
             "request_id": str(uuid.uuid4()),
             "reported_issue": "The fictional glasses remain wet after the wash.",
@@ -234,7 +253,7 @@ async def main() -> None:
             "safe_dom_rendering": True,
         },
         "exact_models": 3,
-        "source_backed_paths": 9,
+        "source_backed_paths": 10,
         "case_id": started["case_id"],
         "selected_step": pending["step_id"],
         "selected_citations": [item["url"] for item in pending["citations"]],
@@ -248,10 +267,11 @@ async def main() -> None:
         "odour_path_citations": [item["url"] for item in odour_pending["citations"]],
         "starting_path_selected_step": starting_pending["step_id"],
         "starting_path_citations": [item["url"] for item in starting_pending["citations"]],
+        "water_retention_citations_by_model": water_pages,
         "recorded_observation_preserved_after_reconnect": True,
         "next_check_not_repeated": True,
         "safety_stop_cleared_pending_check": True,
-        "unsupported_drainage_rejected_without_check": True,
+        "unsupported_error_code_rejected_without_check": True,
         "later_error_report_cleared_pending_check": True,
         "fictional_only": True,
     }

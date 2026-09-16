@@ -53,9 +53,18 @@ test('explicit no-hazard statements and technical phrases do not false stop',()=
 });
 test('information and clarification preserve a pending suggestion',()=>{
  const a=app();a.start();a.ask('first check');
- for(const q of ['Help me.','Only plastic stays wet.','E24 error']){a.ask(q);assert.equal(a.run('state.pending'),'waiting');}
+ for(const q of ['Help me.','Only plastic stays wet.']){a.ask(q);assert.equal(a.run('state.pending'),'waiting');}
  const b=app();b.run("start('Plates are wet.','drying','Bosch SMS6HCI02A/72')");b.ask('Only plastic stays wet.');
  assert.match(b.run('latest'),/page 42/);
+});
+test('an error-code report stops pending guidance and remains in the handover',()=>{
+ const a=app();a.start();a.ask('first check');a.ask('It shows E:61-03.');
+ assert.equal(a.run('state.pending'),null);assert.equal(a.run('state.status'),'Handover ready');
+ assert.match(a.handover(),/Outside verified scope/);assert.match(a.handover(),/E:61-03/);
+ assert.equal(a.run('handoverEvidence().suggested_awaiting_outcome'),null);
+ assert.equal(a.run('handoverEvidence().scope_report'),'It shows E:61-03.');
+ const b=app();b.run("start('Error code E24 on the display.','drying')");
+ assert.equal(b.run('state.status'),'Handover ready');assert.equal(b.run('state.pending'),null);
 });
 test('all deferred outcomes never become performed checks or a diagnosis',()=>{
  const a=app();a.start();
@@ -116,7 +125,7 @@ test('water left inside uses distinct model citations and error codes stay out o
   assert.deepEqual(Array.from(a.run('pagesFor(currentStep)')),pages);
   assert.match(a.handover(),new RegExp(document.replace('.','\\.')+'#page='+pages[0]));
   a.ask('It displays error code E:61-03.');assert.match(a.run('latest'),/no verified error-code/);
-  assert.equal(a.run('state.pending'),'water_filters');
+  assert.equal(a.run('state.pending'),null);assert.equal(a.run('state.status'),'Handover ready');
  }
  const drying=app();drying.start();drying.ask('Water pools in the recesses of my cups.');
  assert.equal(drying.run('state.workflow'),'drying');
