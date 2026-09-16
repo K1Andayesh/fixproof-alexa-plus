@@ -32,6 +32,10 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 Submit the friction log for the optional bonus. It documents two concrete developer-experience issues, reproducible steps, workarounds, severity, and actionable suggestions.
 
+## Open Source mini-challenge
+
+The [additional FixProof Evidence Verifier](https://github.com/K1Andayesh/fixproof-evidence-verifier) is a standalone MIT-licensed Python project created during the hackathon window, separate from the primary FixProof repository. Its [initial contribution](https://github.com/K1Andayesh/fixproof-evidence-verifier/commit/2f50996) validates a fictional bundle exported by the public TypeScript MCP service without network access or third-party dependencies. Six tests cover the cross-runtime fixture, a changed observation, malformed/ambiguous input and command-line behavior. The mini-challenge submission still needs these new contribution and repository URLs entered into the existing Devpost entry.
+
 ## Completed submission
 
 The entry was submitted on 14 September 2026, with the public project at https://devpost.com/software/fixproof. The current 2:38 release walkthrough is embedded on the live evaluation page. Devpost still points to the earlier https://youtu.be/T-yjzCHgvus video until the new MP4 and captions are published on YouTube and the submission is updated. Eligibility attestations were confirmed before submission.
