@@ -234,6 +234,36 @@ async def main() -> None:
         scoped_handover = await call(reconnected, "prepare_handover", {"case_id": drying_started["case_id"]})
         assert scoped_handover["evidence"]["scope_report"] == error_report
 
+        electrolux_checks = {}
+        for issue, path, expected_step, expected_page in (
+            ("The fictional plates remain wet after washing.", "drying", "rinse_aid", 20),
+            ("Food remnants remain on the fictional plates.", "food", "food_spacing", 15),
+        ):
+            opened = await call(reconnected, "start_case", {
+                "request_id": str(uuid.uuid4()), "reported_issue": issue,
+                "model": "Electrolux ESF8735ROX", "model_confirmed": True, "fictional_demo": True,
+            })
+            answered = await call(reconnected, "ask_fixproof", {
+                "request_id": str(uuid.uuid4()), "case_id": opened["case_id"],
+                "revision": opened["revision"], "user_message": "What should I check first?",
+            })
+            check = answered["pending_check"]
+            assert check["step_id"] == expected_step
+            assert [citation["page"] for citation in check["citations"]] == [expected_page]
+            assert all("resource.electrolux.com.au" in citation["url"] for citation in check["citations"])
+            electrolux_checks[path] = [citation["url"] for citation in check["citations"]]
+        unsupported_model_path = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()),
+            "reported_issue": "The fictional dishwasher has detergent residue after a wash.",
+            "model": "Electrolux ESF8735ROX", "model_confirmed": True, "fictional_demo": True,
+        })
+        unsupported_model_path_answer = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": unsupported_model_path["case_id"],
+            "revision": unsupported_model_path["revision"], "user_message": "What should I check first?",
+        })
+        assert unsupported_model_path_answer["pending_check"] is None
+        assert unsupported_model_path_answer["latest_event"]["kind"] == "scope"
+
     evidence = {
         "captured_at": datetime.now(timezone.utc).isoformat(),
         "endpoint": url,
@@ -252,8 +282,10 @@ async def main() -> None:
             "self_contained": True,
             "safe_dom_rendering": True,
         },
-        "exact_models": 3,
+        "exact_models": 4,
         "source_backed_paths": 10,
+        "electrolux_citations_by_path": electrolux_checks,
+        "electrolux_unmapped_path_rejected_without_check": True,
         "case_id": started["case_id"],
         "selected_step": pending["step_id"],
         "selected_citations": [item["url"] for item in pending["citations"]],

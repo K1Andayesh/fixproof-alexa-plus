@@ -32,7 +32,7 @@ function buildServer() {
     { name: "FixProof", version: "0.10.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
     {
       capabilities: { tools: {}, resources: {} },
-      instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the four listed exact Bosch or Electrolux models and fictional_demo=true. The three Bosch models cover ten issue paths. Electrolux ESF8735ROX currently covers drying and food remnants only. Never offer a check lacking a citation for the selected exact model. Error codes, pump and hose work remain outside scope. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
+      instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the four listed exact Bosch or Electrolux models and fictional_demo=true. The three Bosch models cover drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour, door-related-starting and water-left-inside-after-programme paths. Electrolux ESF8735ROX currently covers drying and food-remnant paths only. Never offer a check lacking a citation for the selected exact model. Error codes, pump and hose work remain outside scope. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
     },
   );
 
