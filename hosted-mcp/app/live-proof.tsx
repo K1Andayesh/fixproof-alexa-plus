@@ -145,7 +145,7 @@ export function LiveProof() {
       {state === "passed" && appView && (
         <div className="mt-6 rounded-[2rem] border border-[#c9d5cf] bg-white p-5 shadow-[0_18px_60px_rgba(18,57,47,.08)] sm:p-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Live MCP App preview</p>
-          <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em]">The handover, inside the conversation.</h3>
+          <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em]">Inspect the live handover App.</h3>
           <p className="mt-2 text-sm leading-6 text-[#52645b]">This sandbox renders the App resource just read from the live MCP server, with the fictional handover returned by <code>prepare_handover</code>. Clients without MCP Apps still receive Markdown and structured evidence.</p>
           <iframe
             title="Fictional FixProof MCP App handover"
