@@ -43,6 +43,8 @@ SCENARIOS = [
          attempt=("clouding_dishwasher_proof", "Skipped", "I do not have the glass packaging, so I could not verify the marking."), pending="clouding_steam_phase", safety=None),
     dict(slug="odour-performed", issue="There is an unpleasant odour inside the dishwasher.",
          attempt=("odour_wipe_interior", "Issue unchanged", "I wiped away the coarse interior soiling; the unpleasant odour remains."), pending="odour_clean_filters", safety=None),
+    dict(slug="starting-performed", issue="The dishwasher will not start because the door will not close securely.",
+         attempt=("starting_close_door", "Issue unchanged", "I closed the door fully; it still does not close securely and the programme will not start."), pending="starting_basket_clearance", safety=None),
 ]
 
 FIELDS = ["reported_issue", "model", "reference_match_supported", "performed_checks",

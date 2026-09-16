@@ -1,7 +1,7 @@
 {
   "title": "FixProof controlled handover retrieval evaluation",
   "schema_version": 1,
-  "captured_at": "2026-09-16T02:03:43+00:00",
+  "captured_at": "2026-09-16T04:03:36+00:00",
   "reader_models": [
     "qwen3.5:9b",
     "gemma3:12b-it-qat",
@@ -25,7 +25,7 @@
     }
   ],
   "method": {
-    "design": "8 fictional cases x two formats x 3 local model families",
+    "design": "9 fictional cases x two formats x 3 local model families",
     "same_facts": true,
     "format_blind": true,
     "temperature": 0,
@@ -282,21 +282,50 @@
           36
         ]
       }
+    },
+    {
+      "spec": {
+        "slug": "starting-performed",
+        "issue": "The dishwasher will not start because the door will not close securely.",
+        "attempt": [
+          "starting_close_door",
+          "Issue unchanged",
+          "I closed the door fully; it still does not close securely and the programme will not start."
+        ],
+        "pending": "starting_basket_clearance",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      }
     }
   ],
   "aggregate": {
     "raw_transcript": {
-      "reads": 24,
-      "correct_fields": 215,
-      "total_fields": 240,
-      "field_accuracy_percent": 89.6,
+      "reads": 27,
+      "correct_fields": 243,
+      "total_fields": 270,
+      "field_accuracy_percent": 90.0,
       "critical_errors": 5
     },
     "structured_handover": {
-      "reads": 24,
-      "correct_fields": 230,
-      "total_fields": 240,
-      "field_accuracy_percent": 95.8,
+      "reads": 27,
+      "correct_fields": 254,
+      "total_fields": 270,
+      "field_accuracy_percent": 94.1,
       "critical_errors": 0
     }
   },
@@ -351,7 +380,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.75,
+        "seconds": 6.72,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 259,
@@ -408,7 +437,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.45,
+        "seconds": 1.46,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 584,
@@ -467,7 +496,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.36,
+        "seconds": 9.14,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 276,
@@ -526,7 +555,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.38,
+        "seconds": 2.53,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 613,
@@ -587,7 +616,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.95,
+        "seconds": 10.53,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 303,
@@ -646,11 +675,11 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.65,
+        "seconds": 1.61,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 566,
-        "output_tokens": 163
+        "output_tokens": 197
       }
     },
     {
@@ -709,7 +738,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.58,
+        "seconds": 5.45,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 266,
@@ -772,7 +801,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.63,
+        "seconds": 1.62,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 643,
@@ -835,7 +864,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.47,
+        "seconds": 6.67,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 283,
@@ -874,7 +903,7 @@
         "deferred_checks": [
           "Check spacing and contact"
         ],
-        "pending_check": "Check spacing and contact",
+        "pending_check": null,
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
@@ -890,13 +919,13 @@
         "reference_match_supported": true,
         "performed_checks": true,
         "deferred_checks": false,
-        "pending_check": true,
+        "pending_check": false,
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 9,
+      "correct_fields": 8,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
@@ -904,7 +933,7 @@
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 686,
-        "output_tokens": 154
+        "output_tokens": 150
       }
     },
     {
@@ -963,7 +992,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 8.09,
+        "seconds": 7.42,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 309,
@@ -999,8 +1028,10 @@
         "performed_checks": [
           "Check the filters"
         ],
-        "deferred_checks": [],
-        "pending_check": "Check spacing and contact",
+        "deferred_checks": [
+          "Check spacing and contact"
+        ],
+        "pending_check": null,
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
@@ -1015,22 +1046,22 @@
         "model": true,
         "reference_match_supported": true,
         "performed_checks": true,
-        "deferred_checks": true,
-        "pending_check": true,
+        "deferred_checks": false,
+        "pending_check": false,
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 10,
+      "correct_fields": 8,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.26,
+        "seconds": 1.44,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 613,
-        "output_tokens": 225
+        "output_tokens": 177
       }
     },
     {
@@ -1083,7 +1114,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.48,
+        "seconds": 5.6,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 262,
@@ -1142,7 +1173,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.51,
+        "seconds": 1.47,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 587,
@@ -1197,7 +1228,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.25,
+        "seconds": 6.89,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 279,
@@ -1256,7 +1287,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.3,
+        "seconds": 2.24,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 617,
@@ -1319,7 +1350,7 @@
         "deferred check also classified as performed"
       ],
       "runtime": {
-        "seconds": 7.21,
+        "seconds": 7.08,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 307,
@@ -1354,7 +1385,7 @@
         "deferred_checks": [
           "Clear the tablet collecting tray"
         ],
-        "pending_check": "Reposition the detergent tablet",
+        "pending_check": null,
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
@@ -1368,21 +1399,21 @@
         "reference_match_supported": true,
         "performed_checks": true,
         "deferred_checks": true,
-        "pending_check": true,
+        "pending_check": false,
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 10,
+      "correct_fields": 9,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.87,
+        "seconds": 1.32,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 571,
-        "output_tokens": 253
+        "output_tokens": 169
       }
     },
     {
@@ -1439,7 +1470,7 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 5.47,
+        "seconds": 5.44,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 269,
@@ -1498,7 +1529,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.61,
+        "seconds": 1.6,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 616,
@@ -1559,7 +1590,7 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 6.37,
+        "seconds": 6.31,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 283,
@@ -1598,7 +1629,9 @@
         "safety_report": "There is smoke coming from the dishwasher now.",
         "diagnosis_established": false,
         "issue_resolved": false,
-        "source_pages": []
+        "source_pages": [
+          44
+        ]
       },
       "field_correct": {
         "reported_issue": true,
@@ -1610,17 +1643,17 @@
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
-        "source_pages": false
+        "source_pages": true
       },
-      "correct_fields": 9,
+      "correct_fields": 10,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.36,
+        "seconds": 2.41,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 642,
-        "output_tokens": 138
+        "output_tokens": 140
       }
     },
     {
@@ -1675,7 +1708,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 7.28,
+        "seconds": 7.25,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 314,
@@ -1734,11 +1767,11 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.1,
+        "seconds": 1.78,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 598,
-        "output_tokens": 273
+        "output_tokens": 220
       }
     },
     {
@@ -1793,7 +1826,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.18,
+        "seconds": 5.69,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 265,
@@ -1852,7 +1885,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.58,
+        "seconds": 1.49,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 589,
@@ -1911,7 +1944,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.65,
+        "seconds": 6.46,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 282,
@@ -1972,7 +2005,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.41,
+        "seconds": 2.37,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 619,
@@ -2036,7 +2069,7 @@
         "deferred check also classified as performed"
       ],
       "runtime": {
-        "seconds": 7.82,
+        "seconds": 7.49,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 310,
@@ -2095,11 +2128,11 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.02,
+        "seconds": 1.7,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 573,
-        "output_tokens": 226
+        "output_tokens": 209
       }
     },
     {
@@ -2152,7 +2185,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.54,
+        "seconds": 5.43,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 264,
@@ -2191,9 +2224,7 @@
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
-        "source_pages": [
-          45
-        ]
+        "source_pages": []
       },
       "field_correct": {
         "reported_issue": true,
@@ -2205,17 +2236,17 @@
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
-        "source_pages": true
+        "source_pages": false
       },
-      "correct_fields": 10,
+      "correct_fields": 9,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.8,
+        "seconds": 1.5,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 590,
-        "output_tokens": 137
+        "output_tokens": 129
       }
     },
     {
@@ -2270,7 +2301,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.46,
+        "seconds": 6.66,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 279,
@@ -2330,7 +2361,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.5,
+        "seconds": 2.46,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 616,
@@ -2391,7 +2422,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.14,
+        "seconds": 6.12,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 308,
@@ -2450,7 +2481,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.78,
+        "seconds": 1.72,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 571,
@@ -2507,7 +2538,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.49,
+        "seconds": 5.77,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 265,
@@ -2566,7 +2597,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.65,
+        "seconds": 1.48,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 589,
@@ -2621,7 +2652,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.29,
+        "seconds": 6.81,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 283,
@@ -2681,7 +2712,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.52,
+        "seconds": 2.36,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 621,
@@ -2744,7 +2775,7 @@
         "deferred check also classified as performed"
       ],
       "runtime": {
-        "seconds": 7.03,
+        "seconds": 6.53,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 310,
@@ -2779,7 +2810,7 @@
         "deferred_checks": [
           "Use dishwasher-proof glasses"
         ],
-        "pending_check": "Avoid a lengthy steam phase",
+        "pending_check": null,
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
@@ -2793,21 +2824,21 @@
         "reference_match_supported": true,
         "performed_checks": true,
         "deferred_checks": true,
-        "pending_check": true,
+        "pending_check": false,
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 10,
+      "correct_fields": 9,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 4.26,
+        "seconds": 1.87,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 573,
-        "output_tokens": 595
+        "output_tokens": 238
       }
     },
     {
@@ -2862,7 +2893,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.62,
+        "seconds": 5.51,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 264,
@@ -2921,7 +2952,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.6,
+        "seconds": 1.45,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 589,
@@ -2980,7 +3011,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.8,
+        "seconds": 6.53,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 279,
@@ -3041,7 +3072,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.58,
+        "seconds": 2.48,
         "retries": 0,
         "thinking": false,
         "prompt_tokens": 617,
@@ -3102,7 +3133,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 7.76,
+        "seconds": 7.08,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 309,
@@ -3134,7 +3165,7 @@
         "model": "Bosch SMS6HAI02A/01",
         "reference_match_supported": true,
         "performed_checks": [
-          "Remove coarse interior soiling: Issue unchanged"
+          "Remove coarse interior soiling"
         ],
         "deferred_checks": [],
         "pending_check": "Clean the filters",
@@ -3149,7 +3180,7 @@
         "reported_issue": true,
         "model": true,
         "reference_match_supported": true,
-        "performed_checks": false,
+        "performed_checks": true,
         "deferred_checks": true,
         "pending_check": true,
         "safety_report": true,
@@ -3157,15 +3188,373 @@
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 9,
+      "correct_fields": 10,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.9,
+        "seconds": 2.23,
         "retries": 0,
         "thinking": "low",
         "prompt_tokens": 573,
-        "output_tokens": 217
+        "output_tokens": 272
+      }
+    },
+    {
+      "scenario": "starting-performed",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 5.93,
+        "retries": 0,
+        "thinking": false,
+        "prompt_tokens": 271,
+        "output_tokens": 140
+      }
+    },
+    {
+      "scenario": "starting-performed",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.54,
+        "retries": 0,
+        "thinking": false,
+        "prompt_tokens": 595,
+        "output_tokens": 136
+      }
+    },
+    {
+      "scenario": "starting-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [
+          "Clear the basket edge"
+        ],
+        "pending_check": null,
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": false,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.68,
+        "retries": 0,
+        "thinking": false,
+        "prompt_tokens": 288,
+        "output_tokens": 145
+      }
+    },
+    {
+      "scenario": "starting-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [
+          "Clear the basket edge"
+        ],
+        "pending_check": null,
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": false,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.53,
+        "retries": 0,
+        "thinking": false,
+        "prompt_tokens": 625,
+        "output_tokens": 146
+      }
+    },
+    {
+      "scenario": "starting-performed",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.94,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 316,
+        "output_tokens": 255
+      }
+    },
+    {
+      "scenario": "starting-performed",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher will not start because the door will not close securely.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Close the appliance door"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clear the basket edge",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          47
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.82,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 579,
+        "output_tokens": 232
       }
     }
   ]
