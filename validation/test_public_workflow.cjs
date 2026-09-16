@@ -150,4 +150,14 @@ test('the public evaluation exposes portable fingerprinted evidence and the call
  assert.equal((await a.verify(changedBundle)).valid,false);
  const wrongSchema=JSON.parse(JSON.stringify(bundle));wrongSchema.evidence.schema_version='unknown-schema';
  assert.match((await a.verify(wrongSchema)).reason,/schema/);
+ const malformed=JSON.parse(JSON.stringify(bundle));malformed.evidence.model='not a model object';
+ malformed.evidence_integrity.digest=await a.digest(malformed.evidence);
+ assert.equal((await a.verify(malformed)).valid,false);
+ assert.match((await a.verify(malformed)).reason,/malformed fields/);
+ const falseAuthorship=JSON.parse(JSON.stringify(bundle));falseAuthorship.evidence_integrity.authorship_proof=true;
+ assert.match((await a.verify(falseAuthorship)).reason,/declaration/);
+ const unmatched=JSON.parse(JSON.stringify(bundle));unmatched.evidence.model.catalog_match=false;
+ unmatched.evidence.reference=null;unmatched.evidence.checks=[];unmatched.evidence.suggested_awaiting_outcome=null;
+ unmatched.evidence_integrity.digest=await a.digest(unmatched.evidence);
+ assert.equal((await a.verify(unmatched)).valid,true);
 });

@@ -105,14 +105,37 @@ function handoverEvidence(){
 function sortForDigest(value){if(Array.isArray(value))return value.map(sortForDigest);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).sort(([a],[b])=>a<b?-1:a>b?1:0).map(([key,item])=>[key,sortForDigest(item)]));return value;}
 async function evidenceSha256(evidence){const bytes=new TextEncoder().encode(JSON.stringify(sortForDigest(evidence)));const hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,'0')).join('');}
 async function handoverBundle(){const evidence=handoverEvidence();const digest=await evidenceSha256(evidence);const markdown=handover().trimEnd()+'\n\n## Evidence fingerprint\nSHA-256 (fixproof-sorted-json-v1): '+digest+'\nRecomputing this fingerprint can detect changed evidence fields. It does not prove who created the record.\n';return{case_id:state.id,status:state.status,markdown,evidence,evidence_integrity:{algorithm:'sha256',canonicalization:'fixproof-sorted-json-v1',covers:'evidence',digest,authorship_proof:false}};}
+const evidenceObject=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+const evidenceText=value=>typeof value==='string'&&value.trim().length>0;
+const evidenceHash=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
+const validCitation=c=>evidenceObject(c)&&evidenceText(c.title)&&evidenceText(c.document)&&Number.isSafeInteger(c.page)&&c.page>0&&evidenceText(c.url)&&evidenceHash(c.content_sha256);
+const validCitations=c=>Array.isArray(c)&&c.length>0&&c.every(validCitation);
+function validHandoverEvidence(e){
+ if(!evidenceObject(e)||e.schema_version!=='fixproof-handover-1'||!evidenceText(e.case_id)||!evidenceText(e.case_status)||!evidenceText(e.reported_issue))return false;
+ const m=e.model,r=e.reference;
+ if(!evidenceObject(m)||!evidenceText(m.reported)||typeof m.user_confirmed!=='boolean'||typeof m.fictional_demo!=='boolean'||typeof m.catalog_match!=='boolean')return false;
+ if(r===null){if(m.catalog_match)return false;}
+ else if(!evidenceObject(r)||!evidenceText(r.title)||!evidenceText(r.document)||!evidenceText(r.url)||!evidenceText(r.service_url)||!evidenceHash(r.content_sha256||r.sha256))return false;
+ if(!Array.isArray(e.checks)||!e.checks.every(c=>evidenceObject(c)&&evidenceText(c.step_id)&&evidenceText(c.title)&&['user_reports_performed','deferred_or_skipped'].includes(c.evidence_status)&&evidenceText(c.outcome)&&typeof c.observation==='string'&&evidenceText(c.recorded_at)&&validCitations(c.citations)))return false;
+ if(!Array.isArray(e.limits)||!e.limits.every(evidenceText))return false;
+ const pending=e.suggested_awaiting_outcome;
+ if(pending!=null&&(!evidenceObject(pending)||!evidenceText(pending.step_id)||!evidenceText(pending.title)||!validCitations(pending.citations)))return false;
+ if(r===null&&(e.checks.length||pending!=null))return false;
+ if(e.safety_report!=null&&typeof e.safety_report!=='string')return false;
+ if(e.scope_report!=null&&typeof e.scope_report!=='string')return false;
+ return true;
+}
 async function verifyEvidenceBundle(input){
  let bundle;
+ if(typeof input==='string'&&(input.length>1048576||new TextEncoder().encode(input).length>1048576))return{valid:false,reason:'The evidence file is larger than 1 MB.'};
  try{bundle=typeof input==='string'?JSON.parse(input):input;}catch{return{valid:false,reason:'The file is not valid JSON.'};}
  const evidence=bundle?.evidence,integrity=bundle?.evidence_integrity;
  if(!evidence||typeof evidence!=='object'||Array.isArray(evidence)||!integrity||typeof integrity!=='object')return{valid:false,reason:'This is not a FixProof evidence bundle.'};
- if(evidence.schema_version!=='fixproof-handover-1'||!Array.isArray(evidence.checks)||!Array.isArray(evidence.limits)||!evidence.model||!evidence.reference)return{valid:false,reason:'The FixProof evidence schema is missing required fields.'};
- if(integrity.algorithm!=='sha256'||integrity.canonicalization!=='fixproof-sorted-json-v1'||integrity.covers!=='evidence'||!/^[a-f0-9]{64}$/.test(integrity.digest||''))return{valid:false,reason:'The fingerprint declaration is missing or unsupported.'};
- const recomputed=await evidenceSha256(evidence),valid=recomputed===integrity.digest;
+ if(!validHandoverEvidence(evidence))return{valid:false,reason:'The FixProof evidence schema is missing or has malformed fields.'};
+ if(integrity.algorithm!=='sha256'||integrity.canonicalization!=='fixproof-sorted-json-v1'||integrity.covers!=='evidence'||integrity.authorship_proof!==false||!evidenceHash(integrity.digest))return{valid:false,reason:'The fingerprint declaration is missing or unsupported.'};
+ let recomputed;
+ try{recomputed=await evidenceSha256(evidence);}catch{return{valid:false,reason:'The evidence cannot be fingerprinted.'};}
+ const valid=recomputed===integrity.digest;
  return{valid,reason:valid?'Fingerprint matches the evidence fields.':'Fingerprint mismatch: one or more evidence fields changed after export.',expected:integrity.digest,recomputed,evidence};
 }
 function renderVerification(result){
@@ -121,7 +144,7 @@ function renderVerification(result){
  if(result.expected){const digest=document.createElement('p');digest.className='digest';digest.textContent='Exported: '+result.expected+'\nRecomputed: '+result.recomputed;target.append(digest);}
  if(result.valid){
   const e=result.evidence,performed=e.checks.filter(check=>check.evidence_status==='user_reports_performed').length,deferred=e.checks.filter(check=>check.evidence_status==='deferred_or_skipped').length;
-  for(const text of ['Case: '+e.case_id+' · '+e.case_status,'Reported issue: '+e.reported_issue,'Model: '+e.model.reported+(e.model.fictional_demo?' · fictional demonstration':''),'Evidence: '+performed+' reported performed · '+deferred+' deferred or skipped','Reference: '+e.reference.title+' · '+e.reference.document]){const p=document.createElement('p');p.textContent=text;target.append(p);}
+  for(const text of ['Case: '+e.case_id+' · '+e.case_status,'Reported issue: '+e.reported_issue,'Model: '+e.model.reported+(e.model.fictional_demo?' · fictional demonstration':''),'Evidence: '+performed+' reported performed · '+deferred+' deferred or skipped','Reference: '+(e.reference?e.reference.title+' · '+e.reference.document:'No verified reference for this model')]){const p=document.createElement('p');p.textContent=text;target.append(p);}
  }
  const boundary=document.createElement('p');boundary.className='fine';boundary.textContent='Authorship, identity and physical inspection are not proven by this fingerprint.';target.append(boundary);
 }
