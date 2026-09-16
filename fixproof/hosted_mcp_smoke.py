@@ -235,9 +235,13 @@ async def main() -> None:
         assert scoped_handover["evidence"]["scope_report"] == error_report
 
         electrolux_checks = {}
-        for issue, path, expected_step, expected_page in (
-            ("The fictional plates remain wet after washing.", "drying", "rinse_aid", 20),
-            ("Food remnants remain on the fictional plates.", "food", "food_spacing", 15),
+        for issue, path, expected_step, expected_pages in (
+            ("The fictional plates remain wet after washing.", "drying", "rinse_aid", [20]),
+            ("Food remnants remain on the fictional plates.", "food", "food_spacing", [15]),
+            ("Detergent remains in the fictional dispenser.", "detergent", "electrolux_dispenser_lid", [21]),
+            ("Removable streaks remain on fictional glasses.", "streaks", "streaks_rinse_setting", [20]),
+            ("There is an unpleasant odour inside the fictional dishwasher.", "odour", "electrolux_clean_interior", [16, 18]),
+            ("The fictional dishwasher will not start because its door will not close.", "starting", "starting_close_door", [18]),
         ):
             opened = await call(reconnected, "start_case", {
                 "request_id": str(uuid.uuid4()), "reported_issue": issue,
@@ -249,12 +253,12 @@ async def main() -> None:
             })
             check = answered["pending_check"]
             assert check["step_id"] == expected_step
-            assert [citation["page"] for citation in check["citations"]] == [expected_page]
+            assert [citation["page"] for citation in check["citations"]] == expected_pages
             assert all("resource.electrolux.com.au" in citation["url"] for citation in check["citations"])
             electrolux_checks[path] = [citation["url"] for citation in check["citations"]]
         unsupported_model_path = await call(reconnected, "start_case", {
             "request_id": str(uuid.uuid4()),
-            "reported_issue": "The fictional dishwasher has detergent residue after a wash.",
+            "reported_issue": "The fictional cutlery has rust spots after a wash.",
             "model": "Electrolux ESF8735ROX", "model_confirmed": True, "fictional_demo": True,
         })
         unsupported_model_path_answer = await call(reconnected, "ask_fixproof", {

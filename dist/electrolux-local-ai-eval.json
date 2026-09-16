@@ -1,0 +1,128 @@
+{
+  "captured_at": "2026-09-16T16:15:07+00:00",
+  "model": "qwen3.5:4b",
+  "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "cases": [
+    {
+      "scenario": "detergent",
+      "issue": "Detergent remains in the dispenser after a wash.",
+      "passed": true,
+      "response": {
+        "kind": "step",
+        "text": "Check that items in the baskets do not prevent the detergent dispenser lid from opening.",
+        "workflow": "detergent",
+        "title": "Clear the detergent dispenser lid",
+        "pages": [
+          21
+        ],
+        "step": "electrolux_dispenser_lid",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 7.85,
+          "input_tokens": 720,
+          "output_tokens": 27,
+          "decision": {
+            "category": "detergent",
+            "step": "electrolux_dispenser_lid"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "streaks",
+      "issue": "Removable white streaks remain on glasses after a wash.",
+      "passed": true,
+      "response": {
+        "kind": "step",
+        "text": "If the detergent quantity is too high, use the correct amount stated on its packaging.",
+        "workflow": "streaks",
+        "title": "Check the detergent quantity",
+        "pages": [
+          20,
+          15
+        ],
+        "step": "electrolux_detergent_dose",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.44,
+          "input_tokens": 728,
+          "output_tokens": 23,
+          "decision": {
+            "category": "streaks",
+            "step": "electrolux_detergent_dose"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "odour",
+      "issue": "There is an unpleasant odour inside the dishwasher.",
+      "passed": true,
+      "response": {
+        "kind": "step",
+        "text": "Before maintenance, deactivate and unplug the appliance. Carefully clean the interior and door gasket with a soft damp cloth; avoid abrasive products and strong chemicals.",
+        "workflow": "odour",
+        "title": "Clean the appliance interior",
+        "pages": [
+          16,
+          18
+        ],
+        "step": "electrolux_clean_interior",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.41,
+          "input_tokens": 798,
+          "output_tokens": 20,
+          "decision": {
+            "category": "odour",
+            "step": "electrolux_clean_interior"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "starting",
+      "issue": "The dishwasher will not start because the door will not close securely.",
+      "passed": true,
+      "response": {
+        "kind": "step",
+        "text": "Close the appliance door fully before trying to start the programme.",
+        "workflow": "starting",
+        "title": "Close the appliance door",
+        "pages": [
+          18
+        ],
+        "step": "starting_close_door",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.41,
+          "input_tokens": 700,
+          "output_tokens": 16,
+          "decision": {
+            "category": "starting",
+            "step": "starting_close_door"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "unmapped_noise",
+      "issue": "There is a rattling noise during the wash.",
+      "passed": true,
+      "response": {
+        "kind": "scope",
+        "text": "This exact model has no verified noise guidance in the current reference catalog. No check was selected. Keep the report in the handover for a qualified service conversation.",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.22,
+          "input_tokens": 463,
+          "output_tokens": 7,
+          "decision": {
+            "category": "noise",
+            "step": "none"
+          }
+        }
+      }
+    }
+  ]
+}

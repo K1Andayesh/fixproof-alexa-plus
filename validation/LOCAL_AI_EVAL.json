@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-16T13:16:15+00:00",
+  "at": "2026-09-16T16:16:08+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,7 +15,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 6.03,
+          "seconds": 0.57,
           "input_tokens": 796,
           "output_tokens": 20,
           "decision": {
@@ -39,7 +39,7 @@
         "step": "food_spacing",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.35,
+          "seconds": 0.4,
           "input_tokens": 795,
           "output_tokens": 20,
           "decision": {
@@ -63,7 +63,7 @@
         "step": "detergent_tray",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.36,
+          "seconds": 0.39,
           "input_tokens": 716,
           "output_tokens": 20,
           "decision": {
@@ -87,7 +87,7 @@
         "step": "streaks_rinse_setting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.36,
+          "seconds": 0.39,
           "input_tokens": 879,
           "output_tokens": 22,
           "decision": {
@@ -111,7 +111,7 @@
         "step": "noise_load_distribution",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.33,
+          "seconds": 0.4,
           "input_tokens": 761,
           "output_tokens": 16,
           "decision": {
@@ -135,7 +135,7 @@
         "step": "rust_resistant_tableware",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.35,
+          "seconds": 0.38,
           "input_tokens": 702,
           "output_tokens": 18,
           "decision": {
@@ -159,7 +159,7 @@
         "step": "clouding_steam_phase",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.35,
+          "seconds": 0.42,
           "input_tokens": 816,
           "output_tokens": 19,
           "decision": {
@@ -183,7 +183,7 @@
         "step": "odour_clean_filters",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.32,
+          "seconds": 0.38,
           "input_tokens": 767,
           "output_tokens": 18,
           "decision": {
@@ -207,7 +207,7 @@
         "step": "starting_close_door",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.34,
+          "seconds": 0.37,
           "input_tokens": 763,
           "output_tokens": 16,
           "decision": {
@@ -231,7 +231,7 @@
         "step": "water_cycle",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.35,
+          "seconds": 0.36,
           "input_tokens": 731,
           "output_tokens": 17,
           "decision": {
@@ -271,7 +271,7 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.16,
+          "seconds": 0.18,
           "input_tokens": 463,
           "output_tokens": 13,
           "decision": {
@@ -293,7 +293,7 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.14,
+          "seconds": 0.17,
           "input_tokens": 467,
           "output_tokens": 8,
           "decision": {
@@ -335,7 +335,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.29,
+          "seconds": 0.34,
           "input_tokens": 786,
           "output_tokens": 15,
           "decision": {
@@ -359,7 +359,7 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.37,
+          "seconds": 0.41,
           "input_tokens": 806,
           "output_tokens": 20,
           "decision": {
@@ -402,7 +402,7 @@
         "text": "Every check in this supported path has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.21,
+          "seconds": 0.22,
           "input_tokens": 465,
           "output_tokens": 13,
           "decision": {

@@ -269,7 +269,7 @@ apps.add_html_resource(
 
 mcp = MCPServer(
     "FixProof",
-    version="0.4.0",
+    version="0.5.0",
     website_url="https://fixproof-alexa.keyvan-andayesh.chatgpt.site",
     instructions=(
         "Carry an appliance issue through source-linked checks and a repair handover. "
@@ -278,7 +278,8 @@ mcp = MCPServer(
         "three exact Bosch models with drying, food-remnant, detergent-residue, "
         "removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, "
         "unpleasant-interior-odour, door-related-starting and water-left-inside guidance. "
-        "Electrolux ESF8735ROX has drying and food-remnant guidance only."
+        "Electrolux ESF8735ROX has drying, food-remnant, detergent-residue, "
+        "removable-streak, unpleasant-interior-odour and door-related-starting guidance only."
     ),
     extensions=[apps],
 )

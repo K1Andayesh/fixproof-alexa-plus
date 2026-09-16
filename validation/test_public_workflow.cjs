@@ -57,14 +57,25 @@ test('information and clarification preserve a pending suggestion',()=>{
  const b=app();b.run("start('Plates are wet.','drying','Bosch SMS6HCI02A/72')");b.ask('Only plastic stays wet.');
  assert.match(b.run('latest'),/page 42/);
 });
-test('Electrolux keeps only its two mapped paths and its own cited pages',()=>{
+test('Electrolux keeps only six mapped paths and its own cited pages',()=>{
  const a=app();a.run("start('Plates are wet.','drying','Electrolux ESF8735ROX')");
  assert.deepEqual(Array.from(a.run('activeSteps().map(step=>step.id)')),['waiting','rinse','electrolux_airdry']);
  a.ask('What should I check for wet plates?');
  assert.match(a.run('handoverEvidence().suggested_awaiting_outcome.citations[0].url'),/resource\.electrolux\.com\.au\/Public\/File\/\?Id=33277#page=15/);
  assert.doesNotMatch(a.handover(),/media3\.bsh-group\.com/);
+ for(const [path,ids,page] of [
+  ['detergent',['electrolux_dispenser_lid','electrolux_dispenser_spray'],21],
+  ['streaks',['streaks_rinse_setting','electrolux_detergent_dose'],20],
+  ['odour',['electrolux_clean_interior','electrolux_long_programme','electrolux_cleaner'],16],
+  ['starting',['starting_close_door','starting_basket_clearance'],18],
+ ]){
+  const e=app();e.run(`start('',${JSON.stringify(path)},'Electrolux ESF8735ROX')`);
+  assert.deepEqual(Array.from(e.run('activeSteps().map(step=>step.id)')),ids);
+  e.ask('What should I check first?');
+  assert.match(e.run('handoverEvidence().suggested_awaiting_outcome.citations[0].url'),new RegExp(`#page=${page}$`));
+ }
  const b=app();b.start();
- assert.equal(b.run('activeSteps().some(step=>step.id==="electrolux_airdry")'),false);
+ assert.equal(b.run('activeSteps().some(step=>step.id.startsWith("electrolux_"))'),false);
 });
 test('an error-code report stops pending guidance and remains in the handover',()=>{
  const a=app();a.start();a.ask('first check');a.ask('It shows E:61-03.');

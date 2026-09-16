@@ -74,8 +74,13 @@ class WorkflowTests(unittest.TestCase):
     def test_electrolux_catalog_only_offers_manual_mapped_paths(self):
         model='Electrolux ESF8735ROX'
         steps=server.steps_for(model)
-        self.assertEqual({step['workflow'] for step in steps.values()},{'drying','food'})
+        self.assertEqual({step['workflow'] for step in steps.values()},{'drying','food','detergent','streaks','odour','starting'})
         self.assertEqual(steps['electrolux_airdry']['pages'],[15,20])
+        self.assertEqual(steps['electrolux_dispenser_lid']['pages'],[21])
+        self.assertEqual(steps['electrolux_detergent_dose']['pages'],[20,15])
+        self.assertEqual(steps['electrolux_clean_interior']['pages'],[16,18])
+        self.assertEqual(steps['starting_basket_clearance']['pages'],[19])
+        self.assertNotIn('electrolux_clean_interior',server.steps_for('Bosch SMS6HAI02A/01'))
         self.assertEqual(server.source_for(model)['sha256'],'7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d')
         c=self.create(model=model,issue='Food remains on the dishes.')
         def choose_food(prompt,context,schema):
@@ -85,8 +90,8 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(reply['step'],'food_spacing')
         self.assertEqual(reply['pages'],[15])
         self.assertIn('ESF8735ROX',server.handover(c))
-        with patch.object(server,'infer',return_value=({'category':'detergent'},{'model':'stub','prompt_eval_count':1,'eval_count':1})):
-            out=server.assess(c,'The tablet did not dissolve.')
+        with patch.object(server,'infer',return_value=({'category':'rust'},{'model':'stub','prompt_eval_count':1,'eval_count':1})):
+            out=server.assess(c,'There are rust spots on the cutlery.')
         self.assertEqual(out['kind'],'scope')
         self.assertNotIn('step',out)
     def test_water_left_after_programme_has_model_pages_and_error_code_is_outside_scope(self):

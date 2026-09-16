@@ -44,6 +44,12 @@ const definitions: Record<string, Omit<Step, "pages">> = {
   water_cycle: { workflow: "water_retention", title: "Check whether the programme ended", text: "Confirm that the programme has finished. If it is still running, wait for it to end before assessing water remaining inside the appliance." },
   water_filters: { workflow: "water_retention", title: "Check and clean the filters", text: "If water remains after the programme ends, inspect the filter system for residue and clean it as shown in the manual. Do not open or work on the pump." },
   electrolux_airdry: { workflow: "drying", title: "Use the documented drying option", text: "For improved drying, select AirDry. Otherwise, open the door approximately 10 cm at the end of the programme and allow tableware to cool for 30–40 minutes before unloading." },
+  electrolux_dispenser_lid: { workflow: "detergent", title: "Clear the detergent dispenser lid", text: "Check that items in the baskets do not prevent the detergent dispenser lid from opening." },
+  electrolux_dispenser_spray: { workflow: "detergent", title: "Check spray-arm clearance for the dispenser", text: "Check that the spray arm is not blocked or clogged so water can reach the detergent dispenser." },
+  electrolux_detergent_dose: { workflow: "streaks", title: "Check the detergent quantity", text: "If the detergent quantity is too high, use the correct amount stated on its packaging." },
+  electrolux_clean_interior: { workflow: "odour", title: "Clean the appliance interior", text: "Before maintenance, deactivate and unplug the appliance. Carefully clean the interior and door gasket with a soft damp cloth; avoid abrasive products and strong chemicals." },
+  electrolux_long_programme: { workflow: "odour", title: "Review short-programme use", text: "If short programmes are used regularly, run a long programme at least twice a month to help prevent grease and limescale deposits." },
+  electrolux_cleaner: { workflow: "odour", title: "Use a dishwasher-specific cleaner", text: "Use a cleaner made for dishwashers at least once a month and follow its packaging instructions." },
 };
 
 const catalogs = {
@@ -61,7 +67,7 @@ const catalogs = {
   },
   "Electrolux ESF8735ROX": {
     source: { title: "Electrolux ESF8735ROX · English user manual", url: "https://resource.electrolux.com.au/Public/File/?Id=33277", service_url: "https://www.electrolux.com.au/dishwashers/built-in/esf8735rox/", document: "ESF8735ROX / ESF8735RKX user manual", verified: "2026-09-17", sha256: "7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d" },
-    pages: { rinse_aid:[20], waiting:[15], electrolux_airdry:[15,20], food_spacing:[15], food_spray_arm:[15], food_filters:[16,17,20], food_programme:[20] },
+    pages: { rinse_aid:[20], waiting:[15], electrolux_airdry:[15,20], food_spacing:[15], food_spray_arm:[15], food_filters:[16,17,20], food_programme:[20], electrolux_dispenser_lid:[21], electrolux_dispenser_spray:[21], streaks_rinse_setting:[20], electrolux_detergent_dose:[20,15], electrolux_clean_interior:[16,18], electrolux_long_programme:[18], electrolux_cleaner:[18], starting_close_door:[18], starting_basket_clearance:[19] },
   },
 } satisfies Record<string, { source: Source; pages: Record<string, number[]> }>;
 
