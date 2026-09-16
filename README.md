@@ -8,7 +8,7 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 
 ## 90-second judge tour
 
-1. Read the impact card, choose a verified Bosch reference model, then start a fictional drying case. The selector also exposes separate food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour and door-related-starting, and water-left-inside-after-programme paths.
+1. Read the impact card, choose an exact reference model, then start a fictional drying case. The three Bosch models expose ten paths. Electrolux ESF8735ROX currently exposes drying and food-remnant paths only; the selector disables its unmapped paths.
 2. Ask **What should I check first?** and open the cited manual page.
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
@@ -65,7 +65,7 @@ Optional environment variables: `FIXPROOF_MODEL`, `FIXPROOF_OLLAMA`, `FIXPROOF_P
 
 ## Run the MCP server
 
-For immediate judge testing, open `https://fixproof-mcp.keyvan-andayesh.chatgpt.site` and choose **Run live MCP proof** for a cited, deferred check or **Run scope boundary proof** to see a fictional error-code report retained without a guided check. Both render the returned handover App and fictional evidence in a sandboxed browser frame. An MCP client can also connect directly to `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. The endpoint runs the same bounded three-model, ten-path catalog as a separate public TypeScript MCP service with D1 continuity. The public `prepare_handover` tool advertises the same self-contained `ui://fixproof/handover.html` MCP App as the local server, with Markdown and structured JSON fallbacks. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data.
+For immediate judge testing, open `https://fixproof-mcp.keyvan-andayesh.chatgpt.site` and choose **Run live MCP proof** for a cited, deferred check or **Run scope boundary proof** to see a fictional error-code report retained without a guided check. Both render the returned handover App and fictional evidence in a sandboxed browser frame. An MCP client can also connect directly to `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. The endpoint runs a bounded four-model catalog with ten paths for the three Bosch models and two documented paths for the Electrolux model. The public `prepare_handover` tool advertises the same self-contained `ui://fixproof/handover.html` MCP App as the local server, with Markdown and structured JSON fallbacks. The public service rejects requests unless `fictional_demo: true` is supplied and must not receive real appliance or personal data.
 
 The MCP endpoint uses the official Python SDK and Streamable HTTP. It exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome` and `prepare_handover` as one stateful agent workflow. The handover tool also exposes `ui://fixproof/handover.html` through the official MCP Apps extension, allowing a compatible host to render the evidence inside the conversation.
 
@@ -85,13 +85,13 @@ The server defaults to loopback, uses the same SQLite record and bounded AI deci
 
 ## Implemented
 
-- Three exact reference models, Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72. The same thirty-one application-owned checks across drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour and door-related-starting paths are independently mapped to visually checked pages in each model's official manual.
+- Four exact reference models: Bosch SMS6HAI02A/01, SMS6HCI01A/38 and SMS6HCI02A/72, plus Electrolux ESF8735ROX. The three Bosch models have ten paths and thirty-one shared check definitions, independently mapped to their official manuals. The Electrolux model has a seven-check drying/poor-washing subset mapped to its own manual, including one brand-specific AirDry check. Unsupported model-path combinations stop without a suggested check.
 - Local AI classifies symptoms, then selects from remaining source-backed checks. Server supplies instruction text and citations. Unsupported/unconfirmed models do not receive model-specific checks.
 - SQLite history, revision checks and request idempotency. Outcomes, deferred/skipped checks and user-reported resolution remain distinct. Explicitly revisit recorded outcomes to update them.
 - Reload/resume, model traces, manufacturer links, handover preview, Markdown download and portable structured-JSON download. The public receiver accepts a file or pasted bundle, recomputes its fingerprint locally, rejects changed evidence and renders the bounded case facts without uploading the file.
 - Optional Chrome speech input fills the question for review without submitting it. Browser speech output can read the latest FixProof response aloud. The typed path remains available throughout.
 - Official MCP Python SDK 2.2.0 server over Streamable HTTP. The tested client negotiated MCP protocol `2026-07-28`, later than the competition's `2025-11-25` minimum. Supported step and informational results carry self-contained page citations plus the verified source hash.
-- Public judge-callable TypeScript MCP SDK 2.0.0 deployment over Streamable HTTP, with D1-backed state across connections, an enforced fictional-only input boundary, and machine-facing server instructions that enumerate all ten verified paths.
+- Public judge-callable TypeScript MCP SDK 2.0.0 deployment over Streamable HTTP, with D1-backed state across connections, an enforced fictional-only input boundary, and machine-facing instructions that distinguish the Bosch ten-path catalog from the Electrolux two-path subset.
 - Versioned machine-readable handover evidence preserves the status, observation and citations for every recorded check alongside the human-readable Markdown. A SHA-256 fingerprint over canonical sorted JSON makes later field changes detectable; it is explicitly not an identity or authorship proof.
 - MCP tool annotations identify read-only and state-changing operations, declare retry-safe idempotency, and tell clients that the tools do not reach into an open external world.
 - The read-only handover tool declares an official MCP Apps `ui://` resource. Its self-contained interface loads no external assets, requests no device permissions, renders values through safe DOM text operations, and retains a meaningful result for text-only clients.

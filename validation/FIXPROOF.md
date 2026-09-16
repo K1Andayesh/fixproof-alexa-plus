@@ -26,6 +26,8 @@ Bosch SMS6HCI02A/72 was added on 15 September 2026 as another independent catalo
 
 Pages 23-24, 27-28, 36-37, 41-50 were extracted and visually inspected. They support the same thirty-one check summaries and both informational results with a third independent page map; page 46 supports both the cutlery-rust and irreversible-glass-clouding paths, while pages 35–36 support the unpleasant-interior-odour care path. SHA-256: `b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476`.
 
+Electrolux ESF8735ROX was added on 17 September 2026 as a second-manufacturer reference. The [official product page](https://www.electrolux.com.au/dishwashers/built-in/esf8735rox/) and [official user manual](https://resource.electrolux.com.au/Public/File/?Id=33277) identify this exact model; the manual cover names ESF8735ROX and ESF8735RKX. Physical PDF pages 1, 15–17 and 20 were rendered and visually inspected. Page 15 supports loading, spray-arm clearance, the AirDry/door-opening option and cooling time. Pages 16–17 support filter cleaning and the maintenance warning. Page 20 supports rinse-aid and poor-washing guidance. The manual is mapped to seven checks across drying and food-remnant paths only; unmatched paths are outside this model's verified scope. SHA-256: `7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d`. Source PDF and rendered pages remain under ignored `tmp/`.
+
 ## Ordered work
 
 1. Retrieve the linked manufacturer manual, verify its model coverage and record document version, language, source URL and page references. Use original concise summaries; do not bundle copyrighted manuals without permission.

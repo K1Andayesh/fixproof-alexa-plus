@@ -43,6 +43,7 @@ STEP_DEFINITIONS = {
     'starting_basket_clearance': {'workflow': 'starting', 'title': 'Clear the basket edge', 'text': 'Arrange tableware so no parts project beyond the basket and prevent the appliance door from closing properly.', 'pages': [47]},
     'water_cycle': {'workflow': 'water_retention', 'title': 'Check whether the programme ended', 'text': 'Confirm that the programme has finished. If it is still running, wait for it to end before assessing water remaining inside the appliance.', 'pages': [46]},
     'water_filters': {'workflow': 'water_retention', 'title': 'Check and clean the filters', 'text': 'If water remains after the programme ends, inspect the filter system for residue and clean it as shown in the manual. Do not open or work on the pump.', 'pages': [46, 36, 37]},
+    'electrolux_airdry': {'workflow': 'drying', 'title': 'Use the documented drying option', 'text': 'For improved drying, select AirDry. Otherwise, open the door approximately 10 cm at the end of the programme and allow tableware to cool for 30–40 minutes before unloading.', 'pages': [15, 20]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -113,6 +114,25 @@ CATALOGS = {
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },
+    'ESF8735ROX': {
+        'model': 'Electrolux ESF8735ROX',
+        'aliases': ('ELECTROLUXESF8735ROX', 'ESF8735ROX'),
+        'source': {
+            'title': 'Electrolux ESF8735ROX · English user manual',
+            'url': 'https://resource.electrolux.com.au/Public/File/?Id=33277',
+            'service_url': 'https://www.electrolux.com.au/dishwashers/built-in/esf8735rox/',
+            'document': 'ESF8735ROX / ESF8735RKX user manual',
+            'verified': '2026-09-17',
+            'sha256': '7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d',
+            'coverage': 'The official product page and manual cover name ESF8735ROX. Only drying and poor-washing checks are mapped.',
+        },
+        'step_pages': {
+            'rinse_aid': [20], 'waiting': [15], 'electrolux_airdry': [15, 20],
+            'food_spacing': [15], 'food_spray_arm': [15],
+            'food_filters': [16, 17, 20], 'food_programme': [20],
+        },
+        'info_pages': {'plastic': [20], 'interior': [20]},
+    },
 }
 
 
@@ -129,13 +149,13 @@ def source_for(model):
 def steps_for(model):
     entry = catalog_for(model)
     pages = entry['step_pages'] if entry else CATALOGS['SMS6HAI02A/01']['step_pages']
-    return {key: {**value, 'pages': list(pages[key])} for key, value in STEP_DEFINITIONS.items()}
+    return {key: {**STEP_DEFINITIONS[key], 'pages': list(mapped)} for key, mapped in pages.items()}
 
 
 def info_for(model):
     entry = catalog_for(model)
     pages = entry['info_pages'] if entry else CATALOGS['SMS6HAI02A/01']['info_pages']
-    return {key: {**value, 'pages': list(pages[key])} for key, value in INFO_DEFINITIONS.items()}
+    return {key: {**INFO_DEFINITIONS[key], 'pages': list(mapped)} for key, mapped in pages.items()}
 
 
 STEPS = steps_for(MODEL)

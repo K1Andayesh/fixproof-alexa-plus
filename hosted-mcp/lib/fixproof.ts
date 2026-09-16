@@ -43,6 +43,7 @@ const definitions: Record<string, Omit<Step, "pages">> = {
   starting_basket_clearance: { workflow: "starting", title: "Clear the basket edge", text: "Arrange tableware so no parts project beyond the basket and prevent the appliance door from closing properly." },
   water_cycle: { workflow: "water_retention", title: "Check whether the programme ended", text: "Confirm that the programme has finished. If it is still running, wait for it to end before assessing water remaining inside the appliance." },
   water_filters: { workflow: "water_retention", title: "Check and clean the filters", text: "If water remains after the programme ends, inspect the filter system for residue and clean it as shown in the manual. Do not open or work on the pump." },
+  electrolux_airdry: { workflow: "drying", title: "Use the documented drying option", text: "For improved drying, select AirDry. Otherwise, open the door approximately 10 cm at the end of the programme and allow tableware to cool for 30–40 minutes before unloading." },
 };
 
 const catalogs = {
@@ -57,6 +58,10 @@ const catalogs = {
   "Bosch SMS6HCI02A/72": {
     source: { title: "Bosch SMS6HCI02A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9002017246_A.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72", document: "9002017246 (050605) 650 V1", verified: "2026-09-15", sha256: "b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476" },
     pages: { programme:[41], rinse_aid:[41,23,24], loading:[41,28], waiting:[42], food_spacing:[42], food_spray_arm:[42,37], food_filters:[43,36,37], food_programme:[43], detergent_tray:[43,27,28], detergent_position:[43], streaks_rinse_setting:[45,24], streaks_add_rinse_aid:[45,23], streaks_tray:[45,27,28], streaks_prerinse:[46], noise_spray_arm:[49], noise_load_distribution:[49], noise_light_items:[50], rust_resistant_tableware:[46], rust_remove_rusting_items:[46], clouding_dishwasher_proof:[46], clouding_steam_phase:[46], clouding_lower_temperature:[46], clouding_glass_protection:[46], odour_wipe_interior:[36], odour_clean_filters:[36], odour_machine_care:[35,36], starting_close_door:[48], starting_rear_clearance:[49], starting_basket_clearance:[49], water_cycle:[48], water_filters:[48,36,37] },
+  },
+  "Electrolux ESF8735ROX": {
+    source: { title: "Electrolux ESF8735ROX · English user manual", url: "https://resource.electrolux.com.au/Public/File/?Id=33277", service_url: "https://www.electrolux.com.au/dishwashers/built-in/esf8735rox/", document: "ESF8735ROX / ESF8735RKX user manual", verified: "2026-09-17", sha256: "7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d" },
+    pages: { rinse_aid:[20], waiting:[15], electrolux_airdry:[15,20], food_spacing:[15], food_spray_arm:[15], food_filters:[16,17,20], food_programme:[20] },
   },
 } satisfies Record<string, { source: Source; pages: Record<string, number[]> }>;
 
@@ -81,7 +86,7 @@ export function stepsFor(model: string): Record<string, Step> {
   const entry = catalog(model);
   if (!entry) return {};
   const pages = entry[1].pages as Record<string, number[]>;
-  return Object.fromEntries(Object.entries(definitions).map(([id, step]) => [id, { ...step, pages: [...pages[id]] }])) as Record<string, Step>;
+  return Object.fromEntries(Object.entries(pages).map(([id, mapped]) => [id, { ...definitions[id], pages: [...mapped] }])) as Record<string, Step>;
 }
 
 export function citationsFor(model: string, pages: number[]): Citation[] {
@@ -211,6 +216,12 @@ export async function askFixProof(input: { request_id: string; case_id: string; 
     return view(await saveUpdated(caseRecord, requestId, input.revision));
   }
   const steps = stepsFor(caseRecord.model);
+  if (!Object.values(steps).some((step) => step.workflow === caseRecord.workflow)) {
+    caseRecord.status = "Handover ready";
+    caseRecord.scope_report = `No verified ${caseRecord.workflow.replaceAll("_", " ")} guidance is mapped to this exact model.`;
+    caseRecord.latest_event = { kind: "scope", text: "This issue is outside the verified paths for this exact model. No check was selected; keep the report for a qualified service conversation." };
+    return view(await saveUpdated(caseRecord, requestId, input.revision));
+  }
   if (caseRecord.pending && steps[caseRecord.pending]) return view(caseRecord);
   const next = Object.entries(steps).find(([id, step]) => step.workflow === caseRecord.workflow && !caseRecord.attempts[id]);
   if (!next) {

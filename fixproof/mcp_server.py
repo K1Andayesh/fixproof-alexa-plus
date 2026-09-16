@@ -277,7 +277,8 @@ mcp = MCPServer(
         "physical inspection, or a verified repair. The current reference catalog covers "
         "three exact Bosch models with drying, food-remnant, detergent-residue, "
         "removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, "
-        "unpleasant-interior-odour and door-related-starting guidance."
+        "unpleasant-interior-odour, door-related-starting and water-left-inside guidance. "
+        "Electrolux ESF8735ROX has drying and food-remnant guidance only."
     ),
     extensions=[apps],
 )

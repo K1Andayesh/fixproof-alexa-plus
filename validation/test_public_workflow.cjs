@@ -57,6 +57,15 @@ test('information and clarification preserve a pending suggestion',()=>{
  const b=app();b.run("start('Plates are wet.','drying','Bosch SMS6HCI02A/72')");b.ask('Only plastic stays wet.');
  assert.match(b.run('latest'),/page 42/);
 });
+test('Electrolux keeps only its two mapped paths and its own cited pages',()=>{
+ const a=app();a.run("start('Plates are wet.','drying','Electrolux ESF8735ROX')");
+ assert.deepEqual(Array.from(a.run('activeSteps().map(step=>step.id)')),['waiting','rinse','electrolux_airdry']);
+ a.ask('What should I check for wet plates?');
+ assert.match(a.run('handoverEvidence().suggested_awaiting_outcome.citations[0].url'),/resource\.electrolux\.com\.au\/Public\/File\/\?Id=33277#page=15/);
+ assert.doesNotMatch(a.handover(),/media3\.bsh-group\.com/);
+ const b=app();b.start();
+ assert.equal(b.run('activeSteps().some(step=>step.id==="electrolux_airdry")'),false);
+});
 test('an error-code report stops pending guidance and remains in the handover',()=>{
  const a=app();a.start();a.ask('first check');a.ask('It shows E:61-03.');
  assert.equal(a.run('state.pending'),null);assert.equal(a.run('state.status'),'Handover ready');

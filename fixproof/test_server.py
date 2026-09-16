@@ -71,6 +71,24 @@ class WorkflowTests(unittest.TestCase):
             server.record_evidence(c,'waiting','Still wet','Still wet after waiting.')
             export=server.handover(c)
             self.assertIn(document+'#page='+str(pages[0]),export);self.assertNotIn(excluded,export)
+    def test_electrolux_catalog_only_offers_manual_mapped_paths(self):
+        model='Electrolux ESF8735ROX'
+        steps=server.steps_for(model)
+        self.assertEqual({step['workflow'] for step in steps.values()},{'drying','food'})
+        self.assertEqual(steps['electrolux_airdry']['pages'],[15,20])
+        self.assertEqual(server.source_for(model)['sha256'],'7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d')
+        c=self.create(model=model,issue='Food remains on the dishes.')
+        def choose_food(prompt,context,schema):
+            value={'category':'food'} if 'category' in schema['properties'] else {'step':'food_spacing'}
+            return value,{'model':'stub','prompt_eval_count':1,'eval_count':1}
+        with patch.object(server,'infer',side_effect=choose_food): reply=server.assess(c,'What should I check?')
+        self.assertEqual(reply['step'],'food_spacing')
+        self.assertEqual(reply['pages'],[15])
+        self.assertIn('ESF8735ROX',server.handover(c))
+        with patch.object(server,'infer',return_value=({'category':'detergent'},{'model':'stub','prompt_eval_count':1,'eval_count':1})):
+            out=server.assess(c,'The tablet did not dissolve.')
+        self.assertEqual(out['kind'],'scope')
+        self.assertNotIn('step',out)
     def test_water_left_after_programme_has_model_pages_and_error_code_is_outside_scope(self):
         def choose_water(prompt,context,schema):
             value={'category':'water_retention'} if 'category' in schema['properties'] else {'step':'water_cycle'}
