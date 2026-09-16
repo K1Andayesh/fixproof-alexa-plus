@@ -21,3 +21,5 @@ Connect an MCP client to `http://127.0.0.1:8790/api/mcp`. The `/mcp` route remai
 ```
 
 The server exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome`, and `prepare_handover`. It also exposes the handover App as a `text/html;profile=mcp-app` resource. The App has no external scripts, styles, images, or network calls; it renders only the structured handover returned by the tool. The server covers three exact Bosch models and nine bounded, source-backed issue paths. Each selected check returns the official manual identity, exact page URL, verification date, and locally verified source hash.
+
+The landing page's **Run live MCP proof** button calls the production endpoint with a fixed fictional case, then displays the returned App resource and handover in a sandboxed iframe. This lets a judge inspect the App without configuring a separate MCP host; the iframe preview does not claim Alexa device execution.

@@ -44,11 +44,13 @@ async function callTool(id: number, name: string, args: Record<string, unknown>)
 export function LiveProof() {
   const [state, setState] = useState<"idle" | "running" | "passed" | "failed">("idle");
   const [proof, setProof] = useState<Proof | null>(null);
+  const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
   async function run() {
     setState("running");
     setProof(null);
+    setAppView(null);
     setError("");
     try {
       const initialized = await request(1, "initialize", {
@@ -61,7 +63,8 @@ export function LiveProof() {
       const app = resources.resources.find((item: { uri: string }) => item.uri === "ui://fixproof/handover.html");
       if (!app || app.mimeType !== "text/html;profile=mcp-app") throw new Error("The handover MCP App was not discoverable.");
       const appContents = await request(4, "resources/read", { uri: app.uri });
-      if (!appContents.contents?.[0]?.text?.includes("FixProof repair handover")) throw new Error("The handover MCP App did not load.");
+      const appHtml = appContents.contents?.[0]?.text;
+      if (typeof appHtml !== "string" || !appHtml.includes("FixProof repair handover")) throw new Error("The handover MCP App did not load.");
 
       const started = await callTool(5, "start_case", {
         request_id: crypto.randomUUID(),
@@ -100,6 +103,7 @@ export function LiveProof() {
         continuity: `${recorded.evidence_summary.deferred_or_skipped} deferred · restored by read_case`,
         fingerprint: handover.evidence_integrity.digest,
       });
+      setAppView({ html: appHtml, handover });
       setState("passed");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "The live proof failed.");
@@ -138,6 +142,21 @@ export function LiveProof() {
           )}
         </div>
       </div>
+      {state === "passed" && appView && (
+        <div className="mt-6 rounded-[2rem] border border-[#c9d5cf] bg-white p-5 shadow-[0_18px_60px_rgba(18,57,47,.08)] sm:p-7">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Live MCP App preview</p>
+          <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em]">The handover, inside the conversation.</h3>
+          <p className="mt-2 text-sm leading-6 text-[#52645b]">This sandbox renders the App resource just read from the live MCP server, with the fictional handover returned by <code>prepare_handover</code>. Clients without MCP Apps still receive Markdown and structured evidence.</p>
+          <iframe
+            title="Fictional FixProof MCP App handover"
+            className="mt-5 h-[42rem] w-full rounded-2xl border border-[#d9e5dd] bg-[#f5f8f5]"
+            sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
+            referrerPolicy="no-referrer"
+            srcDoc={appView.html}
+            onLoad={(event) => event.currentTarget.contentWindow?.postMessage({ result: { structuredContent: appView.handover } }, "*")}
+          />
+        </div>
+      )}
     </section>
   );
 }
