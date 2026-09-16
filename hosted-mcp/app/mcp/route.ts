@@ -32,7 +32,7 @@ function buildServer() {
     { name: "FixProof", version: "0.10.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
     {
       capabilities: { tools: {}, resources: {} },
-      instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour and door-related-starting paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
+      instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour, door-related-starting and water-left-inside-after-programme paths. Error codes, pump and hose work remain outside scope. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
     },
   );
 

@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 
 export type Source = { title: string; url: string; service_url: string; document: string; verified: string; sha256: string };
-export type Step = { workflow: "drying" | "food" | "detergent" | "streaks" | "noise" | "rust" | "clouding" | "odour" | "starting"; title: string; text: string; pages: number[] };
+export type Step = { workflow: "drying" | "food" | "detergent" | "streaks" | "noise" | "rust" | "clouding" | "odour" | "starting" | "water_retention"; title: string; text: string; pages: number[] };
 export type Attempt = { outcome: string; observation: string; recorded_at: string };
 export type Citation = { title: string; document: string; page: number; url: string; source_verified: string; content_sha256: string };
 export type FixProofCase = {
@@ -41,20 +41,22 @@ const definitions: Record<string, Omit<Step, "pages">> = {
   starting_close_door: { workflow: "starting", title: "Close the appliance door", text: "Close the appliance door fully before trying to start the programme." },
   starting_rear_clearance: { workflow: "starting", title: "Check behind the appliance", text: "Check whether a socket or unremoved hose holder is pressing the rear panel inward and preventing the door from closing securely." },
   starting_basket_clearance: { workflow: "starting", title: "Clear the basket edge", text: "Arrange tableware so no parts project beyond the basket and prevent the appliance door from closing properly." },
+  water_cycle: { workflow: "water_retention", title: "Check whether the programme ended", text: "Confirm that the programme has finished. If it is still running, wait for it to end before assessing water remaining inside the appliance." },
+  water_filters: { workflow: "water_retention", title: "Check and clean the filters", text: "If water remains after the programme ends, inspect the filter system for residue and clean it as shown in the manual. Do not open or work on the pump." },
 };
 
 const catalogs = {
   "Bosch SMS6HAI02A/01": {
     source: { title: "Bosch SMS6HAI02A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9001676154_A.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HAI02A-01", document: "9001676154 (010805) 650 V1", verified: "2026-09-15", sha256: "af965b35d3447c81adfc56bf652f75f8da565d47a9d4dc9c1e55030ae521a47c" },
-    pages: { programme:[40], rinse_aid:[40,23], loading:[41], waiting:[41], food_spacing:[42], food_spray_arm:[42], food_filters:[42,36,37], food_programme:[42], detergent_tray:[42], detergent_position:[42], streaks_rinse_setting:[44], streaks_add_rinse_aid:[44,23], streaks_tray:[44,27], streaks_prerinse:[45], noise_spray_arm:[48], noise_load_distribution:[48], noise_light_items:[48], rust_resistant_tableware:[45], rust_remove_rusting_items:[45], clouding_dishwasher_proof:[45], clouding_steam_phase:[45], clouding_lower_temperature:[45], clouding_glass_protection:[45], odour_wipe_interior:[36], odour_clean_filters:[36], odour_machine_care:[35,36], starting_close_door:[47], starting_rear_clearance:[47], starting_basket_clearance:[47] },
+    pages: { programme:[40], rinse_aid:[40,23], loading:[41], waiting:[41], food_spacing:[42], food_spray_arm:[42], food_filters:[42,36,37], food_programme:[42], detergent_tray:[42], detergent_position:[42], streaks_rinse_setting:[44], streaks_add_rinse_aid:[44,23], streaks_tray:[44,27], streaks_prerinse:[45], noise_spray_arm:[48], noise_load_distribution:[48], noise_light_items:[48], rust_resistant_tableware:[45], rust_remove_rusting_items:[45], clouding_dishwasher_proof:[45], clouding_steam_phase:[45], clouding_lower_temperature:[45], clouding_glass_protection:[45], odour_wipe_interior:[36], odour_clean_filters:[36], odour_machine_care:[35,36], starting_close_door:[47], starting_rear_clearance:[47], starting_basket_clearance:[47], water_cycle:[46], water_filters:[46,36,37] },
   },
   "Bosch SMS6HCI01A/38": {
     source: { title: "Bosch SMS6HCI01A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9001720311_B.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HCI01A-38", document: "9001720311 (050605) 650 A1", verified: "2026-09-15", sha256: "b2bb4608cd266752804e8c02b3e251bb31e6c32f95824e602614b13f83240fc9" },
-    pages: { programme:[44], rinse_aid:[44,24,25], loading:[44], waiting:[44], food_spacing:[45], food_spray_arm:[45,39], food_filters:[45,38,39], food_programme:[45], detergent_tray:[46,28], detergent_position:[46], streaks_rinse_setting:[48,25], streaks_add_rinse_aid:[48,24], streaks_tray:[48,28], streaks_prerinse:[48], noise_spray_arm:[52], noise_load_distribution:[52], noise_light_items:[52], rust_resistant_tableware:[49], rust_remove_rusting_items:[49], clouding_dishwasher_proof:[49], clouding_steam_phase:[49], clouding_lower_temperature:[49], clouding_glass_protection:[49], odour_wipe_interior:[38], odour_clean_filters:[38], odour_machine_care:[37,38], starting_close_door:[51], starting_rear_clearance:[51], starting_basket_clearance:[51] },
+    pages: { programme:[44], rinse_aid:[44,24,25], loading:[44], waiting:[44], food_spacing:[45], food_spray_arm:[45,39], food_filters:[45,38,39], food_programme:[45], detergent_tray:[46,28], detergent_position:[46], streaks_rinse_setting:[48,25], streaks_add_rinse_aid:[48,24], streaks_tray:[48,28], streaks_prerinse:[48], noise_spray_arm:[52], noise_load_distribution:[52], noise_light_items:[52], rust_resistant_tableware:[49], rust_remove_rusting_items:[49], clouding_dishwasher_proof:[49], clouding_steam_phase:[49], clouding_lower_temperature:[49], clouding_glass_protection:[49], odour_wipe_interior:[38], odour_clean_filters:[38], odour_machine_care:[37,38], starting_close_door:[51], starting_rear_clearance:[51], starting_basket_clearance:[51], water_cycle:[50], water_filters:[50,38,39] },
   },
   "Bosch SMS6HCI02A/72": {
     source: { title: "Bosch SMS6HCI02A · Australian English user manual", url: "https://media3.bsh-group.com/Documents/9002017246_A.pdf", service_url: "https://www.bosch-home.com.au/en/productservice/SMS6HCI02A-72", document: "9002017246 (050605) 650 V1", verified: "2026-09-15", sha256: "b499156281a114882fd254e11400bc6318db71020eab2c4cfac9848264b4b476" },
-    pages: { programme:[41], rinse_aid:[41,23,24], loading:[41,28], waiting:[42], food_spacing:[42], food_spray_arm:[42,37], food_filters:[43,36,37], food_programme:[43], detergent_tray:[43,27,28], detergent_position:[43], streaks_rinse_setting:[45,24], streaks_add_rinse_aid:[45,23], streaks_tray:[45,27,28], streaks_prerinse:[46], noise_spray_arm:[49], noise_load_distribution:[49], noise_light_items:[50], rust_resistant_tableware:[46], rust_remove_rusting_items:[46], clouding_dishwasher_proof:[46], clouding_steam_phase:[46], clouding_lower_temperature:[46], clouding_glass_protection:[46], odour_wipe_interior:[36], odour_clean_filters:[36], odour_machine_care:[35,36], starting_close_door:[48], starting_rear_clearance:[49], starting_basket_clearance:[49] },
+    pages: { programme:[41], rinse_aid:[41,23,24], loading:[41,28], waiting:[42], food_spacing:[42], food_spray_arm:[42,37], food_filters:[43,36,37], food_programme:[43], detergent_tray:[43,27,28], detergent_position:[43], streaks_rinse_setting:[45,24], streaks_add_rinse_aid:[45,23], streaks_tray:[45,27,28], streaks_prerinse:[46], noise_spray_arm:[49], noise_load_distribution:[49], noise_light_items:[50], rust_resistant_tableware:[46], rust_remove_rusting_items:[46], clouding_dishwasher_proof:[46], clouding_steam_phase:[46], clouding_lower_temperature:[46], clouding_glass_protection:[46], odour_wipe_interior:[36], odour_clean_filters:[36], odour_machine_care:[35,36], starting_close_door:[48], starting_rear_clearance:[49], starting_basket_clearance:[49], water_cycle:[48], water_filters:[48,36,37] },
   },
 } satisfies Record<string, { source: Source; pages: Record<string, number[]> }>;
 
@@ -100,13 +102,14 @@ function classify(text: string): FixProofCase["workflow"] {
   if (/irreversible cloud|cloudy|clouding|permanent haze|does not wipe off/.test(value)) return "clouding";
   if (/unpleasant (?:smell|odou?r)|(?:smell|odou?r).*(?:inside|interior|dishwasher)/.test(value)) return "odour";
   if (/(?:won.t|will not|does not) start.*door|door.*(?:won.t|will not|does not) (?:close|latch)|door is not closed/.test(value)) return "starting";
+  if (/\b(?:water (?:is )?(?:left|remains|stays|collects|pools?)|standing water)\b.*\b(?:in|inside|at|after)\b.*\b(?:appliance|dishwasher|bottom|base|tub|programme|program|cycle|wash)\b|\b(?:appliance|dishwasher)\b.*\b(?:water (?:is )?(?:left|remains|stays)|standing water)\b/.test(value)) return "water_retention";
   if (/wet|dry|water/.test(value)) return "drying";
   return null;
 }
 
 function unsupportedIssue(text: string): boolean {
   const value = clean(text).toLowerCase();
-  return /\be[\s:-]?\d{2}\b|\b(?:error|fault)\s+(?:code|message)\b|\b(?:drain|pump)(?:s|ed|ing)?\b|\bstanding water\s+(?:in|at)\s+(?:the\s+)?(?:base|bottom|tub)\b|\bwater\s+(?:left|remains|stays|collects|pooled|pools)\s+(?:in|at)\s+(?:the\s+)?(?:base|bottom|tub)\b/.test(value);
+  return /\be[\s:-]?\d{2}(?:[-:]\d{2})?\b|\b(?:error|fault)\s+(?:code|message)\b|\b(?:drain|pump)(?:s|ed|ing)?\b|\b(?:hose|leak|flood)(?:s|ed|ing)?\b/.test(value);
 }
 
 function hazard(text: string): boolean {
@@ -199,12 +202,12 @@ export async function askFixProof(input: { request_id: string; case_id: string; 
   if (unsupportedIssue(`${caseRecord.issue} ${message}`)) {
     caseRecord.status = "Handover ready"; caseRecord.pending = null;
     caseRecord.scope_report = unsupportedIssue(message) ? message : caseRecord.issue;
-    caseRecord.latest_event = { kind: "scope", text: "This reference set has no verified drainage, pump or error-code guidance. No check was selected. Keep the reported issue in the handover for a qualified service conversation." };
+    caseRecord.latest_event = { kind: "scope", text: "This reference set has no verified error-code, pump or hose diagnosis. No check was selected. Keep the reported issue in the handover for a qualified service conversation." };
     return view(await saveUpdated(caseRecord, requestId, input.revision));
   }
   caseRecord.workflow ??= classify(`${caseRecord.issue} ${message}`);
   if (!caseRecord.workflow) {
-    caseRecord.latest_event = { kind: "clarification", text: "Is the issue wet tableware, food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible glass clouding that does not wipe off, an unpleasant odour inside the appliance, or a door that will not close so the appliance cannot start?" };
+    caseRecord.latest_event = { kind: "clarification", text: "Is the issue wet tableware, food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible glass clouding, an unpleasant interior odour, a door that will not close, or water left inside after a programme?" };
     return view(await saveUpdated(caseRecord, requestId, input.revision));
   }
   const steps = stepsFor(caseRecord.model);

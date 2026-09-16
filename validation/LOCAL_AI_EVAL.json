@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-16T03:05:35+00:00",
+  "at": "2026-09-16T13:16:15+00:00",
   "cases": [
     {
       "name": "supported",
@@ -15,8 +15,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 5.19,
-          "input_tokens": 788,
+          "seconds": 6.03,
+          "input_tokens": 796,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -40,7 +40,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.35,
-          "input_tokens": 787,
+          "input_tokens": 795,
           "output_tokens": 20,
           "decision": {
             "category": "food",
@@ -63,9 +63,9 @@
         "step": "detergent_tray",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.4,
-          "input_tokens": 708,
-          "output_tokens": 25,
+          "seconds": 0.36,
+          "input_tokens": 716,
+          "output_tokens": 20,
           "decision": {
             "category": "detergent",
             "step": "detergent_tray"
@@ -87,9 +87,9 @@
         "step": "streaks_rinse_setting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.4,
-          "input_tokens": 871,
-          "output_tokens": 27,
+          "seconds": 0.36,
+          "input_tokens": 879,
+          "output_tokens": 22,
           "decision": {
             "category": "streaks",
             "step": "streaks_rinse_setting"
@@ -112,7 +112,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.33,
-          "input_tokens": 753,
+          "input_tokens": 761,
           "output_tokens": 16,
           "decision": {
             "category": "noise",
@@ -136,8 +136,8 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.35,
-          "input_tokens": 694,
-          "output_tokens": 23,
+          "input_tokens": 702,
+          "output_tokens": 18,
           "decision": {
             "category": "rust",
             "step": "rust_resistant_tableware"
@@ -159,9 +159,9 @@
         "step": "clouding_steam_phase",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.37,
-          "input_tokens": 808,
-          "output_tokens": 24,
+          "seconds": 0.35,
+          "input_tokens": 816,
+          "output_tokens": 19,
           "decision": {
             "category": "clouding",
             "step": "clouding_steam_phase"
@@ -183,8 +183,8 @@
         "step": "odour_clean_filters",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.33,
-          "input_tokens": 759,
+          "seconds": 0.32,
+          "input_tokens": 767,
           "output_tokens": 18,
           "decision": {
             "category": "odour",
@@ -208,7 +208,7 @@
         "trace": {
           "model": "qwen3.5:4b",
           "seconds": 0.34,
-          "input_tokens": 755,
+          "input_tokens": 763,
           "output_tokens": 16,
           "decision": {
             "category": "starting",
@@ -218,15 +218,39 @@
       }
     },
     {
+      "name": "water_left_inside",
+      "passed": true,
+      "result": {
+        "kind": "step",
+        "text": "Confirm that the programme has finished. If it is still running, wait for it to end before assessing water remaining inside the appliance.",
+        "workflow": "water_retention",
+        "title": "Check whether the programme ended",
+        "pages": [
+          46
+        ],
+        "step": "water_cycle",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.35,
+          "input_tokens": 731,
+          "output_tokens": 17,
+          "decision": {
+            "category": "water_retention",
+            "step": "water_cycle"
+          }
+        }
+      }
+    },
+    {
       "name": "unclear",
       "passed": true,
       "result": {
         "kind": "clarify",
-        "text": "Please describe the symptom first. Say whether tableware remains wet, has food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible clouding that does not wipe off, an unpleasant interior odour, the appliance will not start because the door will not close, or another problem.",
+        "text": "Please describe the symptom first: wet tableware, food remnants, detergent residue, removable streaks, wash-cycle noise, cutlery rust, permanent glass clouding, an unpleasant interior odour, a door that will not close, or water left inside after a programme?",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.19,
-          "input_tokens": 447,
+          "seconds": 0.2,
+          "input_tokens": 455,
           "output_tokens": 8,
           "decision": {
             "category": "unclear",
@@ -247,8 +271,8 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.19,
-          "input_tokens": 455,
+          "seconds": 0.16,
+          "input_tokens": 463,
           "output_tokens": 13,
           "decision": {
             "category": "plastic",
@@ -269,9 +293,9 @@
         ],
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.16,
-          "input_tokens": 459,
-          "output_tokens": 13,
+          "seconds": 0.14,
+          "input_tokens": 467,
+          "output_tokens": 8,
           "decision": {
             "category": "interior",
             "step": "none"
@@ -284,17 +308,7 @@
       "passed": true,
       "result": {
         "kind": "scope",
-        "text": "The verified reference set here covers drying, food-remnant, detergent-residue, removable-streak, wash-cycle knocking or rattling, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour and door-related starting results only. I cannot establish a supported check for this issue. Add your observations and prepare a handover.",
-        "trace": {
-          "model": "qwen3.5:4b",
-          "seconds": 0.13,
-          "input_tokens": 457,
-          "output_tokens": 7,
-          "decision": {
-            "category": "other",
-            "step": "none"
-          }
-        }
+        "text": "This reference set has no verified error-code, pump or hose diagnosis. No check was selected. Keep the reported issue in the handover for a qualified service conversation."
       }
     },
     {
@@ -321,9 +335,9 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.3,
-          "input_tokens": 778,
-          "output_tokens": 20,
+          "seconds": 0.29,
+          "input_tokens": 786,
+          "output_tokens": 15,
           "decision": {
             "category": "drying",
             "step": "waiting"
@@ -345,8 +359,8 @@
         "step": "waiting",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.36,
-          "input_tokens": 798,
+          "seconds": 0.37,
+          "input_tokens": 806,
           "output_tokens": 20,
           "decision": {
             "category": "drying",
@@ -370,8 +384,8 @@
         "step": "rinse_aid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.43,
-          "input_tokens": 817,
+          "seconds": 0.36,
+          "input_tokens": 825,
           "output_tokens": 23,
           "decision": {
             "category": "drying",
@@ -388,8 +402,8 @@
         "text": "Every check in this supported path has a recorded outcome. If the issue remains, prepare a handover for a service provider. No fault has been diagnosed.",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.22,
-          "input_tokens": 457,
+          "seconds": 0.21,
+          "input_tokens": 465,
           "output_tokens": 13,
           "decision": {
             "category": "drying",

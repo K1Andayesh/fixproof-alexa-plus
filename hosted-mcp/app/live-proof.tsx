@@ -70,7 +70,7 @@ export function LiveProof() {
       const started = await callTool(5, "start_case", {
         request_id: crypto.randomUUID(),
         reported_issue: variant === "scope"
-          ? "Water remains at the bottom of this fictional dishwasher after the wash."
+          ? "This fictional dishwasher displays error code E:61-03 after the wash."
           : "Removable streaks remain on glasses after this fictional wash.",
         model: "Bosch SMS6HCI02A/72",
         model_confirmed: true,
@@ -89,14 +89,14 @@ export function LiveProof() {
       let continuity;
       let scope: string | undefined;
       if (variant === "scope") {
-        if (guided.status !== "Handover ready" || guided.pending_check || guided.latest_event?.kind !== "scope") throw new Error("The drainage report was not kept outside the verified scope.");
+        if (guided.status !== "Handover ready" || guided.pending_check || guided.latest_event?.kind !== "scope") throw new Error("The error-code report was not kept outside the verified scope.");
         restored = await callTool(7, "read_case", { case_id: started.case_id });
         handover = await callTool(8, "prepare_handover", { case_id: started.case_id });
         if (restored.status !== "Handover ready" || handover.evidence.checks?.length || handover.evidence.scope_report !== started.reported_issue) throw new Error("The scope boundary did not persist into the handover.");
         selectedCheck = "None";
         selectedPages = "none";
         continuity = "Scope boundary restored by read_case";
-        scope = "Drainage report retained · no check selected";
+        scope = "Error-code report retained · no check selected";
       } else {
         const pending = guided.pending_check;
         if (!pending) throw new Error("The cited streaks check was not selected.");
@@ -142,7 +142,7 @@ export function LiveProof() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Zero-setup judge proof</p>
           <h2 id="live-proof-title" className="mt-3 text-3xl font-bold tracking-[-0.03em]">Call the live MCP now.</h2>
-          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Both paths call the production MCP endpoint, then show the returned handover App. The second path checks that an unsupported drainage report cannot become a drying instruction.</p>
+          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Both paths call the production MCP endpoint, then show the returned handover App. The second path checks that an unsupported error code cannot become a guided instruction.</p>
           <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
             {state === "running" ? "Running live proof…" : "Run live MCP proof"}
           </button>

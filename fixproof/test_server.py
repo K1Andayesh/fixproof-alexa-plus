@@ -71,6 +71,27 @@ class WorkflowTests(unittest.TestCase):
             server.record_evidence(c,'waiting','Still wet','Still wet after waiting.')
             export=server.handover(c)
             self.assertIn(document+'#page='+str(pages[0]),export);self.assertNotIn(excluded,export)
+    def test_water_left_after_programme_has_model_pages_and_error_code_is_outside_scope(self):
+        def choose_water(prompt,context,schema):
+            value={'category':'water_retention'} if 'category' in schema['properties'] else {'step':'water_cycle'}
+            return value,{'model':'stub','prompt_eval_count':1,'eval_count':1}
+        for model,pages,document in [
+            ('Bosch SMS6HAI02A/01',[46],'9001676154_A.pdf'),
+            ('Bosch SMS6HCI01A/38',[50],'9001720311_B.pdf'),
+            ('Bosch SMS6HCI02A/72',[48],'9002017246_A.pdf')]:
+            with self.subTest(model=model):
+                c=self.create(model=model,issue='Water remains inside after the programme ends.')
+                with patch.object(server,'infer',side_effect=choose_water):
+                    result=server.assess(c,'What should I check first?')
+                self.assertEqual(result['step'],'water_cycle')
+                self.assertEqual(result['pages'],pages)
+                self.assertIn(document,server.handover(c))
+                self.assertTrue(server.steps_for(model)['water_filters']['pages'])
+                c['issue']='Error code E:61-03; water remains inside.'
+                with patch.object(server,'infer',side_effect=AssertionError('No AI for error code')):
+                    blocked=server.assess(c,'What should I check first?')
+                self.assertEqual(blocked['kind'],'scope')
+                self.assertNotIn('step',blocked)
     def test_invalid_ai_output_not_executed(self):
         c=self.create()
         class Response:

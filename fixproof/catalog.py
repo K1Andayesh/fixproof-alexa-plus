@@ -41,6 +41,8 @@ STEP_DEFINITIONS = {
     'starting_close_door': {'workflow': 'starting', 'title': 'Close the appliance door', 'text': 'Close the appliance door fully before trying to start the programme.', 'pages': [47]},
     'starting_rear_clearance': {'workflow': 'starting', 'title': 'Check behind the appliance', 'text': 'Check whether a socket or unremoved hose holder is pressing the rear panel inward and preventing the door from closing securely.', 'pages': [47]},
     'starting_basket_clearance': {'workflow': 'starting', 'title': 'Clear the basket edge', 'text': 'Arrange tableware so no parts project beyond the basket and prevent the appliance door from closing properly.', 'pages': [47]},
+    'water_cycle': {'workflow': 'water_retention', 'title': 'Check whether the programme ended', 'text': 'Confirm that the programme has finished. If it is still running, wait for it to end before assessing water remaining inside the appliance.', 'pages': [46]},
+    'water_filters': {'workflow': 'water_retention', 'title': 'Check and clean the filters', 'text': 'If water remains after the programme ends, inspect the filter system for residue and clean it as shown in the manual. Do not open or work on the pump.', 'pages': [46, 36, 37]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -79,6 +81,7 @@ CATALOGS = {
             'clouding_lower_temperature': [49], 'clouding_glass_protection': [49],
             'odour_wipe_interior': [38], 'odour_clean_filters': [38], 'odour_machine_care': [37, 38],
             'starting_close_door': [51], 'starting_rear_clearance': [51], 'starting_basket_clearance': [51],
+            'water_cycle': [50], 'water_filters': [50, 38, 39],
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
@@ -106,6 +109,7 @@ CATALOGS = {
             'clouding_lower_temperature': [46], 'clouding_glass_protection': [46],
             'odour_wipe_interior': [36], 'odour_clean_filters': [36], 'odour_machine_care': [35, 36],
             'starting_close_door': [48], 'starting_rear_clearance': [49], 'starting_basket_clearance': [49],
+            'water_cycle': [48], 'water_filters': [48, 36, 37],
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },

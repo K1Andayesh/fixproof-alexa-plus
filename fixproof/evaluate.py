@@ -15,6 +15,7 @@ cases=[
  ('irreversible_glass_clouding',case('Clouding on the glassware does not wipe off after the wash.'),'What should I check first?',{'step'}),
  ('unpleasant_odour',case('There is an unpleasant odour inside the dishwasher.'),'What should I check first?',{'step'}),
  ('door_related_starting',case('The dishwasher will not start because the door will not close securely.'),'What should I check first?',{'step'}),
+ ('water_left_inside',case('Water remains inside the dishwasher after the programme has ended.'),'What should I check first?',{'step'}),
  ('unclear',case('Something is wrong.'),'Can you help?',{'clarify'}),
  ('plastic',case('Only plastic boxes stay wet. Everything else is dry.'),'Is this a fault?',{'info'}),
  ('interior',case('Only the inside walls of the dishwasher have water droplets; dishes are dry.'),'Is this expected?',{'info'}),
@@ -28,7 +29,7 @@ cases=[
 results=[]
 for name,c,message,expected in cases:
     result=assess(c,message)
-    passed=result['kind'] in expected and not (name=='repeat' and result.get('step')=='waiting')
+    passed=result['kind'] in expected and not (name=='repeat' and result.get('step')=='waiting') and not (name=='water_left_inside' and result.get('step') not in ('water_cycle','water_filters'))
     results.append(dict(name=name,passed=passed,result=result))
     print(name,passed,result['kind'],result.get('step'),flush=True)
 out=Path(__file__).resolve().parents[1]/'validation'/'LOCAL_AI_EVAL.json'

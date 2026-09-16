@@ -103,6 +103,24 @@ test('irreversible-glass-clouding journey stays distinct from removable streaks'
  a.record('Issue unchanged','The clouding does not wipe off.');
  assert.match(a.handover(),/Supported path: irreversible clouding of glassware/);assert.match(a.handover(),/9002017246_A\.pdf#page=46/);
 });
+test('water left inside uses distinct model citations and error codes stay out of scope',()=>{
+ for(const [model,pages,document] of [
+  ['Bosch SMS6HAI02A/01',[46,36,37],'9001676154_A.pdf'],
+  ['Bosch SMS6HCI01A/38',[50,38,39],'9001720311_B.pdf'],
+  ['Bosch SMS6HCI02A/72',[48,36,37],'9002017246_A.pdf']]){
+  const a=app();a.run(`start('Water remains inside the dishwasher after the programme ends.','water_retention',${JSON.stringify(model)})`);
+  a.ask('What should I check first?');assert.equal(a.run('state.pending'),'water_cycle');
+  assert.match(a.get('progress').textContent,/0 of 2 water-left-inside checks/);
+  a.record('Issue unchanged','Fictional programme ended; water remains.');a.ask('What next?');
+  assert.equal(a.run('state.pending'),'water_filters');
+  assert.deepEqual(Array.from(a.run('pagesFor(currentStep)')),pages);
+  assert.match(a.handover(),new RegExp(document.replace('.','\\.')+'#page='+pages[0]));
+  a.ask('It displays error code E:61-03.');assert.match(a.run('latest'),/no verified error-code/);
+  assert.equal(a.run('state.pending'),'water_filters');
+ }
+ const drying=app();drying.start();drying.ask('Water pools in the recesses of my cups.');
+ assert.equal(drying.run('state.workflow'),'drying');
+});
 
 test('unpleasant-interior-odour journey stays within its three care checks',()=>{
  const a=app();a.get('pathway').value='odour';a.get('pathway').onchange();
