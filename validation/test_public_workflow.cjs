@@ -66,6 +66,16 @@ test('an error-code report stops pending guidance and remains in the handover',(
  const b=app();b.run("start('Error code E24 on the display.','drying')");
  assert.equal(b.run('state.status'),'Handover ready');assert.equal(b.run('state.pending'),null);
 });
+test('resuming an older case with an unsupported report clears its stale suggestion',()=>{
+ const saved=new Map();const old=app(saved);old.start();old.ask('first check');
+ old.run("state.events.push({role:'user',text:'Now there is error code E:61-03.',at:new Date().toISOString()})");
+ old.run('save()');
+ const restored=app(saved);restored.get('resume').onclick();
+ assert.equal(restored.run('state.status'),'Handover ready');assert.equal(restored.run('state.pending'),null);
+ assert.match(restored.handover(),/E:61-03/);
+ const outcome=app();outcome.start();outcome.ask('first check');outcome.record('Not yet tested','Display shows E24 error.');
+ assert.equal(outcome.run('state.status'),'Handover ready');assert.equal(outcome.run('state.pending'),null);
+});
 test('all deferred outcomes never become performed checks or a diagnosis',()=>{
  const a=app();a.start();
  for(let i=0;i<4;i++){a.ask('next');a.record(i%2?'Skipped':'Not yet tested');}
