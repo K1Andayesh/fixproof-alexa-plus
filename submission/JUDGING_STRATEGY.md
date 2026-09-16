@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK and D1 continuity, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, an official MCP App, and a cross-runtime SHA-256 fingerprint over each structured handover.
 
-**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 46 passing automated checks and seventeen live local-AI scenarios. The 2:15 video shows the public MCP endpoint and captured three-model, seven-path release; the live build adds an eighth routine-care path; the five-block trace shows the deeper local MCP Apps path.
+**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 46 passing automated checks and seventeen live local-AI scenarios. The 2:15 video shows the public MCP endpoint and current three-model, eight-path release; the five-block trace shows the deeper local MCP Apps path.
 
 ## Design and user experience
 

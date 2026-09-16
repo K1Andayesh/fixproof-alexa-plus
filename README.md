@@ -4,7 +4,7 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The same page can export and independently verify a handover JSON file entirely in the browser, including changed-field detection and the explicit no-authorship boundary. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:15 walkthrough of the prior seven-path release with Australian neural narration. The live build now adds an eighth routine-care path.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The same page can export and independently verify a handover JSON file entirely in the browser, including changed-field detection and the explicit no-authorship boundary. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; that deployment accepts fictional demonstration cases only and persists its five-tool workflow in D1. The page also embeds a captioned 2:15 walkthrough of the current eight-path release with natural Australian neural narration.
 
 ## 90-second judge tour
 
