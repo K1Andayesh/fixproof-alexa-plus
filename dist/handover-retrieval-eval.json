@@ -1,7 +1,7 @@
 {
   "title": "FixProof controlled handover retrieval evaluation",
   "schema_version": 1,
-  "captured_at": "2026-09-15T17:50:50+00:00",
+  "captured_at": "2026-09-16T00:59:35+00:00",
   "reader_models": [
     "qwen3.5:9b",
     "gemma3:12b-it-qat"
@@ -19,7 +19,7 @@
     }
   ],
   "method": {
-    "design": "7 fictional cases x two formats x two local model families",
+    "design": "8 fictional cases x two formats x two local model families",
     "same_facts": true,
     "format_blind": true,
     "temperature": 0,
@@ -247,21 +247,50 @@
           45
         ]
       }
+    },
+    {
+      "spec": {
+        "slug": "odour-performed",
+        "issue": "There is an unpleasant odour inside the dishwasher.",
+        "attempt": [
+          "odour_wipe_interior",
+          "Issue unchanged",
+          "I wiped away the coarse interior soiling; the unpleasant odour remains."
+        ],
+        "pending": "odour_clean_filters",
+        "safety": null
+      },
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      }
     }
   ],
   "aggregate": {
     "raw_transcript": {
-      "reads": 14,
-      "correct_fields": 127,
-      "total_fields": 140,
-      "field_accuracy_percent": 90.7,
+      "reads": 16,
+      "correct_fields": 146,
+      "total_fields": 160,
+      "field_accuracy_percent": 91.2,
       "critical_errors": 2
     },
     "structured_handover": {
-      "reads": 14,
-      "correct_fields": 133,
-      "total_fields": 140,
-      "field_accuracy_percent": 95.0,
+      "reads": 16,
+      "correct_fields": 150,
+      "total_fields": 160,
+      "field_accuracy_percent": 93.8,
       "critical_errors": 0
     }
   },
@@ -316,7 +345,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.68,
+        "seconds": 7.18,
         "retries": 0,
         "prompt_tokens": 259,
         "output_tokens": 128
@@ -372,7 +401,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.38,
+        "seconds": 1.53,
         "retries": 0,
         "prompt_tokens": 584,
         "output_tokens": 124
@@ -430,7 +459,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.51,
+        "seconds": 9.79,
         "retries": 0,
         "prompt_tokens": 276,
         "output_tokens": 133
@@ -488,7 +517,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.37,
+        "seconds": 2.61,
         "retries": 0,
         "prompt_tokens": 613,
         "output_tokens": 135
@@ -550,7 +579,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.52,
+        "seconds": 5.65,
         "retries": 0,
         "prompt_tokens": 266,
         "output_tokens": 146
@@ -612,7 +641,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.57,
+        "seconds": 1.72,
         "retries": 0,
         "prompt_tokens": 643,
         "output_tokens": 142
@@ -674,7 +703,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.6,
+        "seconds": 7.35,
         "retries": 0,
         "prompt_tokens": 283,
         "output_tokens": 142
@@ -738,7 +767,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.7,
+        "seconds": 2.75,
         "retries": 0,
         "prompt_tokens": 686,
         "output_tokens": 154
@@ -794,7 +823,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.48,
+        "seconds": 5.92,
         "retries": 0,
         "prompt_tokens": 262,
         "output_tokens": 129
@@ -852,7 +881,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.47,
+        "seconds": 1.56,
         "retries": 0,
         "prompt_tokens": 587,
         "output_tokens": 133
@@ -906,7 +935,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.55,
+        "seconds": 6.59,
         "retries": 0,
         "prompt_tokens": 279,
         "output_tokens": 130
@@ -964,7 +993,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.37,
+        "seconds": 2.53,
         "retries": 0,
         "prompt_tokens": 617,
         "output_tokens": 136
@@ -1024,7 +1053,7 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 5.96,
+        "seconds": 5.55,
         "retries": 0,
         "prompt_tokens": 269,
         "output_tokens": 135
@@ -1082,7 +1111,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.56,
+        "seconds": 1.72,
         "retries": 0,
         "prompt_tokens": 616,
         "output_tokens": 141
@@ -1142,7 +1171,7 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 6.69,
+        "seconds": 7.2,
         "retries": 0,
         "prompt_tokens": 283,
         "output_tokens": 139
@@ -1200,7 +1229,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.56,
+        "seconds": 2.78,
         "retries": 0,
         "prompt_tokens": 642,
         "output_tokens": 145
@@ -1258,7 +1287,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.5,
+        "seconds": 5.51,
         "retries": 0,
         "prompt_tokens": 265,
         "output_tokens": 138
@@ -1316,7 +1345,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.49,
+        "seconds": 1.58,
         "retries": 0,
         "prompt_tokens": 589,
         "output_tokens": 134
@@ -1374,7 +1403,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.62,
+        "seconds": 7.32,
         "retries": 0,
         "prompt_tokens": 282,
         "output_tokens": 136
@@ -1414,10 +1443,7 @@
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
-        "source_pages": [
-          48,
-          48
-        ]
+        "source_pages": []
       },
       "field_correct": {
         "reported_issue": true,
@@ -1435,10 +1461,10 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.6,
+        "seconds": 2.68,
         "retries": 0,
         "prompt_tokens": 619,
-        "output_tokens": 149
+        "output_tokens": 142
       }
     },
     {
@@ -1491,7 +1517,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.47,
+        "seconds": 5.79,
         "retries": 0,
         "prompt_tokens": 264,
         "output_tokens": 133
@@ -1549,7 +1575,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.57,
+        "seconds": 1.67,
         "retries": 0,
         "prompt_tokens": 590,
         "output_tokens": 137
@@ -1607,7 +1633,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.52,
+        "seconds": 6.77,
         "retries": 0,
         "prompt_tokens": 279,
         "output_tokens": 134
@@ -1666,7 +1692,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.47,
+        "seconds": 2.59,
         "retries": 0,
         "prompt_tokens": 616,
         "output_tokens": 140
@@ -1722,7 +1748,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.72,
+        "seconds": 6.16,
         "retries": 0,
         "prompt_tokens": 265,
         "output_tokens": 129
@@ -1780,7 +1806,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.55,
+        "seconds": 1.56,
         "retries": 0,
         "prompt_tokens": 589,
         "output_tokens": 133
@@ -1834,7 +1860,7 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.71,
+        "seconds": 6.84,
         "retries": 0,
         "prompt_tokens": 283,
         "output_tokens": 130
@@ -1872,8 +1898,64 @@
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.54,
+        "retries": 0,
+        "prompt_tokens": 621,
+        "output_tokens": 135
+      }
+    },
+    {
+      "scenario": "odour-performed",
+      "model": "qwen3.5:9b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
         "source_pages": [
-          45
+          36
+        ]
+      },
+      "extracted": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
         ]
       },
       "field_correct": {
@@ -1892,10 +1974,186 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.37,
+        "seconds": 5.61,
         "retries": 0,
-        "prompt_tokens": 621,
+        "prompt_tokens": 264,
         "output_tokens": 137
+      }
+    },
+    {
+      "scenario": "odour-performed",
+      "model": "qwen3.5:9b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "extracted": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.61,
+        "retries": 0,
+        "prompt_tokens": 589,
+        "output_tokens": 133
+      }
+    },
+    {
+      "scenario": "odour-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "extracted": {
+        "reported_issue": "unpleasant odour inside the dishwasher",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "field_correct": {
+        "reported_issue": false,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.85,
+        "retries": 0,
+        "prompt_tokens": 279,
+        "output_tokens": 133
+      }
+    },
+    {
+      "scenario": "odour-performed",
+      "model": "gemma3:12b-it-qat",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "extracted": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [
+          "Clean the filters"
+        ],
+        "pending_check": null,
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": false,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.67,
+        "retries": 0,
+        "prompt_tokens": 617,
+        "output_tokens": 142
       }
     }
   ]

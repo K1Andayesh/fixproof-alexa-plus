@@ -39,6 +39,8 @@ SCENARIOS = [
          attempt=("rust_resistant_tableware", "Not yet tested", "I have not confirmed whether every item is rust-resistant."), pending="rust_remove_rusting_items", safety=None),
     dict(slug="clouding-skipped", issue="The glass clouding does not wipe off.",
          attempt=("clouding_dishwasher_proof", "Skipped", "I do not have the glass packaging, so I could not verify the marking."), pending="clouding_steam_phase", safety=None),
+    dict(slug="odour-performed", issue="There is an unpleasant odour inside the dishwasher.",
+         attempt=("odour_wipe_interior", "Issue unchanged", "I wiped away the coarse interior soiling; the unpleasant odour remains."), pending="odour_clean_filters", safety=None),
 ]
 
 FIELDS = ["reported_issue", "model", "reference_match_supported", "performed_checks",

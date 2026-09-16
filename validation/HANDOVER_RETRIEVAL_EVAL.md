@@ -6,16 +6,18 @@ Captured 16 September 2026. This evaluation asks whether a reader can recover ca
 
 | Format | Blind reads | Correct fields | Field accuracy | Critical errors |
 | --- | ---: | ---: | ---: | ---: |
-| Ordinary transcript | 14 | 127 / 140 | 90.7% | 2 |
-| FixProof structured handover | 14 | 133 / 140 | 95.0% | 0 |
+| Ordinary transcript | 16 | 146 / 160 | 91.2% | 2 |
+| FixProof structured handover | 16 | 150 / 160 | 93.8% | 0 |
 
-In this controlled synthetic run, the structured handover improved exact fact retrieval by 6 of 140 scored fields and eliminated the two critical errors made from the transcript. Both transcript critical errors occurred in the safety-stop case, where a reader lost or changed the explicit safety report.
+In this controlled synthetic run, the structured handover improved exact fact retrieval by 4 of 160 scored fields and eliminated the two critical errors made from the transcript. Both transcript critical errors occurred in the safety-stop case, where a reader lost or changed the explicit safety report.
+
+The advantage was not universal. The handover scored higher for the detergent, safety-stop and clouding cases, lower for the food-remnant, wash-noise and odour cases, and tied for drying and rust. The aggregate result supports the evidence structure's value while showing that format alone does not guarantee better retrieval on every case.
 
 This supports a narrow claim: for these fictional cases and local readers, FixProof's structure made the recorded facts easier to retrieve accurately. It does not establish customer impact, comprehension by people, time saved, a successful repair or reduced waste.
 
 ## Method
 
-- Seven fictional cases cover performed, deferred, skipped, pending and safety-stop evidence across all seven implemented issue paths.
+- Eight fictional cases cover performed, deferred, skipped, pending and safety-stop evidence across all eight implemented issue paths.
 - Each case is expressed in two formats containing the same ten scored facts: an ordinary chronological transcript and the actual Markdown returned by `fixproof.server.handover`.
 - Two independent local model families read every case and format: `qwen3.5:9b` and `gemma3:12b-it-qat`.
 - The readers receive the same format-neutral extraction prompt, JSON schema, temperature 0 and seed 42. They are not told which format is FixProof output.
