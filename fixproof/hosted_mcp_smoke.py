@@ -241,6 +241,8 @@ async def main() -> None:
             ("Detergent remains in the fictional dispenser.", "detergent", "electrolux_dispenser_lid", [21]),
             ("Removable streaks remain on fictional glasses.", "streaks", "streaks_rinse_setting", [20]),
             ("There is an unpleasant odour inside the fictional dishwasher.", "odour", "electrolux_clean_interior", [16, 18]),
+            ("There is a rattling noise during the fictional wash.", "noise", "electrolux_noise_loading", [19]),
+            ("Rust spots appear on the fictional cutlery after washing.", "rust", "electrolux_separate_cutlery", [20]),
             ("The fictional dishwasher will not start because its door will not close.", "starting", "starting_close_door", [18]),
         ):
             opened = await call(reconnected, "start_case", {
@@ -258,7 +260,7 @@ async def main() -> None:
             electrolux_checks[path] = [citation["url"] for citation in check["citations"]]
         unsupported_model_path = await call(reconnected, "start_case", {
             "request_id": str(uuid.uuid4()),
-            "reported_issue": "The fictional cutlery has rust spots after a wash.",
+            "reported_issue": "Clouding remains on the fictional glassware and does not wipe off.",
             "model": "Electrolux ESF8735ROX", "model_confirmed": True, "fictional_demo": True,
         })
         unsupported_model_path_answer = await call(reconnected, "ask_fixproof", {

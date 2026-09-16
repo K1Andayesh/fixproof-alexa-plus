@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-16T16:15:07+00:00",
+  "captured_at": "2026-09-16T17:11:33+00:00",
   "model": "qwen3.5:4b",
   "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
   "cases": [
@@ -18,7 +18,7 @@
         "step": "electrolux_dispenser_lid",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 7.85,
+          "seconds": 6.26,
           "input_tokens": 720,
           "output_tokens": 27,
           "decision": {
@@ -44,7 +44,7 @@
         "step": "electrolux_detergent_dose",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.44,
+          "seconds": 0.38,
           "input_tokens": 728,
           "output_tokens": 23,
           "decision": {
@@ -70,7 +70,7 @@
         "step": "electrolux_clean_interior",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.41,
+          "seconds": 0.33,
           "input_tokens": 798,
           "output_tokens": 20,
           "decision": {
@@ -95,7 +95,7 @@
         "step": "starting_close_door",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.41,
+          "seconds": 0.28,
           "input_tokens": 700,
           "output_tokens": 16,
           "decision": {
@@ -106,19 +106,69 @@
       }
     },
     {
-      "scenario": "unmapped_noise",
+      "scenario": "noise",
       "issue": "There is a rattling noise during the wash.",
       "passed": true,
       "response": {
-        "kind": "scope",
-        "text": "This exact model has no verified noise guidance in the current reference catalog. No check was selected. Keep the report in the handover for a qualified service conversation.",
+        "kind": "step",
+        "text": "Arrange tableware properly in the baskets so it does not rattle or knock during the wash; refer to the basket-loading guidance.",
+        "workflow": "noise",
+        "title": "Check basket arrangement",
+        "pages": [
+          19
+        ],
+        "step": "electrolux_noise_loading",
         "trace": {
           "model": "qwen3.5:4b",
-          "seconds": 0.22,
-          "input_tokens": 463,
-          "output_tokens": 7,
+          "seconds": 0.32,
+          "input_tokens": 710,
+          "output_tokens": 18,
           "decision": {
             "category": "noise",
+            "step": "electrolux_noise_loading"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "rust",
+      "issue": "Rust spots appear on the cutlery after a wash.",
+      "passed": true,
+      "response": {
+        "kind": "step",
+        "text": "Keep silver and stainless steel cutlery apart in the basket rather than placing them close together.",
+        "workflow": "rust",
+        "title": "Separate silver and stainless steel cutlery",
+        "pages": [
+          20
+        ],
+        "step": "electrolux_separate_cutlery",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.32,
+          "input_tokens": 663,
+          "output_tokens": 21,
+          "decision": {
+            "category": "rust",
+            "step": "electrolux_separate_cutlery"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "unmapped_clouding",
+      "issue": "Clouding on the glassware does not wipe off after the wash.",
+      "passed": true,
+      "response": {
+        "kind": "scope",
+        "text": "This exact model has no verified clouding guidance in the current reference catalog. No check was selected. Keep the report in the handover for a qualified service conversation.",
+        "trace": {
+          "model": "qwen3.5:4b",
+          "seconds": 0.16,
+          "input_tokens": 467,
+          "output_tokens": 8,
+          "decision": {
+            "category": "clouding",
             "step": "none"
           }
         }

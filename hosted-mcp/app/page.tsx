@@ -34,7 +34,7 @@ export default function Home() {
             ))}
           </ol>
           <div className="mt-7 border-t border-white/15 pt-6 text-sm leading-6 text-[#d3e1db]">
-            Three Bosch models with ten paths each · one Electrolux model with six source-backed paths · revision checks · idempotent request IDs · D1 persistence · self-contained MCP App · SHA-256 evidence fingerprint
+            Three Bosch models with ten paths each · one Electrolux model with eight source-backed paths · revision checks · idempotent request IDs · D1 persistence · self-contained MCP App · SHA-256 evidence fingerprint
           </div>
           <div className="mt-5 rounded-xl bg-[#dff1b7] p-4 text-sm font-semibold leading-6 text-[#163a31]">
             This endpoint refuses non-fictional cases. It does not diagnose faults, inspect appliances, or claim repair success.

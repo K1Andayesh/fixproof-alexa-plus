@@ -279,7 +279,8 @@ mcp = MCPServer(
         "removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, "
         "unpleasant-interior-odour, door-related-starting and water-left-inside guidance. "
         "Electrolux ESF8735ROX has drying, food-remnant, detergent-residue, "
-        "removable-streak, unpleasant-interior-odour and door-related-starting guidance only."
+        "removable-streak, wash-noise, cutlery-rust, unpleasant-interior-odour "
+        "and door-related-starting guidance only."
     ),
     extensions=[apps],
 )

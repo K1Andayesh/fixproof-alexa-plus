@@ -57,7 +57,7 @@ test('information and clarification preserve a pending suggestion',()=>{
  const b=app();b.run("start('Plates are wet.','drying','Bosch SMS6HCI02A/72')");b.ask('Only plastic stays wet.');
  assert.match(b.run('latest'),/page 42/);
 });
-test('Electrolux keeps only six mapped paths and its own cited pages',()=>{
+test('Electrolux keeps only eight mapped paths and its own cited pages',()=>{
  const a=app();a.run("start('Plates are wet.','drying','Electrolux ESF8735ROX')");
  assert.deepEqual(Array.from(a.run('activeSteps().map(step=>step.id)')),['waiting','rinse','electrolux_airdry']);
  a.ask('What should I check for wet plates?');
@@ -67,6 +67,8 @@ test('Electrolux keeps only six mapped paths and its own cited pages',()=>{
   ['detergent',['electrolux_dispenser_lid','electrolux_dispenser_spray'],21],
   ['streaks',['streaks_rinse_setting','electrolux_detergent_dose'],20],
   ['odour',['electrolux_clean_interior','electrolux_long_programme','electrolux_cleaner'],16],
+  ['noise',['electrolux_noise_loading','electrolux_noise_spray_arm'],19],
+  ['rust',['electrolux_separate_cutlery'],20],
   ['starting',['starting_close_door','starting_basket_clearance'],18],
  ]){
   const e=app();e.run(`start('',${JSON.stringify(path)},'Electrolux ESF8735ROX')`);

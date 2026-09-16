@@ -50,6 +50,9 @@ const definitions: Record<string, Omit<Step, "pages">> = {
   electrolux_clean_interior: { workflow: "odour", title: "Clean the appliance interior", text: "Before maintenance, deactivate and unplug the appliance. Carefully clean the interior and door gasket with a soft damp cloth; avoid abrasive products and strong chemicals." },
   electrolux_long_programme: { workflow: "odour", title: "Review short-programme use", text: "If short programmes are used regularly, run a long programme at least twice a month to help prevent grease and limescale deposits." },
   electrolux_cleaner: { workflow: "odour", title: "Use a dishwasher-specific cleaner", text: "Use a cleaner made for dishwashers at least once a month and follow its packaging instructions." },
+  electrolux_noise_loading: { workflow: "noise", title: "Check basket arrangement", text: "Arrange tableware properly in the baskets so it does not rattle or knock during the wash; refer to the basket-loading guidance." },
+  electrolux_noise_spray_arm: { workflow: "noise", title: "Check spray-arm movement", text: "Make sure the spray arms can rotate freely without tableware blocking them." },
+  electrolux_separate_cutlery: { workflow: "rust", title: "Separate silver and stainless steel cutlery", text: "Keep silver and stainless steel cutlery apart in the basket rather than placing them close together." },
 };
 
 const catalogs = {
@@ -67,7 +70,7 @@ const catalogs = {
   },
   "Electrolux ESF8735ROX": {
     source: { title: "Electrolux ESF8735ROX · English user manual", url: "https://resource.electrolux.com.au/Public/File/?Id=33277", service_url: "https://www.electrolux.com.au/dishwashers/built-in/esf8735rox/", document: "ESF8735ROX / ESF8735RKX user manual", verified: "2026-09-17", sha256: "7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d" },
-    pages: { rinse_aid:[20], waiting:[15], electrolux_airdry:[15,20], food_spacing:[15], food_spray_arm:[15], food_filters:[16,17,20], food_programme:[20], electrolux_dispenser_lid:[21], electrolux_dispenser_spray:[21], streaks_rinse_setting:[20], electrolux_detergent_dose:[20,15], electrolux_clean_interior:[16,18], electrolux_long_programme:[18], electrolux_cleaner:[18], starting_close_door:[18], starting_basket_clearance:[19] },
+    pages: { rinse_aid:[20], waiting:[15], electrolux_airdry:[15,20], food_spacing:[15], food_spray_arm:[15], food_filters:[16,17,20], food_programme:[20], electrolux_dispenser_lid:[21], electrolux_dispenser_spray:[21], streaks_rinse_setting:[20], electrolux_detergent_dose:[20,15], electrolux_clean_interior:[16,18], electrolux_long_programme:[18], electrolux_cleaner:[18], electrolux_noise_loading:[19], electrolux_noise_spray_arm:[19], electrolux_separate_cutlery:[20], starting_close_door:[18], starting_basket_clearance:[19] },
   },
 } satisfies Record<string, { source: Source; pages: Record<string, number[]> }>;
 

@@ -12,7 +12,9 @@ CASES = (
     ('streaks', 'Removable white streaks remain on glasses after a wash.', {'streaks_rinse_setting', 'electrolux_detergent_dose'}),
     ('odour', 'There is an unpleasant odour inside the dishwasher.', {'electrolux_clean_interior', 'electrolux_long_programme', 'electrolux_cleaner'}),
     ('starting', 'The dishwasher will not start because the door will not close securely.', {'starting_close_door', 'starting_basket_clearance'}),
-    ('unmapped_noise', 'There is a rattling noise during the wash.', set()),
+    ('noise', 'There is a rattling noise during the wash.', {'electrolux_noise_loading', 'electrolux_noise_spray_arm'}),
+    ('rust', 'Rust spots appear on the cutlery after a wash.', {'electrolux_separate_cutlery'}),
+    ('unmapped_clouding', 'Clouding on the glassware does not wipe off after the wash.', set()),
 )
 
 

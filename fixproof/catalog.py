@@ -50,6 +50,9 @@ STEP_DEFINITIONS = {
     'electrolux_clean_interior': {'workflow': 'odour', 'title': 'Clean the appliance interior', 'text': 'Before maintenance, deactivate and unplug the appliance. Carefully clean the interior and door gasket with a soft damp cloth; avoid abrasive products and strong chemicals.', 'pages': [16, 18]},
     'electrolux_long_programme': {'workflow': 'odour', 'title': 'Review short-programme use', 'text': 'If short programmes are used regularly, run a long programme at least twice a month to help prevent grease and limescale deposits.', 'pages': [18]},
     'electrolux_cleaner': {'workflow': 'odour', 'title': 'Use a dishwasher-specific cleaner', 'text': 'Use a cleaner made for dishwashers at least once a month and follow its packaging instructions.', 'pages': [18]},
+    'electrolux_noise_loading': {'workflow': 'noise', 'title': 'Check basket arrangement', 'text': 'Arrange tableware properly in the baskets so it does not rattle or knock during the wash; refer to the basket-loading guidance.', 'pages': [19]},
+    'electrolux_noise_spray_arm': {'workflow': 'noise', 'title': 'Check spray-arm movement', 'text': 'Make sure the spray arms can rotate freely without tableware blocking them.', 'pages': [19]},
+    'electrolux_separate_cutlery': {'workflow': 'rust', 'title': 'Separate silver and stainless steel cutlery', 'text': 'Keep silver and stainless steel cutlery apart in the basket rather than placing them close together.', 'pages': [20]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -130,7 +133,7 @@ CATALOGS = {
             'document': 'ESF8735ROX / ESF8735RKX user manual',
             'verified': '2026-09-17',
             'sha256': '7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d',
-            'coverage': 'The official product page and manual cover name ESF8735ROX. Only six explicitly mapped issue paths are supported.',
+            'coverage': 'The official product page and manual cover name ESF8735ROX. Only eight explicitly mapped issue paths are supported.',
         },
         'step_pages': {
             'rinse_aid': [20], 'waiting': [15], 'electrolux_airdry': [15, 20],
@@ -139,6 +142,8 @@ CATALOGS = {
             'electrolux_dispenser_lid': [21], 'electrolux_dispenser_spray': [21],
             'streaks_rinse_setting': [20], 'electrolux_detergent_dose': [20, 15],
             'electrolux_clean_interior': [16, 18], 'electrolux_long_programme': [18], 'electrolux_cleaner': [18],
+            'electrolux_noise_loading': [19], 'electrolux_noise_spray_arm': [19],
+            'electrolux_separate_cutlery': [20],
             'starting_close_door': [18], 'starting_basket_clearance': [19],
         },
         'info_pages': {'plastic': [20], 'interior': [20]},

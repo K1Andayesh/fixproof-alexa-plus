@@ -74,11 +74,14 @@ class WorkflowTests(unittest.TestCase):
     def test_electrolux_catalog_only_offers_manual_mapped_paths(self):
         model='Electrolux ESF8735ROX'
         steps=server.steps_for(model)
-        self.assertEqual({step['workflow'] for step in steps.values()},{'drying','food','detergent','streaks','odour','starting'})
+        self.assertEqual({step['workflow'] for step in steps.values()},{'drying','food','detergent','streaks','noise','rust','odour','starting'})
         self.assertEqual(steps['electrolux_airdry']['pages'],[15,20])
         self.assertEqual(steps['electrolux_dispenser_lid']['pages'],[21])
         self.assertEqual(steps['electrolux_detergent_dose']['pages'],[20,15])
         self.assertEqual(steps['electrolux_clean_interior']['pages'],[16,18])
+        self.assertEqual(steps['electrolux_noise_loading']['pages'],[19])
+        self.assertEqual(steps['electrolux_noise_spray_arm']['pages'],[19])
+        self.assertEqual(steps['electrolux_separate_cutlery']['pages'],[20])
         self.assertEqual(steps['starting_basket_clearance']['pages'],[19])
         self.assertNotIn('electrolux_clean_interior',server.steps_for('Bosch SMS6HAI02A/01'))
         self.assertEqual(server.source_for(model)['sha256'],'7089b73bb67e976e348397074b2052e55d373caaa9ded6330a60b137eaf2400d')
@@ -90,8 +93,9 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(reply['step'],'food_spacing')
         self.assertEqual(reply['pages'],[15])
         self.assertIn('ESF8735ROX',server.handover(c))
-        with patch.object(server,'infer',return_value=({'category':'rust'},{'model':'stub','prompt_eval_count':1,'eval_count':1})):
-            out=server.assess(c,'There are rust spots on the cutlery.')
+        unsupported=self.create(model=model,issue='Clouding remains on the glassware and does not wipe off.')
+        with patch.object(server,'infer',return_value=({'category':'clouding'},{'model':'stub','prompt_eval_count':1,'eval_count':1})):
+            out=server.assess(unsupported,'What should I check?')
         self.assertEqual(out['kind'],'scope')
         self.assertNotIn('step',out)
     def test_water_left_after_programme_has_model_pages_and_error_code_is_outside_scope(self):
