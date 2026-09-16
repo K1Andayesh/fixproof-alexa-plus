@@ -179,6 +179,41 @@ async def main() -> None:
         starting_pending = starting_assessed["pending_check"]
         assert starting_pending["step_id"] == "starting_close_door"
         assert [item["page"] for item in starting_pending["citations"]] == [48]
+        drainage_issue = "Water remains at the bottom of this fictional dishwasher after the wash."
+        drainage_started = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()), "reported_issue": drainage_issue,
+            "model": "Bosch SMS6HCI02A/72", "model_confirmed": True, "fictional_demo": True,
+        })
+        drainage_assessed = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": drainage_started["case_id"],
+            "revision": drainage_started["revision"], "user_message": "What should I check first?",
+        })
+        assert drainage_assessed["status"] == "Handover ready"
+        assert drainage_assessed["pending_check"] is None
+        assert drainage_assessed["latest_event"]["kind"] == "scope"
+        drainage_handover = await call(reconnected, "prepare_handover", {"case_id": drainage_started["case_id"]})
+        assert drainage_handover["evidence"]["scope_report"] == drainage_issue
+        assert "No check was selected" in drainage_handover["markdown"]
+        assert drainage_handover["evidence"]["checks"] == []
+        assert drainage_handover["evidence_integrity"]["digest"] == evidence_sha256(drainage_handover["evidence"])
+        drying_started = await call(reconnected, "start_case", {
+            "request_id": str(uuid.uuid4()),
+            "reported_issue": "The fictional glasses remain wet after the wash.",
+            "model": "Bosch SMS6HCI02A/72", "model_confirmed": True, "fictional_demo": True,
+        })
+        drying_assessed = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": drying_started["case_id"],
+            "revision": drying_started["revision"], "user_message": "What should I check first?",
+        })
+        assert drying_assessed["pending_check"]["step_id"] == "programme"
+        error_report = "Actually this fictional appliance shows E:24 and will not drain."
+        scoped = await call(reconnected, "ask_fixproof", {
+            "request_id": str(uuid.uuid4()), "case_id": drying_started["case_id"],
+            "revision": drying_assessed["revision"], "user_message": error_report,
+        })
+        assert scoped["status"] == "Handover ready" and scoped["pending_check"] is None
+        scoped_handover = await call(reconnected, "prepare_handover", {"case_id": drying_started["case_id"]})
+        assert scoped_handover["evidence"]["scope_report"] == error_report
 
     evidence = {
         "captured_at": datetime.now(timezone.utc).isoformat(),
@@ -216,6 +251,8 @@ async def main() -> None:
         "recorded_observation_preserved_after_reconnect": True,
         "next_check_not_repeated": True,
         "safety_stop_cleared_pending_check": True,
+        "unsupported_drainage_rejected_without_check": True,
+        "later_error_report_cleared_pending_check": True,
         "fictional_only": True,
     }
     output = Path(os.environ.get("FIXPROOF_HOSTED_MCP_EVIDENCE", "validation/HOSTED_MCP.json"))

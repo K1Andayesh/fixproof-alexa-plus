@@ -11,6 +11,7 @@ type Proof = {
   pages: string;
   continuity: string;
   fingerprint: string;
+  scope?: string;
 };
 
 function parseSse(text: string) {
@@ -47,7 +48,7 @@ export function LiveProof() {
   const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
-  async function run() {
+  async function run(variant: "streaks" | "scope") {
     setState("running");
     setProof(null);
     setAppView(null);
@@ -68,7 +69,9 @@ export function LiveProof() {
 
       const started = await callTool(5, "start_case", {
         request_id: crypto.randomUUID(),
-        reported_issue: "Removable streaks remain on glasses after this fictional wash.",
+        reported_issue: variant === "scope"
+          ? "Water remains at the bottom of this fictional dishwasher after the wash."
+          : "Removable streaks remain on glasses after this fictional wash.",
         model: "Bosch SMS6HCI02A/72",
         model_confirmed: true,
         fictional_demo: true,
@@ -79,29 +82,51 @@ export function LiveProof() {
         revision: started.revision,
         user_message: "What should I check first?",
       });
-      const pending = guided.pending_check;
-      const recorded = await callTool(7, "record_outcome", {
-        request_id: crypto.randomUUID(),
-        case_id: started.case_id,
-        revision: guided.revision,
-        step_id: pending.step_id,
-        outcome: "Not yet tested",
-        observation: "Fictional browser proof; no appliance was inspected.",
-      });
-      const restored = await callTool(8, "read_case", { case_id: started.case_id });
-      const handover = await callTool(9, "prepare_handover", { case_id: started.case_id });
-      const restoredObservation = restored.recorded_outcomes?.[pending.step_id]?.observation;
-      if (restoredObservation !== "Fictional browser proof; no appliance was inspected.") throw new Error("The recorded observation did not persist.");
+      let restored;
+      let handover;
+      let selectedCheck;
+      let selectedPages;
+      let continuity;
+      let scope: string | undefined;
+      if (variant === "scope") {
+        if (guided.status !== "Handover ready" || guided.pending_check || guided.latest_event?.kind !== "scope") throw new Error("The drainage report was not kept outside the verified scope.");
+        restored = await callTool(7, "read_case", { case_id: started.case_id });
+        handover = await callTool(8, "prepare_handover", { case_id: started.case_id });
+        if (restored.status !== "Handover ready" || handover.evidence.checks?.length || handover.evidence.scope_report !== started.reported_issue) throw new Error("The scope boundary did not persist into the handover.");
+        selectedCheck = "None";
+        selectedPages = "none";
+        continuity = "Scope boundary restored by read_case";
+        scope = "Drainage report retained · no check selected";
+      } else {
+        const pending = guided.pending_check;
+        if (!pending) throw new Error("The cited streaks check was not selected.");
+        const recorded = await callTool(7, "record_outcome", {
+          request_id: crypto.randomUUID(),
+          case_id: started.case_id,
+          revision: guided.revision,
+          step_id: pending.step_id,
+          outcome: "Not yet tested",
+          observation: "Fictional browser proof; no appliance was inspected.",
+        });
+        restored = await callTool(8, "read_case", { case_id: started.case_id });
+        handover = await callTool(9, "prepare_handover", { case_id: started.case_id });
+        const restoredObservation = restored.recorded_outcomes?.[pending.step_id]?.observation;
+        if (restoredObservation !== "Fictional browser proof; no appliance was inspected.") throw new Error("The recorded observation did not persist.");
+        selectedCheck = pending.title;
+        selectedPages = pending.citations.map((item: { page: number }) => item.page).join(", ");
+        continuity = `${recorded.evidence_summary.deferred_or_skipped} deferred · restored by read_case`;
+      }
 
       setProof({
         protocol: initialized.protocolVersion,
         server: initialized.serverInfo.version,
         tools: listed.tools.length,
         app: `${app.name} · ${app.mimeType}`,
-        check: pending.title,
-        pages: pending.citations.map((item: { page: number }) => item.page).join(", "),
-        continuity: `${recorded.evidence_summary.deferred_or_skipped} deferred · restored by read_case`,
+        check: selectedCheck,
+        pages: selectedPages,
+        continuity,
         fingerprint: handover.evidence_integrity.digest,
+        scope,
       });
       setAppView({ html: appHtml, handover });
       setState("passed");
@@ -117,9 +142,12 @@ export function LiveProof() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Zero-setup judge proof</p>
           <h2 id="live-proof-title" className="mt-3 text-3xl font-bold tracking-[-0.03em]">Call the live MCP now.</h2>
-          <p className="mt-4 leading-7 text-[#52645b]">Runs a fixed fictional case through protocol negotiation, discovery, a cited check, explicit outcome storage, cross-request read-back, and the fingerprinted handover.</p>
-          <button onClick={run} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
+          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Both paths call the production MCP endpoint, then show the returned handover App. The second path checks that an unsupported drainage report cannot become a drying instruction.</p>
+          <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
             {state === "running" ? "Running live proof…" : "Run live MCP proof"}
+          </button>
+          <button onClick={() => run("scope")} disabled={state === "running"} className="mt-3 block rounded-full border border-[#a8c3b4] bg-white px-6 py-3 font-semibold text-[#163a31] disabled:cursor-wait disabled:opacity-60">
+            Run scope boundary proof
           </button>
           <p className="mt-3 text-xs leading-5 text-[#6a7b74]">Uses only hard-coded fictional data. It does not inspect or diagnose an appliance.</p>
         </div>
@@ -133,7 +161,7 @@ export function LiveProof() {
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                 <div><dt className="text-[#6a7b74]">Protocol · server</dt><dd className="font-semibold">{proof.protocol} · {proof.server}</dd></div>
                 <div><dt className="text-[#6a7b74]">Discovery</dt><dd className="font-semibold">{proof.tools} tools · MCP App loaded</dd></div>
-                <div><dt className="text-[#6a7b74]">Selected check</dt><dd className="font-semibold">{proof.check} · pages {proof.pages}</dd></div>
+                <div><dt className="text-[#6a7b74]">{proof.scope ? "Boundary" : "Selected check"}</dt><dd className="font-semibold">{proof.scope || `${proof.check} · pages ${proof.pages}`}</dd></div>
                 <div><dt className="text-[#6a7b74]">Continuity</dt><dd className="font-semibold">{proof.continuity}</dd></div>
               </dl>
               <p className="mt-4 text-xs text-[#6a7b74]">{proof.app}</p>

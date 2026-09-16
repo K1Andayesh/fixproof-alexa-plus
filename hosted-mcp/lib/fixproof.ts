@@ -8,7 +8,7 @@ export type FixProofCase = {
   id: string; created: string; model: string; verified: boolean; demo: boolean; issue: string;
   workflow: Step["workflow"] | null; status: "Open" | "Handover ready"; revision: number;
   attempts: Record<string, Attempt>; pending: string | null;
-  latest_event?: { kind: string; text: string; citations?: Citation[] }; safety_report?: string;
+  latest_event?: { kind: string; text: string; citations?: Citation[] }; safety_report?: string; scope_report?: string;
 };
 
 const definitions: Record<string, Omit<Step, "pages">> = {
@@ -91,6 +91,7 @@ export function citationsFor(model: string, pages: number[]): Citation[] {
 
 function classify(text: string): FixProofCase["workflow"] {
   const value = clean(text).toLowerCase();
+  if (unsupportedIssue(value)) return null;
   if (/food|remnant|dirty|soil/.test(value)) return "food";
   if (/detergent|tablet|powder|residue/.test(value)) return "detergent";
   if (/streak|white coating|limescale/.test(value)) return "streaks";
@@ -101,6 +102,11 @@ function classify(text: string): FixProofCase["workflow"] {
   if (/(?:won.t|will not|does not) start.*door|door.*(?:won.t|will not|does not) (?:close|latch)|door is not closed/.test(value)) return "starting";
   if (/wet|dry|water/.test(value)) return "drying";
   return null;
+}
+
+function unsupportedIssue(text: string): boolean {
+  const value = clean(text).toLowerCase();
+  return /\be[\s:-]?\d{2}\b|\b(?:error|fault)\s+(?:code|message)\b|\b(?:drain|pump)(?:s|ed|ing)?\b|\bstanding water\s+(?:in|at)\s+(?:the\s+)?(?:base|bottom|tub)\b|\bwater\s+(?:left|remains|stays|collects|pooled|pools)\s+(?:in|at)\s+(?:the\s+)?(?:base|bottom|tub)\b/.test(value);
 }
 
 function hazard(text: string): boolean {
@@ -188,6 +194,12 @@ export async function askFixProof(input: { request_id: string; case_id: string; 
     caseRecord.latest_event = { kind: "safety", text: "Stop using the appliance and seek qualified help. No further troubleshooting check was selected." };
     return view(await saveUpdated(caseRecord, requestId, input.revision));
   }
+  if (unsupportedIssue(`${caseRecord.issue} ${message}`)) {
+    caseRecord.status = "Handover ready"; caseRecord.pending = null;
+    caseRecord.scope_report = unsupportedIssue(message) ? message : caseRecord.issue;
+    caseRecord.latest_event = { kind: "scope", text: "This reference set has no verified drainage, pump or error-code guidance. No check was selected. Keep the reported issue in the handover for a qualified service conversation." };
+    return view(await saveUpdated(caseRecord, requestId, input.revision));
+  }
   caseRecord.workflow ??= classify(`${caseRecord.issue} ${message}`);
   if (!caseRecord.workflow) {
     caseRecord.latest_event = { kind: "clarification", text: "Is the issue wet tableware, food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible glass clouding that does not wipe off, an unpleasant odour inside the appliance, or a door that will not close so the appliance cannot start?" };
@@ -251,10 +263,11 @@ export async function handover(caseRecord: FixProofCase) {
     model: { reported: caseRecord.model, user_confirmed: caseRecord.verified, fictional_demo: caseRecord.demo, catalog_match: true }, reference: { ...entry[1].source }, checks,
     suggested_awaiting_outcome: caseRecord.pending ? { step_id: caseRecord.pending, title: steps[caseRecord.pending].title, citations: citationsFor(caseRecord.model, steps[caseRecord.pending].pages) } : null,
     safety_report: caseRecord.safety_report ?? null,
+    ...(caseRecord.scope_report ? { scope_report: caseRecord.scope_report } : {}),
     limits: ["No physical inspection was performed.", "No fault or repair requirement was diagnosed.", "Deferred or skipped checks do not establish performed work."],
   };
   const digest = await evidenceSha256(evidence);
-  const lines = ["# FixProof repair handover", "", "Public MCP evaluation · fictional data only · no diagnosis.", "", `Case: ${caseRecord.id}`, `Status: ${caseRecord.status}`, `Model: ${caseRecord.model}`, "", "## Reported issue", caseRecord.issue, "", "## Recorded checks", ...(checks.length ? checks.flatMap((check) => [`- ${check.title}: ${check.outcome}${check.observation ? ` — ${check.observation}` : ""}`, ...check.citations.map((citation) => `  Source: ${citation.url}`)]) : ["None recorded."]), "", "## Reference provenance", entry[1].source.title, entry[1].source.document, entry[1].source.url, entry[1].source.service_url, ...(caseRecord.safety_report ? ["", "## Safety report", caseRecord.safety_report] : []), "", "## Evidence fingerprint", `SHA-256 (fixproof-sorted-json-v1): ${digest}`, "Recomputing this fingerprint can detect changed evidence fields. It does not prove who created the record.", "", "## Limits", ...evidence.limits];
+  const lines = ["# FixProof repair handover", "", "Public MCP evaluation · fictional data only · no diagnosis.", "", `Case: ${caseRecord.id}`, `Status: ${caseRecord.status}`, `Model: ${caseRecord.model}`, "", "## Reported issue", caseRecord.issue, "", "## Recorded checks", ...(checks.length ? checks.flatMap((check) => [`- ${check.title}: ${check.outcome}${check.observation ? ` — ${check.observation}` : ""}`, ...check.citations.map((citation) => `  Source: ${citation.url}`)]) : ["None recorded."]), "", "## Reference provenance", entry[1].source.title, entry[1].source.document, entry[1].source.url, entry[1].source.service_url, ...(caseRecord.safety_report ? ["", "## Safety report", caseRecord.safety_report] : []), ...(caseRecord.scope_report ? ["", "## Outside verified scope", caseRecord.scope_report, "No check was selected for this report."] : []), "", "## Evidence fingerprint", `SHA-256 (fixproof-sorted-json-v1): ${digest}`, "Recomputing this fingerprint can detect changed evidence fields. It does not prove who created the record.", "", "## Limits", ...evidence.limits];
   return {
     case_id: caseRecord.id, revision: caseRecord.revision, status: caseRecord.status, markdown: lines.join("\n"),
     evidence,
