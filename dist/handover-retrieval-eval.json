@@ -1,10 +1,11 @@
 {
   "title": "FixProof controlled handover retrieval evaluation",
   "schema_version": 1,
-  "captured_at": "2026-09-16T00:59:35+00:00",
+  "captured_at": "2026-09-16T02:03:43+00:00",
   "reader_models": [
     "qwen3.5:9b",
-    "gemma3:12b-it-qat"
+    "gemma3:12b-it-qat",
+    "gpt-oss:20b"
   ],
   "reader_model_details": [
     {
@@ -16,10 +17,15 @@
       "name": "gemma3:12b-it-qat",
       "digest": "5d4fa005e7bb5931be8bc35224080a9b316c7e1c069c9481a6a51b607f4252e2",
       "size": 8928675346
+    },
+    {
+      "name": "gpt-oss:20b",
+      "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+      "size": 13793441244
     }
   ],
   "method": {
-    "design": "8 fictional cases x two formats x two local model families",
+    "design": "8 fictional cases x two formats x 3 local model families",
     "same_facts": true,
     "format_blind": true,
     "temperature": 0,
@@ -280,17 +286,17 @@
   ],
   "aggregate": {
     "raw_transcript": {
-      "reads": 16,
-      "correct_fields": 146,
-      "total_fields": 160,
-      "field_accuracy_percent": 91.2,
-      "critical_errors": 2
+      "reads": 24,
+      "correct_fields": 215,
+      "total_fields": 240,
+      "field_accuracy_percent": 89.6,
+      "critical_errors": 5
     },
     "structured_handover": {
-      "reads": 16,
-      "correct_fields": 150,
-      "total_fields": 160,
-      "field_accuracy_percent": 93.8,
+      "reads": 24,
+      "correct_fields": 230,
+      "total_fields": 240,
+      "field_accuracy_percent": 95.8,
       "critical_errors": 0
     }
   },
@@ -345,8 +351,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 7.18,
+        "seconds": 5.75,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 259,
         "output_tokens": 128
       }
@@ -401,8 +408,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.53,
+        "seconds": 1.45,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 584,
         "output_tokens": 124
       }
@@ -459,8 +467,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 9.79,
+        "seconds": 6.36,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 276,
         "output_tokens": 133
       }
@@ -517,10 +526,131 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.61,
+        "seconds": 2.38,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 613,
         "output_tokens": 135
+      }
+    },
+    {
+      "scenario": "drying-deferred",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Allow drying to finish"
+        ],
+        "deferred_checks": [
+          "Not yet tested"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": false,
+        "deferred_checks": false,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.95,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 303,
+        "output_tokens": 193
+      }
+    },
+    {
+      "scenario": "drying-deferred",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishes are still wet after the programme finished.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Allow drying to finish"
+        ],
+        "pending_check": "Check rinse aid",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          41
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.65,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 566,
+        "output_tokens": 163
       }
     },
     {
@@ -579,8 +709,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.65,
+        "seconds": 5.58,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 266,
         "output_tokens": 146
       }
@@ -641,8 +772,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.72,
+        "seconds": 1.63,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 643,
         "output_tokens": 142
       }
@@ -703,8 +835,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 7.35,
+        "seconds": 6.47,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 283,
         "output_tokens": 142
       }
@@ -767,10 +900,137 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.75,
+        "seconds": 2.6,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 686,
         "output_tokens": 154
+      }
+    },
+    {
+      "scenario": "food-performed",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Food remnants remain on plates after washing",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42,
+          36,
+          37
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 8.09,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 309,
+        "output_tokens": 304
+      }
+    },
+    {
+      "scenario": "food-performed",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36,
+          37,
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Food remnants remain on plates after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check the filters"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Check spacing and contact",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42,
+          36,
+          37
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.26,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 613,
+        "output_tokens": 225
       }
     },
     {
@@ -823,8 +1083,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.92,
+        "seconds": 5.48,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 262,
         "output_tokens": 129
       }
@@ -881,8 +1142,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.56,
+        "seconds": 1.51,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 587,
         "output_tokens": 133
       }
@@ -935,8 +1197,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.59,
+        "seconds": 6.25,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 279,
         "output_tokens": 130
       }
@@ -993,10 +1256,133 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.53,
+        "seconds": 2.3,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 617,
         "output_tokens": 136
+      }
+    },
+    {
+      "scenario": "detergent-skipped",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Detergent tablet remains after wash",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "field_correct": {
+        "reported_issue": false,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": false,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [
+        "deferred check also classified as performed"
+      ],
+      "runtime": {
+        "seconds": 7.21,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 307,
+        "output_tokens": 281
+      }
+    },
+    {
+      "scenario": "detergent-skipped",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The detergent tablet remains after the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Clear the tablet collecting tray"
+        ],
+        "pending_check": "Reposition the detergent tablet",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          42
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.87,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 571,
+        "output_tokens": 253
       }
     },
     {
@@ -1053,8 +1439,9 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 5.55,
+        "seconds": 5.47,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 269,
         "output_tokens": 135
       }
@@ -1111,8 +1498,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.72,
+        "seconds": 1.61,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 616,
         "output_tokens": 141
       }
@@ -1171,8 +1559,9 @@
         "safety report lost or changed"
       ],
       "runtime": {
-        "seconds": 7.2,
+        "seconds": 6.37,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 283,
         "output_tokens": 139
       }
@@ -1202,7 +1591,123 @@
         "model": "Bosch SMS6HAI02A/01",
         "reference_match_supported": true,
         "performed_checks": [
-          "Lower the rinse aid setting: Improved, not resolved"
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": []
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": false
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.36,
+        "retries": 0,
+        "thinking": false,
+        "prompt_tokens": 642,
+        "output_tokens": 138
+      }
+    },
+    {
+      "scenario": "streaks-safety-stop",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "extracted": {
+        "reported_issue": "There is smoke coming from the dishwasher now.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "field_correct": {
+        "reported_issue": false,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 7.28,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 314,
+        "output_tokens": 344
+      }
+    },
+    {
+      "scenario": "streaks-safety-stop",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
+        ],
+        "deferred_checks": [],
+        "pending_check": null,
+        "safety_report": "There is smoke coming from the dishwasher now.",
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          44
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Glasses have removable streaks and cutlery looks metallic.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Lower the rinse aid setting"
         ],
         "deferred_checks": [],
         "pending_check": null,
@@ -1217,7 +1722,7 @@
         "reported_issue": true,
         "model": true,
         "reference_match_supported": true,
-        "performed_checks": false,
+        "performed_checks": true,
         "deferred_checks": true,
         "pending_check": true,
         "safety_report": true,
@@ -1225,14 +1730,15 @@
         "issue_resolved": true,
         "source_pages": true
       },
-      "correct_fields": 9,
+      "correct_fields": 10,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.78,
+        "seconds": 2.1,
         "retries": 0,
-        "prompt_tokens": 642,
-        "output_tokens": 145
+        "thinking": "low",
+        "prompt_tokens": 598,
+        "output_tokens": 273
       }
     },
     {
@@ -1287,8 +1793,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.51,
+        "seconds": 5.18,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 265,
         "output_tokens": 138
       }
@@ -1347,6 +1854,7 @@
       "runtime": {
         "seconds": 1.58,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 589,
         "output_tokens": 134
       }
@@ -1403,8 +1911,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 7.32,
+        "seconds": 6.65,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 282,
         "output_tokens": 136
       }
@@ -1443,7 +1952,9 @@
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
-        "source_pages": []
+        "source_pages": [
+          48
+        ]
       },
       "field_correct": {
         "reported_issue": true,
@@ -1455,16 +1966,140 @@
         "safety_report": true,
         "diagnosis_established": true,
         "issue_resolved": true,
-        "source_pages": false
+        "source_pages": true
       },
-      "correct_fields": 7,
+      "correct_fields": 8,
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.68,
+        "seconds": 2.41,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 619,
-        "output_tokens": 142
+        "output_tokens": 144
+      }
+    },
+    {
+      "scenario": "noise-performed",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [
+          "Check spray-arm clearance",
+          "Distribute a small load"
+        ],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [
+        "deferred check also classified as performed"
+      ],
+      "runtime": {
+        "seconds": 7.82,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 310,
+        "output_tokens": 368
+      }
+    },
+    {
+      "scenario": "noise-performed",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The dishwasher knocks and rattles during the wash.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Check spray-arm clearance"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Distribute a small load",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          48
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 2.02,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 573,
+        "output_tokens": 226
       }
     },
     {
@@ -1517,8 +2152,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.79,
+        "seconds": 5.54,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 264,
         "output_tokens": 133
       }
@@ -1575,8 +2211,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.67,
+        "seconds": 1.8,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 590,
         "output_tokens": 137
       }
@@ -1633,8 +2270,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.77,
+        "seconds": 6.46,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 279,
         "output_tokens": 134
       }
@@ -1692,10 +2330,131 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.59,
+        "seconds": 2.5,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 616,
         "output_tokens": 140
+      }
+    },
+    {
+      "scenario": "rust-deferred",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "deferred_checks": [
+          "Not yet tested"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": false,
+        "deferred_checks": false,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 6.14,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 308,
+        "output_tokens": 170
+      }
+    },
+    {
+      "scenario": "rust-deferred",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "Rust spots remain on the cutlery after washing.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use rust-resistant tableware"
+        ],
+        "pending_check": "Keep rusting items out",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.78,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 571,
+        "output_tokens": 219
       }
     },
     {
@@ -1748,8 +2507,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.16,
+        "seconds": 5.49,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 265,
         "output_tokens": 129
       }
@@ -1806,8 +2566,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.56,
+        "seconds": 1.65,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 589,
         "output_tokens": 133
       }
@@ -1860,8 +2621,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.84,
+        "seconds": 6.29,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 283,
         "output_tokens": 130
       }
@@ -1898,7 +2660,10 @@
         "safety_report": null,
         "diagnosis_established": false,
         "issue_resolved": false,
-        "source_pages": []
+        "source_pages": [
+          45,
+          1
+        ]
       },
       "field_correct": {
         "reported_issue": true,
@@ -1916,10 +2681,133 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.54,
+        "seconds": 2.52,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 621,
-        "output_tokens": 135
+        "output_tokens": 141
+      }
+    },
+    {
+      "scenario": "clouding-skipped",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": false,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [
+        "deferred check also classified as performed"
+      ],
+      "runtime": {
+        "seconds": 7.03,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 310,
+        "output_tokens": 247
+      }
+    },
+    {
+      "scenario": "clouding-skipped",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "extracted": {
+        "reported_issue": "The glass clouding does not wipe off.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [],
+        "deferred_checks": [
+          "Use dishwasher-proof glasses"
+        ],
+        "pending_check": "Avoid a lengthy steam phase",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          45
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 10,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 4.26,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 573,
+        "output_tokens": 595
       }
     },
     {
@@ -1974,8 +2862,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 5.61,
+        "seconds": 5.62,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 264,
         "output_tokens": 137
       }
@@ -2032,8 +2921,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 1.61,
+        "seconds": 1.6,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 589,
         "output_tokens": 133
       }
@@ -2090,8 +2980,9 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 6.85,
+        "seconds": 6.8,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 279,
         "output_tokens": 133
       }
@@ -2150,10 +3041,131 @@
       "total_fields": 10,
       "critical_errors": [],
       "runtime": {
-        "seconds": 2.67,
+        "seconds": 2.58,
         "retries": 0,
+        "thinking": false,
         "prompt_tokens": 617,
         "output_tokens": 142
+      }
+    },
+    {
+      "scenario": "odour-performed",
+      "model": "gpt-oss:20b",
+      "format": "raw_transcript",
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "extracted": {
+        "reported_issue": "unpleasant odour inside the dishwasher",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [
+          "Clean the filters"
+        ],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "field_correct": {
+        "reported_issue": false,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": true,
+        "deferred_checks": false,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 8,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 7.76,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 309,
+        "output_tokens": 287
+      }
+    },
+    {
+      "scenario": "odour-performed",
+      "model": "gpt-oss:20b",
+      "format": "structured_handover",
+      "expected": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "extracted": {
+        "reported_issue": "There is an unpleasant odour inside the dishwasher.",
+        "model": "Bosch SMS6HAI02A/01",
+        "reference_match_supported": true,
+        "performed_checks": [
+          "Remove coarse interior soiling: Issue unchanged"
+        ],
+        "deferred_checks": [],
+        "pending_check": "Clean the filters",
+        "safety_report": null,
+        "diagnosis_established": false,
+        "issue_resolved": false,
+        "source_pages": [
+          36
+        ]
+      },
+      "field_correct": {
+        "reported_issue": true,
+        "model": true,
+        "reference_match_supported": true,
+        "performed_checks": false,
+        "deferred_checks": true,
+        "pending_check": true,
+        "safety_report": true,
+        "diagnosis_established": true,
+        "issue_resolved": true,
+        "source_pages": true
+      },
+      "correct_fields": 9,
+      "total_fields": 10,
+      "critical_errors": [],
+      "runtime": {
+        "seconds": 1.9,
+        "retries": 0,
+        "thinking": "low",
+        "prompt_tokens": 573,
+        "output_tokens": 217
       }
     }
   ]

@@ -40,7 +40,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
 | Handover is composable | `prepare_handover` returns readable Markdown plus a versioned evidence object, a reproducible SHA-256 fingerprint over that object, and a sandboxed [`ui://` MCP App](fixproof/handover_app.html) for human review; the zero-install browser build exports the same evidence schema as JSON and locally verifies an unchanged or edited copy |
-| Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 150/160 fields with zero critical errors from handovers versus 146/160 fields and two critical errors from equal-fact transcripts across two local model families and all eight issue paths |
+| Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 230/240 fields with zero critical errors from handovers versus 215/240 fields and five critical errors from equal-fact transcripts across three local model families and all eight issue paths |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
 | Current judge walkthrough | Embedded captioned 2:15 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V7_QA.md) |

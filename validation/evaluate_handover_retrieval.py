@@ -17,10 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "fixproof"))
 import server as workflow  # noqa: E402
 
-OUT = ROOT / "validation" / "HANDOVER_RETRIEVAL_EVAL.json"
+OUT = Path(os.environ.get(
+    "FIXPROOF_RETRIEVAL_OUT", ROOT / "validation" / "HANDOVER_RETRIEVAL_EVAL.json"
+))
 OLLAMA = os.environ.get("FIXPROOF_OLLAMA", "http://127.0.0.1:11434").rstrip("/")
 MODELS = [m.strip() for m in os.environ.get(
-    "FIXPROOF_READER_MODELS", "qwen3.5:9b,gemma3:12b-it-qat"
+    "FIXPROOF_READER_MODELS", "qwen3.5:9b,gemma3:12b-it-qat,gpt-oss:20b"
 ).split(",") if m.strip()]
 
 SCENARIOS = [
@@ -114,7 +116,8 @@ A performed check requires an outcome showing it was actually tried. Put 'Not ye
 
 
 def ask(model: str, text: str) -> tuple[dict, dict]:
-    payload = dict(model=model, stream=False, think=False, format=SCHEMA, keep_alive="10m",
+    thinking = "low" if model.startswith("gpt-oss:") else False
+    payload = dict(model=model, stream=False, think=thinking, format=SCHEMA, keep_alive="10m",
                    options=dict(temperature=0, seed=42, num_ctx=8192, num_predict=900),
                    messages=[dict(role="system", content=SYSTEM), dict(role="user", content=text)])
     started = time.monotonic()
@@ -126,6 +129,7 @@ def ask(model: str, text: str) -> tuple[dict, dict]:
         try:
             parsed = json.loads(raw["message"]["content"])
             return parsed, dict(seconds=round(time.monotonic()-started, 2), retries=attempt,
+                thinking=thinking,
                 prompt_tokens=raw.get("prompt_eval_count"), output_tokens=raw.get("eval_count"))
         except json.JSONDecodeError as exc:
             last_error = exc
@@ -189,7 +193,7 @@ def main() -> None:
     artifact = dict(title="FixProof controlled handover retrieval evaluation", schema_version=1,
         captured_at=datetime.now(timezone.utc).isoformat(timespec="seconds"), reader_models=MODELS,
         reader_model_details=reader_model_details(),
-        method=dict(design=f"{len(SCENARIOS)} fictional cases x two formats x two local model families",
+        method=dict(design=f"{len(SCENARIOS)} fictional cases x two formats x {len(MODELS)} local model families",
                     same_facts=True, format_blind=True, temperature=0, seed=42,
                     limitations=["Synthetic cases, not user research.", "Measures fact retrieval, not repair success, time saved, or customer impact.", "Local model output can vary across runtime or model versions."]),
         fields=FIELDS, scenarios=[dict(spec=s, expected=expected_for(case_for(s))) for s in SCENARIOS],
