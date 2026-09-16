@@ -276,7 +276,8 @@ mcp = MCPServer(
         "Only user-confirmed outcomes count as attempted. Never claim a diagnosis, a "
         "physical inspection, or a verified repair. The current reference catalog covers "
         "three exact Bosch models with drying, food-remnant, detergent-residue, "
-        "removable-streak, wash-noise, cutlery-rust and irreversible-glass-clouding guidance."
+        "removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, "
+        "unpleasant-interior-odour and door-related-starting guidance."
     ),
     extensions=[apps],
 )

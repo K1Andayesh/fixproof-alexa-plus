@@ -183,6 +183,7 @@ class MCPWorkflowTests(unittest.IsolatedAsyncioTestCase):
             for path in (
                 "drying", "food-remnant", "detergent-residue", "removable-streak",
                 "wash-noise", "cutlery-rust", "irreversible-glass-clouding",
+                "unpleasant-interior-odour", "door-related-starting",
             ):
                 self.assertIn(path, mcp_server.mcp.instructions)
             listed = {tool.name: tool for tool in (await client.list_tools()).tools}

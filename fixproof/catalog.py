@@ -38,6 +38,9 @@ STEP_DEFINITIONS = {
     'odour_wipe_interior': {'workflow': 'odour', 'title': 'Remove coarse interior soiling', 'text': 'Remove coarse soiling from the appliance interior with a damp cloth.', 'pages': [36]},
     'odour_clean_filters': {'workflow': 'odour', 'title': 'Clean the filters', 'text': 'Check the filters for residue and clean them under running water as described in the manual.', 'pages': [36]},
     'odour_machine_care': {'workflow': 'odour', 'title': 'Run Machine Care', 'text': 'Run Machine Care without tableware. Use only products designed for dishwashers and follow the product packaging safety instructions.', 'pages': [35, 36]},
+    'starting_close_door': {'workflow': 'starting', 'title': 'Close the appliance door', 'text': 'Close the appliance door fully before trying to start the programme.', 'pages': [47]},
+    'starting_rear_clearance': {'workflow': 'starting', 'title': 'Check behind the appliance', 'text': 'Check whether a socket or unremoved hose holder is pressing the rear panel inward and preventing the door from closing securely.', 'pages': [47]},
+    'starting_basket_clearance': {'workflow': 'starting', 'title': 'Clear the basket edge', 'text': 'Arrange tableware so no parts project beyond the basket and prevent the appliance door from closing properly.', 'pages': [47]},
 }
 INFO_DEFINITIONS = {
     'plastic': {'title': 'Plastic dries differently', 'text': 'Plastic retains less heat and can remain wet. The manual describes this as normal.', 'pages': [41]},
@@ -75,6 +78,7 @@ CATALOGS = {
             'clouding_dishwasher_proof': [49], 'clouding_steam_phase': [49],
             'clouding_lower_temperature': [49], 'clouding_glass_protection': [49],
             'odour_wipe_interior': [38], 'odour_clean_filters': [38], 'odour_machine_care': [37, 38],
+            'starting_close_door': [51], 'starting_rear_clearance': [51], 'starting_basket_clearance': [51],
         },
         'info_pages': {'plastic': [44], 'interior': [45]},
     },
@@ -101,6 +105,7 @@ CATALOGS = {
             'clouding_dishwasher_proof': [46], 'clouding_steam_phase': [46],
             'clouding_lower_temperature': [46], 'clouding_glass_protection': [46],
             'odour_wipe_interior': [36], 'odour_clean_filters': [36], 'odour_machine_care': [35, 36],
+            'starting_close_door': [48], 'starting_rear_clearance': [49], 'starting_basket_clearance': [49],
         },
         'info_pages': {'plastic': [42], 'interior': [42]},
     },

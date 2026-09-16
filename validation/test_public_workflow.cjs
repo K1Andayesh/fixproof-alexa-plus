@@ -113,6 +113,15 @@ test('unpleasant-interior-odour journey stays within its three care checks',()=>
  assert.match(a.handover(),/Supported path: unpleasant odour inside the appliance/);assert.match(a.handover(),/9001720311_B\.pdf#page=38/);
 });
 
+test('door-related starting journey stays within its three cited checks',()=>{
+ const a=app();a.get('pathway').value='starting';a.get('pathway').onchange();
+ assert.equal(a.get('issue').value,'The dishwasher will not start because the door will not close securely.');
+ a.run("start('The dishwasher will not start because the door will not close securely.','starting','Bosch SMS6HCI02A/72')");a.ask('What should I check first?');
+ assert.equal(a.run('state.pending'),'starting_close_door');assert.match(a.get('progress').textContent,/0 of 3 door-related-starting checks/);
+ a.record('Issue unchanged','The door still will not close securely.');
+ assert.match(a.handover(),/Supported path: appliance will not start because the door will not close/);assert.match(a.handover(),/9002017246_A\.pdf#page=48/);
+});
+
 test('a cross-path request does not replace a pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('There is also food left on the plates.');
  assert.equal(a.run('state.pending'),'waiting');assert.match(a.run('latest'),/Start a new fictional case/);

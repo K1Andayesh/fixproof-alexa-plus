@@ -14,6 +14,7 @@ cases=[
  ('cutlery_rust',case('Rust spots appear on the cutlery after the wash.'),'What should I check first?',{'step'}),
  ('irreversible_glass_clouding',case('Clouding on the glassware does not wipe off after the wash.'),'What should I check first?',{'step'}),
  ('unpleasant_odour',case('There is an unpleasant odour inside the dishwasher.'),'What should I check first?',{'step'}),
+ ('door_related_starting',case('The dishwasher will not start because the door will not close securely.'),'What should I check first?',{'step'}),
  ('unclear',case('Something is wrong.'),'Can you help?',{'clarify'}),
  ('plastic',case('Only plastic boxes stay wet. Everything else is dry.'),'Is this a fault?',{'info'}),
  ('interior',case('Only the inside walls of the dishwasher have water droplets; dishes are dry.'),'Is this expected?',{'info'}),

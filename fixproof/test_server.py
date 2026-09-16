@@ -210,6 +210,25 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(third['noise_spray_arm']['pages'],[49])
         self.assertEqual(third['noise_light_items']['pages'],[50])
 
+    def test_door_related_starting_flow_uses_only_visually_verified_steps(self):
+        c=self.create(issue='The dishwasher will not start because the door will not close securely.')
+        seen=[]
+        def choose_starting(prompt,context,schema):
+            raw={'model':'stub','prompt_eval_count':1,'eval_count':1}
+            if 'category' in schema['properties']: return {'category':'starting'},raw
+            seen.append(context['available_checks'])
+            return {'step':'starting_close_door'},raw
+        with patch.object(server,'infer',side_effect=choose_starting):
+            reply=server.assess(c,'What should I check first?')
+        self.assertEqual(reply['kind'],'step');self.assertEqual(reply['step'],'starting_close_door')
+        self.assertEqual(reply['pages'],[47])
+        self.assertEqual(set(seen[0]),{'starting_close_door','starting_rear_clearance','starting_basket_clearance'})
+        second=server.steps_for('Bosch SMS6HCI01A/38')
+        third=server.steps_for('Bosch SMS6HCI02A/72')
+        self.assertEqual(second['starting_basket_clearance']['pages'],[51])
+        self.assertEqual(third['starting_close_door']['pages'],[48])
+        self.assertEqual(third['starting_rear_clearance']['pages'],[49])
+
     def test_cutlery_rust_flow_uses_only_visually_verified_rust_steps(self):
         c=self.create(issue='Rust spots appear on the cutlery after the wash.')
         seen=[]
