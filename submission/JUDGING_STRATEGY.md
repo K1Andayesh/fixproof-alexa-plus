@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK and D1 continuity, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, an official MCP App, and a cross-runtime SHA-256 fingerprint over each structured handover.
 
-**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 48 passing automated checks and eighteen live local-AI scenarios. The 2:15 video shows the public MCP endpoint and eight-path core release. The current build adds a ninth path, and the five-block trace shows the deeper local MCP Apps path.
+**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 48 passing automated checks and eighteen live local-AI scenarios. The 2:38 video shows the public MCP endpoint, all nine source-backed paths and the controlled retrieval result; the five-block trace shows the deeper local MCP Apps path.
 
 ## Design and user experience
 
@@ -34,7 +34,7 @@ Submit the friction log for the optional bonus. It documents two concrete develo
 
 ## Completed submission
 
-The entry was submitted on 14 September 2026, with the public project at https://devpost.com/software/fixproof. The current 2:15 release walkthrough is embedded on the live evaluation page. Devpost still points to the earlier https://youtu.be/T-yjzCHgvus video until the new MP4 and captions are published on YouTube and the submission is updated. Eligibility attestations were confirmed before submission.
+The entry was submitted on 14 September 2026, with the public project at https://devpost.com/software/fixproof. The current 2:38 release walkthrough is embedded on the live evaluation page. Devpost still points to the earlier https://youtu.be/T-yjzCHgvus video until the new MP4 and captions are published on YouTube and the submission is updated. Eligibility attestations were confirmed before submission.
 
 ## Current release evidence
 

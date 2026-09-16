@@ -43,7 +43,7 @@ This is a prototype reliability claim, not a probability of winning, an applianc
 | MCP App rendering | Passed | The exact `ui://fixproof/handover.html` resource rendered a fictional result in a browser with evidence counts, recorded and pending checks, page citations and limits; the resource itself emitted no browser warnings or errors |
 | Public MCP evidence trace | Passed | The refreshed probe output and hosted `mcp-run.json` had identical SHA-256 hashes; production Chrome expanded all five visible stages and opened the complete JSON |
 | Controlled handover retrieval | 254/270 fields; 0 critical errors | Twenty-seven blind reads of structured handovers across three local model families and all nine paths, versus 243/270 fields and five critical errors from equal-fact transcripts; synthetic, not user research, and not superior on every individual case |
-| Chrome UI exercise | Passed | Production Chrome selected the third model and door-related-starting path, returned page 48, recorded `Issue unchanged`, and produced a sourced handover. The captioned v8 video remains explicitly labelled as the eight-path core walkthrough while the page names the ninth release path |
+| Chrome UI exercise | Passed | Production Chrome selected the third model and door-related-starting path, returned page 48, recorded `Issue unchanged`, and produced a sourced handover. A captioned v9 video covering all nine paths and the controlled retrieval result is ready for deployment |
 | JavaScript syntax and whitespace checks | Passed | Both interfaces |
 
 Reproduce:
