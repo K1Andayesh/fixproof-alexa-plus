@@ -155,9 +155,11 @@ async function saveUpdated(caseRecord: FixProofCase, requestId: string, expected
   const now = new Date().toISOString();
   const results = await database().batch([
     database().prepare("UPDATE cases SET revision = ?, body = ? WHERE id = ? AND revision = ?").bind(next.revision, JSON.stringify(next), next.id, expectedRevision),
-    database().prepare("INSERT INTO requests (id, case_id, body, created_at) VALUES (?, ?, ?, ?)").bind(clean(requestId, 100), next.id, JSON.stringify(next), now),
+    // The batch is one SQLite transaction. Do not cache a proposed result when the compare-and-swap updated zero rows.
+    database().prepare("INSERT INTO requests (id, case_id, body, created_at) SELECT ?, ?, ?, ? WHERE changes() = 1").bind(clean(requestId, 100), next.id, JSON.stringify(next), now),
   ]);
   if ((results[0].meta?.changes ?? 0) !== 1) throw new Error("This case changed. Read it again before continuing.");
+  if ((results[1].meta?.changes ?? 0) !== 1) throw new Error("The case was saved but its request receipt is missing. Read the case before retrying.");
   return next;
 }
 
