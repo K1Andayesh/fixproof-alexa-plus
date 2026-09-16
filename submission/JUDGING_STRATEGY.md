@@ -4,9 +4,9 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Technical implementation
 
-**Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK and D1 continuity, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, an official MCP App, and a cross-runtime SHA-256 fingerprint over each structured handover.
+**Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK, D1 continuity and a self-contained inline MCP App, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and a cross-runtime SHA-256 fingerprint over each structured handover.
 
-**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, exact page URLs, D1 continuity across new connections without repeating a recorded check, 48 passing automated checks and eighteen live local-AI scenarios. The 2:38 video shows the public MCP endpoint, all nine source-backed paths and the controlled retrieval result; the five-block trace shows the deeper local MCP Apps path.
+**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then inspect the captured run. The official client evidence records five live tools, the discoverable `prepare_handover` App resource, exact page URLs, D1 continuity across new connections without repeating a recorded check, 48 passing automated checks and eighteen live local-AI scenarios. The 2:38 video shows the public MCP endpoint, all nine source-backed paths and the controlled retrieval result; the implementation trace explains how the same handover stays useful as an inline App, Markdown and structured JSON.
 
 ## Design and user experience
 
@@ -38,4 +38,4 @@ The entry was submitted on 14 September 2026, with the public project at https:/
 
 ## Current release evidence
 
-The reliability changes in validation/RELIABILITY_REVIEW.md have 31 Python tests, seventeen public-interface logic tests and eighteen passing live local-AI scenarios. The public MCP deployment adds a judge-callable five-tool HTTPS route with D1 continuity. The controlled retrieval evaluation adds 54 blind-format reads across three local model families and all nine paths. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.
+The reliability changes in validation/RELIABILITY_REVIEW.md have 31 Python tests, seventeen public-interface logic tests and eighteen passing live local-AI scenarios. The public MCP deployment adds a judge-callable five-tool HTTPS route with D1 continuity and a self-contained inline handover App. The controlled retrieval evaluation adds 54 blind-format reads across three local model families and all nine paths. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported.

@@ -41,6 +41,22 @@ async def main() -> None:
         names = [tool.name for tool in listed.tools]
         assert names == ["start_case", "read_case", "ask_fixproof", "record_outcome", "prepare_handover"]
         assert all(tool.annotations.open_world_hint is False for tool in listed.tools)
+        handover_tool = next(tool for tool in listed.tools if tool.name == "prepare_handover")
+        assert handover_tool.meta == {"ui": {"resourceUri": "ui://fixproof/handover.html"}}
+        listed_resources = await client.list_resources()
+        assert len(listed_resources.resources) == 1
+        app_resource = listed_resources.resources[0]
+        assert str(app_resource.uri) == "ui://fixproof/handover.html"
+        assert app_resource.mime_type == "text/html;profile=mcp-app"
+        app_result = await client.read_resource(str(app_resource.uri))
+        assert len(app_result.contents) == 1
+        app_content = app_result.contents[0]
+        assert app_content.mime_type == "text/html;profile=mcp-app"
+        assert "FixProof repair handover" in app_content.text
+        assert "window.addEventListener(\"message\"" in app_content.text
+        assert "<script src=" not in app_content.text
+        assert "<link " not in app_content.text
+        assert "innerHTML" not in app_content.text
         started = await call(client, "start_case", {
             "request_id": str(uuid.uuid4()),
             "reported_issue": "Removable streaks remain on glasses after the fictional wash.",
@@ -175,6 +191,13 @@ async def main() -> None:
         "changed_evidence_detected": True,
         "authorship_proof_claimed": False,
         "tools": names,
+        "mcp_app": {
+            "tool": handover_tool.name,
+            "resource_uri": str(app_resource.uri),
+            "mime_type": app_resource.mime_type,
+            "self_contained": True,
+            "safe_dom_rendering": True,
+        },
         "exact_models": 3,
         "source_backed_paths": 9,
         "case_id": started["case_id"],

@@ -10,12 +10,15 @@ import {
   recordOutcome,
   startCase,
 } from "../../lib/fixproof";
+import { handoverAppHtml } from "../../lib/handover-app";
 
 export const dynamic = "force-dynamic";
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const localWrite = { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const outputSchema = z.looseObject({});
+const handoverAppUri = "ui://fixproof/handover.html";
+const handoverAppMime = "text/html;profile=mcp-app";
 
 function result(value: Record<string, unknown>, text?: string) {
   return {
@@ -26,11 +29,30 @@ function result(value: Record<string, unknown>, text?: string) {
 
 function buildServer() {
   const server = new McpServer(
-    { name: "FixProof", version: "0.9.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
+    { name: "FixProof", version: "0.10.0", websiteUrl: "https://fixproof-alexa.keyvan-andayesh.chatgpt.site" },
     {
-      capabilities: { tools: {} },
+      capabilities: { tools: {}, resources: {} },
       instructions: "Public judge endpoint for fictional FixProof evaluations. Use only the three listed exact Bosch models and fictional_demo=true. The verified catalog covers drying, food-remnant, detergent-residue, removable-streak, wash-noise, cutlery-rust, irreversible-glass-clouding, unpleasant-interior-odour and door-related-starting paths. Never send personal or real appliance data. Only explicit user outcomes count as attempted. Never claim a diagnosis, physical inspection, or verified repair.",
     },
+  );
+
+  server.registerResource(
+    "FixProof repair handover",
+    handoverAppUri,
+    {
+      title: "FixProof repair handover",
+      description: "A compact evidence view for appliance owners and repair professionals.",
+      mimeType: handoverAppMime,
+      _meta: { ui: { prefersBorder: true } },
+    },
+    async (uri) => ({
+      contents: [{
+        uri: uri.href,
+        mimeType: handoverAppMime,
+        text: handoverAppHtml,
+        _meta: { ui: { prefersBorder: true } },
+      }],
+    }),
   );
 
   server.registerTool(
@@ -107,6 +129,7 @@ function buildServer() {
       inputSchema: z.object({ case_id: z.string().uuid() }),
       outputSchema,
       annotations: readOnly,
+      _meta: { ui: { resourceUri: handoverAppUri } },
     },
     async ({ case_id }) => {
       const value = await handover(await readCase(case_id));

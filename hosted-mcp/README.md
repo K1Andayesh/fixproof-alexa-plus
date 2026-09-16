@@ -1,6 +1,6 @@
 # FixProof hosted MCP
 
-This Cloudflare Worker-compatible Sites project exposes the FixProof workflow as a public Streamable HTTP MCP endpoint. It uses the official `@modelcontextprotocol/server` 2.x SDK and D1 for fictional-case continuity across client connections.
+This Cloudflare Worker-compatible Sites project exposes the FixProof workflow as a public Streamable HTTP MCP endpoint. It uses the official `@modelcontextprotocol/server` 2.x SDK and D1 for fictional-case continuity across client connections. The `prepare_handover` tool advertises a self-contained MCP App at `ui://fixproof/handover.html`, while retaining readable Markdown and machine-readable JSON fallbacks.
 
 The public endpoint accepts fictional evaluation data only. `start_case` requires `fictional_demo: true` and rejects other calls. Do not send personal or real appliance data.
 
@@ -20,4 +20,4 @@ Connect an MCP client to `http://127.0.0.1:8790/api/mcp`. The `/mcp` route remai
 .\.venv\Scripts\python.exe fixproof\hosted_mcp_smoke.py
 ```
 
-The server exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome`, and `prepare_handover`. It covers three exact Bosch models and nine bounded, source-backed issue paths. Each selected check returns the official manual identity, exact page URL, verification date, and locally verified source hash.
+The server exposes `start_case`, `read_case`, `ask_fixproof`, `record_outcome`, and `prepare_handover`. It also exposes the handover App as a `text/html;profile=mcp-app` resource. The App has no external scripts, styles, images, or network calls; it renders only the structured handover returned by the tool. The server covers three exact Bosch models and nine bounded, source-backed issue paths. Each selected check returns the official manual identity, exact page URL, verification date, and locally verified source hash.
