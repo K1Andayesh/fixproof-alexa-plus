@@ -1,9 +1,11 @@
+import { LiveProof } from "./live-proof";
+
 const tools = ["start_case", "read_case", "ask_fixproof", "record_outcome", "prepare_handover"];
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#f7f7f1] text-[#163a31]">
-      <section className="mx-auto grid min-h-screen max-w-6xl content-center gap-12 px-6 py-16 lg:grid-cols-[1.15fr_.85fr] lg:px-10">
+      <section className="mx-auto grid min-h-[calc(100vh-16rem)] max-w-6xl content-center gap-12 px-6 py-16 lg:grid-cols-[1.15fr_.85fr] lg:px-10">
         <div>
           <p className="mb-5 text-sm font-bold uppercase tracking-[0.18em] text-[#547267]">FixProof · Alexa+ track</p>
           <h1 className="max-w-3xl text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-7xl">A live MCP endpoint judges can call.</h1>
@@ -39,6 +41,7 @@ export default function Home() {
           </div>
         </aside>
       </section>
+      <LiveProof />
     </main>
   );
 }
