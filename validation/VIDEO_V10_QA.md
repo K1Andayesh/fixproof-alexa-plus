@@ -20,4 +20,4 @@ The revised cards distinguish ten paths for three exact Bosch models from eight 
 - VTT SHA-256: `4F82808F49C759E2DD5C6F4175C4CC3C58CF67D16B1133DEEF6DACFE8098B026`
 - Poster SHA-256: `9605A42CE8FE1ADCC191B48165FCC4545991118F6D1CBB3F2BB2B0E7F4C990B3`
 
-Production playback and exact deployed-file checks remain to be recorded after publication.
+The public Sites version 56 deployed on 17 September 2026. Production Chrome loaded the new MP4 at ready state 4 with its English (Australia) track showing; playback advanced beyond 27 seconds and the rendered caption was visible over the video. The deployed MP4, VTT and poster each matched the reviewed local SHA-256 value above. The in-app browser crashed when its native video control was activated, so Chrome was used for the playback check; the production page itself remained available.
