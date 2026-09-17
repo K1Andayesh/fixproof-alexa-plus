@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK, D1 continuity and a self-contained inline MCP App, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and a cross-runtime SHA-256 fingerprint over each structured handover.
 
-**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then choose **Run live MCP proof**. The browser calls the production protocol directly and reports negotiation, five-tool discovery, exact page selection, D1 read-back and the handover fingerprint. It then renders the actual `ui://` App resource with that fictional evidence in a sandboxed frame. **Run scope boundary proof** separately shows an unsupported error-code report reaching a no-check handover rather than a drying instruction. The saved official-client evidence verifies continuity across fresh connections without repeating a recorded check, alongside 54 passing automated checks and 26 live local-AI scenarios across the baseline and Electrolux expansion. The earlier 2:38 video shows nine paths and the controlled retrieval result; the live product now exposes ten Bosch paths plus an Electrolux eight-path subset.
+**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then choose **Run live MCP proof**. The browser calls the production protocol directly and reports negotiation, five-tool discovery, exact page selection, D1 read-back and the handover fingerprint. It then renders the actual `ui://` App resource with that fictional evidence in a sandboxed frame. **Run scope boundary proof** separately shows an unsupported error-code report reaching a no-check handover rather than a drying instruction. The saved official-client evidence verifies continuity across fresh connections without repeating a recorded check, alongside 54 passing automated checks and 26 live local-AI scenarios across the baseline and Electrolux expansion. The captioned 2:39 video shows ten Bosch paths, an eight-path Electrolux subset, the public MCP proof and the controlled retrieval result.
 
 ## Design and user experience
 
@@ -38,7 +38,7 @@ The [additional FixProof Evidence Verifier](https://github.com/K1Andayesh/fixpro
 
 ## Completed submission
 
-The entry was submitted on 14 September 2026, with the public project at https://devpost.com/software/fixproof. The current 2:38 release walkthrough is embedded on the live evaluation page. Devpost still points to the earlier https://youtu.be/T-yjzCHgvus video until the new MP4 and captions are published on YouTube and the submission is updated. Eligibility attestations were confirmed before submission.
+The entry was submitted on 14 September 2026, with the public project at https://devpost.com/software/fixproof. The current 2:39 release walkthrough is embedded on the live evaluation page. Devpost still points to the earlier https://youtu.be/T-yjzCHgvus video until the new MP4 and captions are published on YouTube and the submission is updated. Eligibility attestations were confirmed before submission.
 
 ## Current release evidence
 

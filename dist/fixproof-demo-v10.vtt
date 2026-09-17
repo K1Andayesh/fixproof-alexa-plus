@@ -1,0 +1,118 @@
+WEBVTT
+
+00:00:00.050 --> 00:00:03.926
+If a dishwasher problem survives one conversation the evidence should
+
+00:00:03.926 --> 00:00:09.027
+too FixProof keeps the symptom the source and the user's confirmed outcomes
+
+00:00:09.027 --> 00:00:11.704
+together Here's the current four-model build
+
+00:00:12.772 --> 00:00:17.079
+I'll start a fictional drying case and ask what to check first FixProof
+
+00:00:17.079 --> 00:00:21.262
+suggests waiting for drying to finish then links directly to page forty-one
+
+00:00:21.262 --> 00:00:26.126
+of the manufacturer's manual The model chooses a bounded check The application
+
+00:00:26.126 --> 00:00:27.958
+owns the instruction and citation
+
+00:00:28.974 --> 00:00:33.162
+Here's the key rule A suggestion is not evidence that someone performed
+
+00:00:33.162 --> 00:00:37.749
+a check The user records what actually happened In this fictional case
+
+00:00:37.999 --> 00:00:42.424
+the glasses remain wet after thirty minutes That outcome is saved but
+
+00:00:42.424 --> 00:00:44.262
+the problem is not declared fixed
+
+00:00:45.296 --> 00:00:50.234
+Now reload and resume The observation is still here Ask what to check
+
+00:00:50.234 --> 00:00:54.120
+next and FixProof moves to rinse aid instead of repeating the recorded
+
+00:00:54.120 --> 00:00:57.016
+check The case changes the next interaction
+
+00:00:58.042 --> 00:01:01.704
+The current release covers ten issue paths for three exact Bosch models
+
+00:01:02.017 --> 00:01:06.030
+and eight separately mapped paths for one Electrolux model Each uses
+
+00:01:06.030 --> 00:01:10.380
+its own manufacturer's manual Unsupported model and issue combinations
+
+00:01:10.380 --> 00:01:12.092
+stop without a suggested check
+
+00:01:13.116 --> 00:01:17.478
+The handover carries the exact model the recorded outcome the observation
+
+00:01:17.641 --> 00:01:22.104
+and the source page It also states what is still unknown Someone can
+
+00:01:22.104 --> 00:01:25.491
+pick up the case without treating an assistant's suggestion as a fact
+
+00:01:26.534 --> 00:01:31.175
+We tested that handover format not customer outcomes Across fifty-four
+
+00:01:31.175 --> 00:01:35.234
+blind reads by three local model families structured handovers recovered
+
+00:01:35.235 --> 00:01:38.564
+two hundred fifty-four of two hundred seventy fields with zero critical
+
+00:01:38.564 --> 00:01:42.635
+errors Equal-fact transcripts recovered two hundred forty-three with
+
+00:01:42.636 --> 00:01:47.066
+five critical errors Results varied by case and the complete synthetic
+
+00:01:47.066 --> 00:01:48.131
+evidence is public
+
+00:01:49.168 --> 00:01:53.593
+If a burning smell is reported troubleshooting stops The pending check
+
+00:01:53.593 --> 00:01:58.168
+disappears the warning remains after reload and the original report stays
+
+00:01:58.168 --> 00:02:01.193
+in the handover No diagnosis is invented
+
+00:02:02.226 --> 00:02:06.657
+Judges can call the public M C P endpoint directly An official client
+
+00:02:06.657 --> 00:02:10.382
+discovered five tools read a fictional outcome across new connections
+
+00:02:10.691 --> 00:02:14.516
+and found that the recorded check was not repeated The handover also
+
+00:02:14.516 --> 00:02:19.021
+advertises a self-contained M C P App The complete trace and live proof
+
+00:02:19.021 --> 00:02:20.073
+are linked from the site
+
+00:02:21.092 --> 00:02:25.688
+FixProof has not run on an Alexa device or proven a repair outcome It
+
+00:02:25.688 --> 00:02:29.880
+demonstrates a narrower result across four exact models a stateful assistant
+
+00:02:29.880 --> 00:02:33.213
+can carry user-confirmed observations and their sources into the next
+
+00:02:33.213 --> 00:02:37.708
+conversation Try the live M C P workflow or the browser simulation

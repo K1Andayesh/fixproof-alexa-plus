@@ -4,7 +4,7 @@ A voice-first Alexa+ experience and MCP server for the Amazon Developer Hackatho
 
 ## Try the hosted workflow
 
-Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The same page can export and independently verify a handover JSON file entirely in the browser, including changed-field detection and the explicit no-authorship boundary. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; its landing page includes a zero-setup live proof that negotiates the protocol, discovers the five tools and MCP App, runs a fixed fictional cited check, reads the saved outcome back and prepares the fingerprinted handover. The endpoint accepts fictional demonstration cases only and persists its workflow in D1. The evaluation page also embeds a captioned 2:38 walkthrough of the earlier nine source-backed paths and the controlled retrieval result with natural Australian neural narration.
+Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andayesh.chatgpt.site). It uses a fixed source-backed sequence and browser storage so an appliance owner or repair professional can test the core workflow without installing anything. The same page can export and independently verify a handover JSON file entirely in the browser, including changed-field detection and the explicit no-authorship boundary. Judges can also call the [public Streamable HTTP MCP endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/) directly; its landing page includes a zero-setup live proof that negotiates the protocol, discovers the five tools and MCP App, runs a fixed fictional cited check, reads the saved outcome back and prepares the fingerprinted handover. The endpoint accepts fictional demonstration cases only and persists its workflow in D1. The evaluation page embeds a captioned 2:39 walkthrough of the four exact models, separately mapped Bosch and Electrolux paths, hosted MCP evidence and controlled retrieval result with natural Australian neural narration.
 
 ## 90-second judge tour
 
@@ -44,7 +44,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Handover structure aids retrieval | [Controlled synthetic evaluation](validation/HANDOVER_RETRIEVAL_EVAL.md): 254/270 fields with zero critical errors from handovers versus 243/270 fields and five critical errors from equal-fact transcripts across three local model families and all nine issue paths |
 | Boundaries are visible | Hazard, unsupported issue, unconfirmed model, and unclear-symptom cases |
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
-| Current judge walkthrough | Embedded captioned 2:38 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V9_QA.md) |
+| Current judge walkthrough | Embedded captioned 2:39 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V10_QA.md) |
 | Developer feedback | [Hackathon friction log](FRICTION_LOG.md) |
 
 The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).
