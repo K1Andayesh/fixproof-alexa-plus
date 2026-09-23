@@ -22,4 +22,8 @@ The optional developer-friction bonus links to the repository's reproducible fri
 - The design link navigated to `#verify-title` and placed the handover verifier heading in view.
 - The responsive stylesheet collapses the map to one column below 560 pixels.
 
-Production deployment verification is recorded below after publication.
+## Production
+
+- Sites version 57 deployed successfully as `appgdep_6ab3429efe6081919559bb428bf38df0` from product commit `4010ff902d72fcdddf605442a7deade53a344096`.
+- Production Chrome exposed the labelled map and all four criterion links at `https://fixproof-alexa.keyvan-andayesh.chatgpt.site/`.
+- The production desktop layout matched the reviewed local layout: all four cards, the bonus link and the adjacent case form were readable without overlap or clipping.
