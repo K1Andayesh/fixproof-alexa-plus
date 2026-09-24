@@ -1,4 +1,4 @@
-# FixProof QA evidence — updated 16 September 2026
+# FixProof QA evidence — updated 24 September 2026
 
 ## Result
 
@@ -21,6 +21,8 @@ Working local MVP at http://127.0.0.1:8768. Real Qwen 3.5 4B inference through t
 | Reload after failed request, restore provider, retry | Draft survived; retry created one reply at revision 1 and cleared draft |
 | Two tabs editing same case | Old revision could not overwrite Handover ready with resolved; visible reload instruction |
 | Desktop screenshot inspection | Readable two-column layout; no overlapping controls observed at tested desktop size |
+| Keyboard evidence navigation | In actual Chrome, the first Tab exposed a visible skip link; Enter moved focus to the main region. Activating the Design and experience evidence route moved both the URL and focus to its destination heading. |
+| Mobile judge path | At an explicit 390 × 844 Chrome viewport, the header, main claim, judge evidence cards and verifier section stacked without horizontal overflow, clipping or overlapping controls. The temporary viewport override was reset after inspection. |
 | Voice-first UI | Chrome exposed an enabled Speak control, review-before-send privacy text, and typed fallback |
 | Spoken response | Browser action completed and the live status returned to Ready; audible output could not be independently measured |
 | Hosted judge-mode shortcuts | Plastic, safety hazard, unsupported issue, and unclear report each reached the intended bounded response |
@@ -62,7 +64,7 @@ The first main case retains the earlier clarification response as truthful QA hi
 ## Limits and next validation
 
 - Small controlled evaluation set, not a robust safety or multilingual benchmark. No repair diagnosis, physical inspection or actual appliance outcome verified.
-- Native mobile viewport, screen reader, keyboard-only end-to-end, long-running load and forced lost HTTP response after successful commit remain untested. Retry idempotency and stale versions have automated coverage; ordinary provider failure has UI coverage.
+- Screen reader, full keyboard-only case completion, long-running load and forced lost HTTP response after successful commit remain untested. The public judge path has been checked at a 390 × 844 Chrome viewport, and its skip link plus evidence-map focus transfer have been exercised by keyboard. Retry idempotency and stale versions have automated coverage; ordinary provider failure has UI coverage.
 - Microphone capture was not started because accepting a Chrome microphone permission requires separate user authorization. Chrome exposed the API and the control remained enabled, but transcript accuracy and permission-denial UI remain unverified. The app states that Chrome may use an online recognition service and never auto-submits a transcript.
 - No native Alexa account connection or voice/device execution tested. The product is labelled as an Alexa+ experience simulation.
 - No owner/technician feedback or baseline comparison yet. Do not claim saved repair cost, repair accuracy, market demand or a better win probability.

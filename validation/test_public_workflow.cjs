@@ -220,3 +220,12 @@ test('the public evaluation exposes portable fingerprinted evidence and the call
  unmatched.evidence_integrity.digest=await a.digest(unmatched.evidence);
  assert.equal((await a.verify(unmatched)).valid,true);
 });
+
+test('judge evidence routes support keyboard navigation',()=>{
+ assert.match(page,/class="skip-link" href="#main-content"/);
+ assert.match(page,/<main id="main-content" tabindex="-1">/);
+ assert.match(page,/id="verify-title" tabindex="-1"/);
+ assert.match(page,/id="impact-title" tabindex="-1"/);
+ assert.match(page,/<form id="start" tabindex="-1">/);
+ assert.match(source,/target\.focus\(\{preventScroll:true\}\)/);
+});
