@@ -22,4 +22,4 @@ This demonstrates idempotent handling for one repeated `record_outcome` request 
 
 ## Production verification
 
-Pending deployment.
+MCP Site version 22 was saved from commit `5bfc1156343295a7f01a7f87a4f2432a772f3dcb` and production deployment `appgdep_6ab5e4d7dfb08191ace15b2a80ab97e6` succeeded. Actual Chrome ran the retry path against `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. The visible production result reported protocol 2025-11-25, server 0.12.0, five tools, the MCP App, revision 2 returned twice and one persisted outcome. The rendered App showed one deferred check, two source citations, the fixed fictional observation, a matching 64-digit fingerprint and the no-diagnosis boundary.
