@@ -12,6 +12,7 @@ type Proof = {
   continuity: string;
   fingerprint: string;
   scope?: string;
+  retry?: string;
 };
 
 function parseSse(text: string) {
@@ -48,7 +49,7 @@ export function LiveProof() {
   const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
-  async function run(variant: "streaks" | "scope") {
+  async function run(variant: "streaks" | "scope" | "retry") {
     setState("running");
     setProof(null);
     setAppView(null);
@@ -88,6 +89,7 @@ export function LiveProof() {
       let selectedPages;
       let continuity;
       let scope: string | undefined;
+      let retry: string | undefined;
       if (variant === "scope") {
         if (guided.status !== "Handover ready" || guided.pending_check || guided.latest_event?.kind !== "scope") throw new Error("The error-code report was not kept outside the verified scope.");
         restored = await callTool(7, "read_case", { case_id: started.case_id });
@@ -100,16 +102,34 @@ export function LiveProof() {
       } else {
         const pending = guided.pending_check;
         if (!pending) throw new Error("The cited streaks check was not selected.");
+        const mutationRequestId = crypto.randomUUID();
         const recorded = await callTool(7, "record_outcome", {
-          request_id: crypto.randomUUID(),
+          request_id: mutationRequestId,
           case_id: started.case_id,
           revision: guided.revision,
           step_id: pending.step_id,
           outcome: "Not yet tested",
           observation: "Fictional browser proof; no appliance was inspected.",
         });
-        restored = await callTool(8, "read_case", { case_id: started.case_id });
-        handover = await callTool(9, "prepare_handover", { case_id: started.case_id });
+        if (variant === "retry") {
+          const retried = await callTool(8, "record_outcome", {
+            request_id: mutationRequestId,
+            case_id: started.case_id,
+            revision: guided.revision,
+            step_id: pending.step_id,
+            outcome: "Not yet tested",
+            observation: "Fictional browser proof; no appliance was inspected.",
+          });
+          if (JSON.stringify(retried) !== JSON.stringify(recorded)) throw new Error("The retried mutation did not return the original result.");
+          restored = await callTool(9, "read_case", { case_id: started.case_id });
+          handover = await callTool(10, "prepare_handover", { case_id: started.case_id });
+          const savedOutcomes = Object.keys(restored.recorded_outcomes || {});
+          if (savedOutcomes.length !== 1 || restored.revision !== recorded.revision) throw new Error("The retried mutation changed persisted case state.");
+          retry = `Same request ID returned revision ${recorded.revision} twice · one outcome persisted`;
+        } else {
+          restored = await callTool(8, "read_case", { case_id: started.case_id });
+          handover = await callTool(9, "prepare_handover", { case_id: started.case_id });
+        }
         const restoredObservation = restored.recorded_outcomes?.[pending.step_id]?.observation;
         if (restoredObservation !== "Fictional browser proof; no appliance was inspected.") throw new Error("The recorded observation did not persist.");
         selectedCheck = pending.title;
@@ -127,6 +147,7 @@ export function LiveProof() {
         continuity,
         fingerprint: handover.evidence_integrity.digest,
         scope,
+        retry,
       });
       setAppView({ html: appHtml, handover });
       setState("passed");
@@ -142,12 +163,15 @@ export function LiveProof() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Zero-setup judge proof</p>
           <h2 id="live-proof-title" className="mt-3 text-3xl font-bold tracking-[-0.03em]">Call the live MCP now.</h2>
-          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Both paths call the production MCP endpoint, then show the returned handover App. The second path checks that an unsupported error code cannot become a guided instruction.</p>
+          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Every path calls the production MCP endpoint, then shows the returned handover App. The boundary path prevents an unsupported error code from becoming guidance; the retry path repeats one mutation with the same request ID and checks that only one outcome persists.</p>
           <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
             {state === "running" ? "Running live proof…" : "Run live MCP proof"}
           </button>
           <button onClick={() => run("scope")} disabled={state === "running"} className="mt-3 block rounded-full border border-[#a8c3b4] bg-white px-6 py-3 font-semibold text-[#163a31] disabled:cursor-wait disabled:opacity-60">
             Run scope boundary proof
+          </button>
+          <button onClick={() => run("retry")} disabled={state === "running"} className="mt-3 block rounded-full border border-[#a8c3b4] bg-white px-6 py-3 font-semibold text-[#163a31] disabled:cursor-wait disabled:opacity-60">
+            Run retry-safety proof
           </button>
           <p className="mt-3 text-xs leading-5 text-[#6a7b74]">Uses only hard-coded fictional data. It does not inspect or diagnose an appliance.</p>
         </div>
@@ -163,6 +187,7 @@ export function LiveProof() {
                 <div><dt className="text-[#6a7b74]">Discovery</dt><dd className="font-semibold">{proof.tools} tools · MCP App loaded</dd></div>
                 <div><dt className="text-[#6a7b74]">{proof.scope ? "Boundary" : "Selected check"}</dt><dd className="font-semibold">{proof.scope || `${proof.check} · pages ${proof.pages}`}</dd></div>
                 <div><dt className="text-[#6a7b74]">Continuity</dt><dd className="font-semibold">{proof.continuity}</dd></div>
+                {proof.retry && <div className="sm:col-span-2"><dt className="text-[#6a7b74]">Retry safety</dt><dd className="font-semibold">{proof.retry}</dd></div>}
               </dl>
               <p className="mt-4 text-xs text-[#6a7b74]">{proof.app}</p>
               <code className="mt-2 block break-all text-xs text-[#36574c]">SHA-256 {proof.fingerprint}</code>
