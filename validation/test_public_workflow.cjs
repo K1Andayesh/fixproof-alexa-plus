@@ -229,3 +229,10 @@ test('judge evidence routes support keyboard navigation',()=>{
  assert.match(page,/<form id="start" tabindex="-1">/);
  assert.match(source,/target\.focus\(\{preventScroll:true\}\)/);
 });
+
+test('judge map exposes the optional friction-log evidence',()=>{
+ assert.match(page,/Optional 10% bonus/);
+ assert.match(page,/Inspect three reproducible friction entries/);
+ assert.match(page,/Implementation path · MCP verification · rules-link continuity/);
+ assert.match(page,/github\.com\/K1Andayesh\/fixproof-alexa-plus\/blob\/main\/FRICTION_LOG\.md/);
+});
