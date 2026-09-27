@@ -6,7 +6,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 **Lead proof:** a judge-callable five-tool MCP workflow over public HTTPS using the official TypeScript SDK, D1 continuity and a self-contained inline MCP App, plus the deeper local Python/SQLite/Qwen implementation with bounded model decisions, self-contained page citations, request idempotency, stale-write protection, Origin rejection, and a cross-runtime SHA-256 fingerprint over each structured handover.
 
-**Judge should see:** open **Call the live public MCP endpoint** in the implementation card, then choose **Run live MCP proof**. The browser calls the production protocol directly and reports negotiation, five-tool discovery, exact page selection, D1 read-back and the handover fingerprint. It then renders the actual `ui://` App resource with that fictional evidence in a sandboxed frame. **Run scope boundary proof** separately shows an unsupported error-code report reaching a no-check handover rather than a drying instruction. The saved official-client evidence verifies continuity across fresh connections without repeating a recorded check, alongside 54 passing automated checks and 26 live local-AI scenarios across the baseline and Electrolux expansion. The captioned 2:39 video shows ten Bosch paths, an eight-path Electrolux subset, the public MCP proof and the controlled retrieval result.
+**Judge should see:** follow the technical-implementation link directly to **Run retry-safety proof**. It calls the production protocol, discovers all five tools and the MCP App, repeats one `record_outcome` mutation with the same request ID, verifies that both responses have the same revision, and reads back exactly one persisted outcome before rendering the actual `ui://` App. **Run live MCP proof** demonstrates exact page selection and D1 read-back; **Run scope boundary proof** shows an unsupported error-code report reaching a no-check handover. The saved official-client evidence separately verifies continuity across fresh connections without repeating a recorded check. The captioned 2:39 video shows ten Bosch paths, an eight-path Electrolux subset, the public MCP proof and the controlled retrieval result.
 
 ## Design and user experience
 
@@ -30,7 +30,7 @@ Prepared 14 September 2026 against the four equally weighted Alexa+ judging crit
 
 ## Optional bonus evidence
 
-Submit the friction log for the optional bonus. It documents two concrete developer-experience issues, reproducible steps, workarounds, severity, and actionable suggestions.
+Submit the friction log for the optional bonus. It documents three concrete developer-experience issues, reproducible steps, workarounds, severity, and actionable suggestions.
 
 ## Open Source mini-challenge
 
@@ -42,4 +42,4 @@ The entry was submitted on 14 September 2026, with the public project at https:/
 
 ## Current release evidence
 
-The current release has 33 Python tests, 21 public-interface logic tests and 26 passing live local-AI scenarios. The public MCP deployment adds a judge-callable five-tool HTTPS route with D1 continuity and a self-contained inline handover App. The controlled retrieval evaluation adds 54 blind-format reads across three local model families and its original nine paths. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported. The public Devpost description and linked video still describe an earlier release; update them before judges review the entry.
+The current release has 33 Python tests, public-interface regression coverage and 26 passing live local-AI scenarios. The public MCP deployment adds a judge-callable five-tool HTTPS route with D1 continuity, a visible retry-safety proof and a self-contained inline handover App. The controlled retrieval evaluation adds 54 blind-format reads across three local model families and its original nine paths. Independent owner/professional validation remains missing; no time-saving or winning-probability claim is supported. The public Devpost description and linked video still describe an earlier release; update them before judges review the entry.

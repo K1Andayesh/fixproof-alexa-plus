@@ -236,3 +236,9 @@ test('judge map exposes the optional friction-log evidence',()=>{
  assert.match(page,/Implementation path · MCP verification · rules-link continuity/);
  assert.match(page,/github\.com\/K1Andayesh\/fixproof-alexa-plus\/blob\/main\/FRICTION_LOG\.md/);
 });
+
+test('technical evidence routes judges directly to the retry-safety proof',()=>{
+ assert.match(page,/https:\/\/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#retry-proof/);
+ assert.match(page,/Run protocol, persistence and retry-safety proofs/);
+ assert.match(page,/confirms that only one outcome persists/);
+});
