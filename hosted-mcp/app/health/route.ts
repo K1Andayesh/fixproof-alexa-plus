@@ -1,10 +1,11 @@
 import { models } from "../../lib/fixproof";
+import { FIXPROOF_MCP_VERSION } from "../../lib/release";
 
 export function GET() {
   return Response.json({
     status: "ok",
     service: "FixProof MCP",
-    version: "0.10.0",
+    version: FIXPROOF_MCP_VERSION,
     transport: "Streamable HTTP",
     protocol_minimum: "2025-11-25",
     endpoint: "/api/mcp",
