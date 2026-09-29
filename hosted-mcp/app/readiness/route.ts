@@ -11,6 +11,7 @@ const requiredColumns = {
 type ColumnRow = { name: string };
 
 export async function GET() {
+  const responseHeaders = { "Cache-Control": "no-store" };
   try {
     if (!env.DB) throw new Error("missing binding");
     const [caseColumns, requestColumns] = await env.DB.batch([
@@ -30,7 +31,7 @@ export async function GET() {
         service: "FixProof MCP",
         version: FIXPROOF_MCP_VERSION,
         checks: { database_binding: "available", persistence_schema: "incomplete", mutation: "none" },
-      }, { status: 503 });
+      }, { status: 503, headers: responseHeaders });
     }
     return Response.json({
       status: "ready",
@@ -42,14 +43,13 @@ export async function GET() {
         required_columns: 8,
         mutation: "none",
       },
-    });
+    }, { headers: responseHeaders });
   } catch {
     return Response.json({
       status: "not_ready",
       service: "FixProof MCP",
       version: FIXPROOF_MCP_VERSION,
       checks: { database_binding: "unavailable", persistence_schema: "unchecked", mutation: "none" },
-    }, { status: 503 });
+    }, { status: 503, headers: responseHeaders });
   }
 }
-

@@ -35,7 +35,7 @@ The model classifies the symptom and selects only from server-provided remaining
 
 | Claim | Reproducible evidence |
 | --- | --- |
-| Real MCP runtime | [Public callable endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/), read-only [D1 readiness gate](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/readiness), [captured hosted result](validation/HOSTED_MCP.json), executable `fixproof/hosted_mcp_smoke.py`, local [HTTP result](validation/RELIABILITY_MCP.json), and integration tests |
+| Real MCP runtime | [Public callable endpoint](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/), read-only [D1 readiness gate](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/readiness?release=0.12.0), [captured hosted result](validation/HOSTED_MCP.json), executable `fixproof/hosted_mcp_smoke.py`, local [HTTP result](validation/RELIABILITY_MCP.json), and integration tests |
 | State survives retries and reloads | SQLite/D1, stable request IDs, case revisions, automated stale-write tests, and the [live retry-safety proof](https://fixproof-mcp.keyvan-andayesh.chatgpt.site/#retry-proof), which repeats one fictional mutation and confirms one persisted outcome; see [production QA](validation/RETRY_SAFETY_QA.md) |
 | Suggestions do not become facts | `record_outcome` requires the current pending check and an explicit outcome |
 | Sources are application-owned | `fixproof/catalog.py` owns exact-model provenance; MCP guidance returns exact page URLs and the verified content hash |
