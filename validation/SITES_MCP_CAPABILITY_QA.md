@@ -11,5 +11,6 @@ The hosted FixProof project now declares the native `mcp` capability in `.openai
 - The public browser proof remains available without plugin installation.
 - MCP Site version 27 deployed successfully with `has_mcp: true`.
 - A post-deployment Site metadata read returned `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/mcp` as both the MCP connection URL and OAuth resource.
+- The zero-login judge proof continues to use `/api/mcp`; the native `/mcp` connection is protected by Sites-managed authentication.
 
 The Site-hosted plugin connection is additional integration evidence. It does not establish Alexa-device execution, customer validation, appliance inspection, diagnosis or repair success.
