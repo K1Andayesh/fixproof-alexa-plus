@@ -19,7 +19,8 @@ export default function Home() {
           <div className="mt-12 rounded-2xl border border-[#c9d5cf] bg-white p-6 shadow-[0_18px_60px_rgba(18,57,47,.08)]">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Streamable HTTP endpoint</p>
             <code className="mt-3 block break-all text-base font-semibold text-[#163a31]">https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp</code>
-            <p className="mt-3 text-sm leading-6 text-[#61766e]">Protocol 2025-11-25 and later · JSON responses · no login · fictional evaluation cases only</p>
+            <p className="mt-3 text-sm leading-6 text-[#61766e]">Protocol 2025-11-25 and later · native Sites MCP capability · JSON responses · no login · fictional evaluation cases only</p>
+            <p className="mt-2 text-sm leading-6 text-[#61766e]">The same five-tool server is exposed at <code className="font-semibold">/mcp</code> for the Site-provisioned ChatGPT and Codex plugin.</p>
             <a className="mt-4 inline-block text-sm font-semibold underline underline-offset-4" href="/readiness?release=0.12.0" target="_blank" rel="noreferrer">Verify D1 readiness without writing data ↗</a>
           </div>
         </div>
