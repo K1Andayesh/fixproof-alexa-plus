@@ -230,6 +230,14 @@ test('judge evidence routes support keyboard navigation',()=>{
  assert.match(source,/target\.focus\(\{preventScroll:true\}\)/);
 });
 
+test('Devpost visitors get a dated current-release route',()=>{
+ assert.match(page,/CURRENT RELEASE · 30 SEPTEMBER 2026/);
+ assert.match(page,/Arriving from Devpost\? Start with the current evidence\./);
+ assert.match(page,/href="#demo-title"/);
+ assert.match(page,/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#retry-proof/);
+ assert.match(page,/github\.com\/K1Andayesh\/fixproof-alexa-plus/);
+});
+
 test('judge map exposes the optional friction-log evidence',()=>{
  assert.match(page,/Optional 10% bonus/);
  assert.match(page,/Inspect three reproducible friction entries/);
