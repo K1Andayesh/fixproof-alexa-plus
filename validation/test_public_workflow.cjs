@@ -231,7 +231,7 @@ test('judge evidence routes support keyboard navigation',()=>{
 });
 
 test('Devpost visitors get a dated current-release route',()=>{
- assert.match(page,/CURRENT RELEASE · 30 SEPTEMBER 2026/);
+ assert.match(page,/CURRENT RELEASE · 1 OCTOBER 2026/);
  assert.match(page,/Arriving from Devpost\? Start with the current evidence\./);
  assert.match(page,/href="#demo-title"/);
  assert.match(page,/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#retry-proof/);

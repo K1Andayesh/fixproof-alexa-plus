@@ -1,6 +1,6 @@
 # Current-release snapshot QA
 
-Prepared 30 September 2026 to reduce the mismatch between the early Devpost story and the current public build.
+Prepared 1 October 2026 to reduce the mismatch between the early Devpost story and the current public build.
 
 ## Improvement
 
