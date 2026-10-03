@@ -226,6 +226,10 @@ test('judge evidence routes support keyboard navigation',()=>{
  assert.match(page,/<main id="main-content" tabindex="-1">/);
  assert.match(page,/id="verify-title" tabindex="-1"/);
  assert.match(page,/id="demo-title" tabindex="-1"/);
+ assert.match(page,/id="case-title" tabindex="-1"/);
+ assert.match(page,/id="step-title" tabindex="-1"/);
+ assert.match(page,/id="safety-notice"[^>]*tabindex="-1"/);
+ assert.match(source,/moveFocus\(state\.safetyReport\?'safety-notice':currentStep\?'step-title'/);
  assert.match(page,/id="impact-title" tabindex="-1"/);
  assert.match(page,/<form id="start" tabindex="-1">/);
  assert.match(source,/target\.focus\(\{preventScroll:true\}\)/);
