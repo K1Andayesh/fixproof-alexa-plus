@@ -255,3 +255,13 @@ test('technical evidence routes judges directly to the retry-safety proof',()=>{
  assert.match(page,/Run protocol, persistence and retry-safety proofs/);
  assert.match(page,/confirms that only one outcome persists/);
 });
+
+test('controlled retrieval evidence is inspectable without hiding losing cases',()=>{
+ assert.match(page,/id="open-retrieval-explorer"/);
+ assert.match(page,/Explore all 54 scored reads/);
+ assert.match(page,/id="retrieval-explorer" aria-labelledby="retrieval-explorer-title"/);
+ assert.match(page,/handovers scored lower in two scenarios and tied in one/);
+ assert.match(source,/handover-retrieval-eval\.json/);
+ assert.match(source,/field_correct/);
+ assert.match(source,/critical.*error/i);
+});

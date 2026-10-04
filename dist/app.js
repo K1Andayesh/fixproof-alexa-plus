@@ -175,6 +175,46 @@ function download(name,text,type='text/markdown'){const a=document.createElement
 $('download').onclick=async()=>download('fixproof-handover.md',(await handoverBundle()).markdown);
 $('download-json').onclick=async()=>download('fixproof-evidence.json',JSON.stringify(await handoverBundle(),null,2)+'\n','application/json');
 $('feedback').onclick=()=>{const value=$('value').value||'No rating selected';const missing=$('missing').value.trim()||'No written feedback.';download('fixproof-feedback.md',['# FixProof test feedback','',`Compared with manual + notes: ${value}`,'',`Missing or confusing: ${missing}`,'',`Case outcomes recorded: ${Object.keys(state?.outcomes||{}).length}`,'No personal identifier was requested.'].join('\n'));};
+
+let retrievalEvaluation;
+function retrievalOption(value,label){const option=document.createElement('option');option.value=value;option.textContent=label;return option;}
+function retrievalFormatCard(result,label){
+ const card=document.createElement('section');card.className='format-score';
+ const heading=document.createElement('span');heading.textContent=label;
+ const score=document.createElement('strong');score.textContent=`${result.correct_fields}/${result.total_fields} fields`;
+ const critical=document.createElement('span');critical.textContent=`${result.critical_errors.length} critical ${result.critical_errors.length===1?'error':'errors'}`;
+ const fields=document.createElement('ul');fields.className='field-list';
+ for(const [field,correct] of Object.entries(result.field_correct)){const item=document.createElement('li');item.className=correct?'':'miss';item.textContent=`${correct?'✓':'×'} ${field.replaceAll('_',' ')}`;fields.append(item);}
+ if(result.critical_errors.length){for(const error of result.critical_errors){const item=document.createElement('li');item.className='miss';item.textContent=`Critical: ${error}`;fields.append(item);}}
+ card.append(heading,score,critical,fields);return card;
+}
+function renderRetrievalComparison(){
+ const scenario=$('retrieval-scenario').value,model=$('retrieval-model').value;
+ const spec=retrievalEvaluation.scenarios.find(item=>item.spec.slug===scenario)?.spec;
+ const transcript=retrievalEvaluation.results.find(item=>item.scenario===scenario&&item.model===model&&item.format==='raw_transcript');
+ const handover=retrievalEvaluation.results.find(item=>item.scenario===scenario&&item.model===model&&item.format==='structured_handover');
+ const target=$('retrieval-result');target.replaceChildren();
+ if(!spec||!transcript||!handover){const error=document.createElement('p');error.textContent='This comparison is missing from the published artifact.';target.append(error);return;}
+ const heading=document.createElement('h3');heading.textContent=spec.issue;
+ const meta=document.createElement('p');meta.textContent=`Reader: ${model} · same facts · format label hidden during extraction`;
+ const comparison=document.createElement('div');comparison.className='format-comparison';comparison.append(retrievalFormatCard(transcript,'Ordinary transcript'),retrievalFormatCard(handover,'FixProof handover'));
+ const note=document.createElement('p');note.className='comparison-note';const difference=handover.correct_fields-transcript.correct_fields;note.textContent=difference>0?`Handover retrieved ${difference} more field${difference===1?'':'s'} in this read.`:difference<0?`Transcript retrieved ${-difference} more field${difference===-1?'':'s'} in this read.`:'Both formats retrieved the same number of fields in this read.';
+ target.append(heading,meta,comparison,note);
+}
+async function openRetrievalExplorer(){
+ const dialog=$('retrieval-explorer');dialog.showModal();
+ if(retrievalEvaluation)return;
+ try{
+  const response=await fetch('handover-retrieval-eval.json');if(!response.ok)throw new Error('Evaluation artifact unavailable');retrievalEvaluation=await response.json();
+  $('retrieval-scenario').replaceChildren(...retrievalEvaluation.scenarios.map(item=>retrievalOption(item.spec.slug,item.spec.issue)));
+  $('retrieval-model').replaceChildren(...retrievalEvaluation.reader_models.map(model=>retrievalOption(model,model)));
+  renderRetrievalComparison();
+ }catch{$('retrieval-result').textContent='The explorer could not load. Open the complete reproducibility artifact below.';}
+}
+$('open-retrieval-explorer').onclick=openRetrievalExplorer;
+$('close-retrieval-explorer').onclick=()=>$('retrieval-explorer').close();
+$('retrieval-scenario').onchange=renderRetrievalComparison;
+$('retrieval-model').onchange=renderRetrievalComparison;
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){recognition=new SR();recognition.lang='en-AU';recognition.interimResults=true;recognition.onstart=()=>{listening=true;$('listen').classList.add('listening');$('listen').setAttribute('aria-pressed','true');$('listen').textContent='Listening…';$('voice-status').textContent='Listening. Your words will appear below for review.'};recognition.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;$('question').value=t.trim();$('voice-status').textContent=e.results[e.results.length-1].isFinal?'Transcript ready. Review it, then press Ask FixProof.':'Listening… '+t.trim();};recognition.onerror=e=>$('voice-status').textContent=e.error==='not-allowed'?'Microphone access was not granted. Type instead.':'Voice input stopped: '+e.error+'. Type instead.';recognition.onend=()=>{listening=false;$('listen').classList.remove('listening');$('listen').setAttribute('aria-pressed','false');$('listen').textContent='● Speak';};$('listen').onclick=()=>listening?recognition.stop():recognition.start();}else{$('listen').disabled=true;$('voice-status').textContent='Voice input is unavailable here. Type your question below.';}
 if('speechSynthesis'in window&&'SpeechSynthesisUtterance'in window){$('hear').onclick=()=>{if(!latest)return;$('voice-status').textContent='Reading the latest response aloud.';speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(latest);u.lang='en-AU';u.onend=()=>$('voice-status').textContent='Ready for a typed or spoken question.';speechSynthesis.speak(u);};}else{$('hear').disabled=true;}
 
