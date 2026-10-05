@@ -1,6 +1,7 @@
 prototype/data/
 fixproof/data/
 tmp/
+.tmp/
 carerelay/data/
 __pycache__/
 .env
