@@ -178,6 +178,24 @@ $('feedback').onclick=()=>{const value=$('value').value||'No rating selected';co
 
 let retrievalEvaluation;
 function retrievalOption(value,label){const option=document.createElement('option');option.value=value;option.textContent=label;return option;}
+function validateRetrievalEvaluation(data){
+ const formats=['raw_transcript','structured_handover'];
+ if(!data||!Array.isArray(data.fields)||!Array.isArray(data.scenarios)||!Array.isArray(data.reader_models)||!Array.isArray(data.results))return{valid:false,reason:'Required evaluation arrays are missing.'};
+ const scenarios=data.scenarios.map(item=>item?.spec?.slug),models=data.reader_models;
+ if(scenarios.some(value=>typeof value!=='string')||models.some(value=>typeof value!=='string')||new Set(scenarios).size!==scenarios.length||new Set(models).size!==models.length)return{valid:false,reason:'Scenario or reader identities are invalid.'};
+ const expectedReads=scenarios.length*models.length*formats.length,seen=new Set(),totals={raw_transcript:{reads:0,correct_fields:0,total_fields:0,critical_errors:0},structured_handover:{reads:0,correct_fields:0,total_fields:0,critical_errors:0}};
+ for(const result of data.results){
+  const key=`${result?.scenario}|${result?.model}|${result?.format}`;
+  if(!scenarios.includes(result?.scenario)||!models.includes(result?.model)||!formats.includes(result?.format)||seen.has(key))return{valid:false,reason:'A read is duplicated or has an unknown identity.'};
+  seen.add(key);
+  const fieldValues=result.field_correct&&Object.values(result.field_correct);
+  if(!fieldValues||fieldValues.length!==data.fields.length||fieldValues.some(value=>typeof value!=='boolean')||result.total_fields!==data.fields.length||result.correct_fields!==fieldValues.filter(Boolean).length||!Array.isArray(result.critical_errors))return{valid:false,reason:'A read does not match its field-level scores.'};
+  const aggregate=totals[result.format];aggregate.reads++;aggregate.correct_fields+=result.correct_fields;aggregate.total_fields+=result.total_fields;aggregate.critical_errors+=result.critical_errors.length;
+ }
+ if(data.results.length!==expectedReads||seen.size!==expectedReads)return{valid:false,reason:'The case-reader-format matrix is incomplete.'};
+ for(const format of formats){const declared=data.aggregate?.[format],actual=totals[format];if(!declared||['reads','correct_fields','total_fields','critical_errors'].some(field=>declared[field]!==actual[field]))return{valid:false,reason:'Declared aggregate totals do not match the scored reads.'};}
+ return{valid:true,reads:expectedReads,pairs:expectedReads/2,totals};
+}
 function retrievalFormatCard(result,label){
  const card=document.createElement('section');card.className='format-score';
  const heading=document.createElement('span');heading.textContent=label;
@@ -205,11 +223,12 @@ async function openRetrievalExplorer(){
  const dialog=$('retrieval-explorer');dialog.showModal();
  if(retrievalEvaluation)return;
  try{
-  const response=await fetch('handover-retrieval-eval.json');if(!response.ok)throw new Error('Evaluation artifact unavailable');retrievalEvaluation=await response.json();
+  const response=await fetch('handover-retrieval-eval.json');if(!response.ok)throw new Error('Evaluation artifact unavailable');const candidate=await response.json(),audit=validateRetrievalEvaluation(candidate);if(!audit.valid)throw new Error(audit.reason);retrievalEvaluation=candidate;
+  const integrity=$('retrieval-integrity');integrity.className='integrity-status verified';integrity.textContent=`✓ Recomputed from ${audit.reads} reads · ${audit.pairs} complete format pairs · published totals match`;
   $('retrieval-scenario').replaceChildren(...retrievalEvaluation.scenarios.map(item=>retrievalOption(item.spec.slug,item.spec.issue)));
   $('retrieval-model').replaceChildren(...retrievalEvaluation.reader_models.map(model=>retrievalOption(model,model)));
   renderRetrievalComparison();
- }catch{$('retrieval-result').textContent='The explorer could not load. Open the complete reproducibility artifact below.';}
+ }catch(error){const integrity=$('retrieval-integrity');integrity.className='integrity-status mismatch';integrity.textContent='! Artifact self-check failed: '+error.message;$('retrieval-result').textContent='The explorer is disabled. Open the complete reproducibility artifact below.';}
 }
 $('open-retrieval-explorer').onclick=openRetrievalExplorer;
 $('close-retrieval-explorer').onclick=()=>$('retrieval-explorer').close();

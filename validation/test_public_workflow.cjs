@@ -6,6 +6,7 @@ const fs=require('node:fs');
 const {webcrypto}=require('node:crypto');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../dist/app.js'),'utf8');
 const page=fs.readFileSync(require('node:path').join(__dirname,'../dist/index.html'),'utf8');
+const retrievalEvaluation=JSON.parse(fs.readFileSync(require('node:path').join(__dirname,'HANDOVER_RETRIEVAL_EVAL.json'),'utf8'));
 function app(saved=new Map()){
  const elements=new Map();
  const element=()=>({value:'',children:[],hidden:false,disabled:false,textContent:'',append(...items){this.children.push(...items)},replaceChildren(...items){this.children=items},focus(){},scrollIntoView(){},showModal(){},close(){},classList:{add(){},remove(){}},setAttribute(){}});
@@ -264,4 +265,16 @@ test('controlled retrieval evidence is inspectable without hiding losing cases',
  assert.match(source,/handover-retrieval-eval\.json/);
  assert.match(source,/field_correct/);
  assert.match(source,/critical.*error/i);
+});
+
+test('retrieval explorer recomputes the complete matrix and rejects changed scores',()=>{
+ const a=app(),serialized=JSON.stringify(retrievalEvaluation);
+ const verified=a.run(`validateRetrievalEvaluation(${serialized})`);
+ assert.equal(verified.valid,true);assert.equal(verified.reads,54);assert.equal(verified.pairs,27);
+ const changed=JSON.parse(serialized);changed.results[0].correct_fields--;
+ assert.equal(a.run(`validateRetrievalEvaluation(${JSON.stringify(changed)})`).valid,false);
+ const missing=JSON.parse(serialized);missing.results.pop();
+ assert.equal(a.run(`validateRetrievalEvaluation(${JSON.stringify(missing)})`).valid,false);
+ assert.match(page,/id="retrieval-integrity"/);
+ assert.match(source,/published totals match/);
 });
