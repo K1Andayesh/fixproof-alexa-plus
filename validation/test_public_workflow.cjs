@@ -257,6 +257,17 @@ test('technical evidence routes judges directly to the retry-safety proof',()=>{
  assert.match(page,/confirms that only one outcome persists/);
 });
 
+test('open-source mini-challenge evidence supplies every required identity and link',()=>{
+ assert.match(page,/id="open-source-proof"/);
+ assert.match(page,/Open Source Mini Challenge/i);
+ assert.match(page,/github\.com\/K1Andayesh\/fixproof-evidence-verifier\/commit\/2f50996/);
+ assert.match(page,/github\.com\/K1Andayesh\/fixproof-evidence-verifier/);
+ assert.match(page,/github\.com\/K1Andayesh/);
+ assert.match(page,/Recipients can detect changed fields without uploading the handover/);
+ assert.match(page,/MIT license/);
+ assert.match(page,/does not prove authorship, physical inspection, or repair success/);
+});
+
 test('controlled retrieval evidence is inspectable without hiding losing cases',()=>{
  assert.match(page,/id="open-retrieval-explorer"/);
  assert.match(page,/Explore all 54 scored reads/);
