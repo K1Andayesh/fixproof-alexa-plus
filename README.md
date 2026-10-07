@@ -46,6 +46,7 @@ The model classifies the symptom and selects only from server-provided remaining
 | Potential-impact context | [Official-source evidence note](validation/IMPACT_EVIDENCE.md), with documented repair barriers separated from the product outcomes that still need measurement |
 | Current judge walkthrough | Embedded captioned 2:39 video on the public evaluation page; [video QA and provenance](validation/VIDEO_V10_QA.md) |
 | Developer feedback | [Three reproducible hackathon friction entries](FRICTION_LOG.md), including the implementation path, MCP verification, and rules-link continuity |
+| Required product feedback | [Five-toolchain submission record](submission/PRODUCT_FEEDBACK.md) covering use, strengths, limitations, onboarding, build-again decisions, and linked implementation evidence |
 
 The submission positioning for each judging criterion is documented in [the judging strategy](submission/JUDGING_STRATEGY.md).
 

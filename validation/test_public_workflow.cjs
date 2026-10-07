@@ -268,6 +268,18 @@ test('open-source mini-challenge evidence supplies every required identity and l
  assert.match(page,/does not prove authorship, physical inspection, or repair success/);
 });
 
+test('required product feedback covers every material toolchain and submission prompt',()=>{
+ const feedback=fs.readFileSync(require('node:path').join(__dirname,'..','submission','PRODUCT_FEEDBACK.md'),'utf8');
+ assert.match(page,/id="product-feedback"/);
+ assert.match(page,/Five toolchains\. Every submission prompt answered\./);
+ assert.match(page,/submission\/PRODUCT_FEEDBACK\.md/);
+ assert.match(page,/FRICTION_LOG\.md/);
+ for(const tool of ['MCP Python','MCP TypeScript + Apps','Sites + D1','Ollama + Qwen','Browser speech'])assert.ok(page.includes(tool));
+ for(const prompt of ['Used for:','Worked well:','Needs work:','Onboarding:','Build with it again\?'])assert.match(feedback,new RegExp(prompt));
+ assert.match(feedback,/does not claim Alexa-device execution or independent user validation/);
+ assert.match(feedback,/Permission denial, recognition accuracy, and microphone capture were not evaluated/);
+});
+
 test('controlled retrieval evidence is inspectable without hiding losing cases',()=>{
  assert.match(page,/id="open-retrieval-explorer"/);
  assert.match(page,/Explore all 54 scored reads/);
