@@ -33,6 +33,16 @@ test('reload restores recorded evidence and excludes it from next suggestions',(
  const restored=app(a.saved);restored.get('resume').onclick();restored.ask('next');
  assert.equal(restored.run('state.pending'),'rinse');assert.match(restored.handover(),/Fictional observation/);
 });
+test('malformed or incompatible saved browser cases fail closed and recover',()=>{
+ for(const raw of ['{broken',JSON.stringify({id:'case-1',created:'2026-10-08T00:00:00Z',issue:'Plates are wet.',model:'Bosch SMS6HAI02A/01',workflow:'drying',events:[],outcomes:{},pending:'not-a-real-check',status:'Open'})]){
+  const saved=new Map([['fixproof-public-case-v1',raw]]),a=app(saved);
+  assert.equal(saved.has('fixproof-public-case-v1'),false);
+  assert.equal(a.get('resume').hidden,true);
+  assert.equal(a.get('saved-case-status').hidden,false);
+  assert.match(a.get('saved-case-status').textContent,/has been cleared\. Start a new fictional case\./);
+  assert.equal(a.run('state'),null);
+ }
+});
 test('hazards in initial issues, questions and observations stop persisted state',()=>{
  for(const entry of ['initial','question','observation']){
   const a=app();
