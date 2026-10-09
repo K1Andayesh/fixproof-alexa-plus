@@ -43,6 +43,14 @@ test('malformed or incompatible saved browser cases fail closed and recover',()=
   assert.equal(a.run('state'),null);
  }
 });
+test('blocked browser storage keeps the active case usable with a visible limitation',()=>{
+ const a=app();a.run("localStorage.setItem=()=>{throw new Error('blocked')}");
+ assert.doesNotThrow(()=>a.start());
+ assert.equal(a.run('state.status'),'Open');
+ assert.equal(a.get('storage-status').hidden,false);
+ assert.match(a.get('storage-status').textContent,/still works in this tab.*reload recovery is unavailable/);
+ a.ask('first check');assert.equal(a.run('state.pending'),'waiting');
+});
 test('hazards in initial issues, questions and observations stop persisted state',()=>{
  for(const entry of ['initial','question','observation']){
   const a=app();
