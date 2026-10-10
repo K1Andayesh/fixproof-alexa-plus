@@ -11,9 +11,28 @@ type Proof = {
   pages: string;
   continuity: string;
   fingerprint: string;
+  integrity: string;
   scope?: string;
   retry?: string;
 };
+
+function sortForDigest(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sortForDigest);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
+        .map(([key, item]) => [key, sortForDigest(item)]),
+    );
+  }
+  return value;
+}
+
+async function evidenceSha256(evidence: Record<string, unknown>) {
+  const canonical = JSON.stringify(sortForDigest(evidence));
+  const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
+  return Array.from(new Uint8Array(hash), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
 
 function parseSse(text: string) {
   const line = text.split(/\r?\n/).find((value) => value.startsWith("data: "));
@@ -61,6 +80,9 @@ export function LiveProof() {
         clientInfo: { name: "FixProof browser judge probe", version: "1.0.0" },
       });
       const listed = await request(2, "tools/list");
+      const expectedTools = ["ask_fixproof", "prepare_handover", "read_case", "record_outcome", "start_case"];
+      const discoveredTools = listed.tools.map((item: { name: string }) => item.name).sort();
+      if (JSON.stringify(discoveredTools) !== JSON.stringify(expectedTools)) throw new Error("The expected five-tool contract was not discoverable.");
       const resources = await request(3, "resources/list");
       const app = resources.resources.find((item: { uri: string }) => item.uri === "ui://fixproof/handover.html");
       if (!app || app.mimeType !== "text/html;profile=mcp-app") throw new Error("The handover MCP App was not discoverable.");
@@ -137,6 +159,13 @@ export function LiveProof() {
         continuity = `${recorded.evidence_summary.deferred_or_skipped} deferred · restored by read_case`;
       }
 
+      const integrity = handover.evidence_integrity;
+      if (integrity?.algorithm !== "sha256" || integrity?.canonicalization !== "fixproof-sorted-json-v1" || integrity?.covers !== "evidence" || integrity?.authorship_proof !== false) {
+        throw new Error("The handover fingerprint declaration was missing or unsupported.");
+      }
+      const recomputedDigest = await evidenceSha256(handover.evidence);
+      if (recomputedDigest !== integrity.digest) throw new Error("The browser-recomputed evidence fingerprint did not match the handover.");
+
       setProof({
         protocol: initialized.protocolVersion,
         server: initialized.serverInfo.version,
@@ -146,6 +175,7 @@ export function LiveProof() {
         pages: selectedPages,
         continuity,
         fingerprint: handover.evidence_integrity.digest,
+        integrity: "Browser recomputation matched the returned evidence",
         scope,
         retry,
       });
@@ -188,6 +218,7 @@ export function LiveProof() {
                 <div><dt className="text-[#6a7b74]">{proof.scope ? "Boundary" : "Selected check"}</dt><dd className="font-semibold">{proof.scope || `${proof.check} · pages ${proof.pages}`}</dd></div>
                 <div><dt className="text-[#6a7b74]">Continuity</dt><dd className="font-semibold">{proof.continuity}</dd></div>
                 {proof.retry && <div className="sm:col-span-2"><dt className="text-[#6a7b74]">Retry safety</dt><dd className="font-semibold">{proof.retry}</dd></div>}
+                <div className="sm:col-span-2"><dt className="text-[#6a7b74]">Evidence integrity</dt><dd className="font-semibold">{proof.integrity}</dd></div>
               </dl>
               <p className="mt-4 text-xs text-[#6a7b74]">{proof.app}</p>
               <code className="mt-2 block break-all text-xs text-[#36574c]">SHA-256 {proof.fingerprint}</code>
