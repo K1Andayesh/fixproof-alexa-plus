@@ -17,7 +17,10 @@ The judge-facing live MCP proof previously waited indefinitely if the production
 
 - `npm run build` — passed.
 - `npm run lint` — passed.
-- Production browser QA is recorded after deployment below.
+- Production Chrome, public Site v31 — retry-safety proof passed with five tools, one persisted outcome after the duplicate request ID, matching browser-recomputed SHA-256, rendered MCP App, and no console warnings or errors.
+- Production Chrome, public Site v31 — **Stop proof** interrupted an active run, displayed the no-result-claimed failure state, restored all proof actions, and displayed no false success.
+- Production Chrome, public Site v31 — a fresh retry after cancellation passed the retry-safety and integrity checks.
+- The 15-second automatic timeout is build-verified; its wall-clock expiry was not independently forced in production.
 
 ## Claim boundary
 
