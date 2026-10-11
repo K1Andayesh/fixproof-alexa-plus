@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Proof = {
   protocol: string;
@@ -42,7 +42,7 @@ function parseSse(text: string) {
   return message.result;
 }
 
-async function request(id: number, method: string, params: Record<string, unknown> = {}) {
+async function request(id: number, method: string, params: Record<string, unknown> = {}, signal?: AbortSignal) {
   const response = await fetch("/api/mcp", {
     method: "POST",
     headers: {
@@ -51,24 +51,34 @@ async function request(id: number, method: string, params: Record<string, unknow
       "MCP-Protocol-Version": "2025-11-25",
     },
     body: JSON.stringify({ jsonrpc: "2.0", id, method, params }),
+    signal,
   });
   if (!response.ok) throw new Error(`MCP request failed with HTTP ${response.status}.`);
   return parseSse(await response.text());
 }
 
-async function callTool(id: number, name: string, args: Record<string, unknown>) {
-  const result = await request(id, "tools/call", { name, arguments: args });
+async function callTool(id: number, name: string, args: Record<string, unknown>, signal?: AbortSignal) {
+  const result = await request(id, "tools/call", { name, arguments: args }, signal);
   if (result.isError) throw new Error(`${name} returned an MCP tool error.`);
   return result.structuredContent;
 }
 
 export function LiveProof() {
+  const activeProof = useRef<AbortController | null>(null);
+  const abortReason = useRef<"timeout" | "stopped" | null>(null);
   const [state, setState] = useState<"idle" | "running" | "passed" | "failed">("idle");
   const [proof, setProof] = useState<Proof | null>(null);
   const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
   async function run(variant: "streaks" | "scope" | "retry") {
+    const controller = new AbortController();
+    abortReason.current = null;
+    activeProof.current = controller;
+    const timeout = window.setTimeout(() => {
+      abortReason.current = "timeout";
+      controller.abort();
+    }, 15_000);
     setState("running");
     setProof(null);
     setAppView(null);
@@ -78,15 +88,15 @@ export function LiveProof() {
         protocolVersion: "2025-11-25",
         capabilities: {},
         clientInfo: { name: "FixProof browser judge probe", version: "1.0.0" },
-      });
-      const listed = await request(2, "tools/list");
+      }, controller.signal);
+      const listed = await request(2, "tools/list", {}, controller.signal);
       const expectedTools = ["ask_fixproof", "prepare_handover", "read_case", "record_outcome", "start_case"];
       const discoveredTools = listed.tools.map((item: { name: string }) => item.name).sort();
       if (JSON.stringify(discoveredTools) !== JSON.stringify(expectedTools)) throw new Error("The expected five-tool contract was not discoverable.");
-      const resources = await request(3, "resources/list");
+      const resources = await request(3, "resources/list", {}, controller.signal);
       const app = resources.resources.find((item: { uri: string }) => item.uri === "ui://fixproof/handover.html");
       if (!app || app.mimeType !== "text/html;profile=mcp-app") throw new Error("The handover MCP App was not discoverable.");
-      const appContents = await request(4, "resources/read", { uri: app.uri });
+      const appContents = await request(4, "resources/read", { uri: app.uri }, controller.signal);
       const appHtml = appContents.contents?.[0]?.text;
       if (typeof appHtml !== "string" || !appHtml.includes("FixProof repair handover")) throw new Error("The handover MCP App did not load.");
 
@@ -98,13 +108,13 @@ export function LiveProof() {
         model: "Bosch SMS6HCI02A/72",
         model_confirmed: true,
         fictional_demo: true,
-      });
+      }, controller.signal);
       const guided = await callTool(6, "ask_fixproof", {
         request_id: crypto.randomUUID(),
         case_id: started.case_id,
         revision: started.revision,
         user_message: "What should I check first?",
-      });
+      }, controller.signal);
       let restored;
       let handover;
       let selectedCheck;
@@ -114,8 +124,8 @@ export function LiveProof() {
       let retry: string | undefined;
       if (variant === "scope") {
         if (guided.status !== "Handover ready" || guided.pending_check || guided.latest_event?.kind !== "scope") throw new Error("The error-code report was not kept outside the verified scope.");
-        restored = await callTool(7, "read_case", { case_id: started.case_id });
-        handover = await callTool(8, "prepare_handover", { case_id: started.case_id });
+        restored = await callTool(7, "read_case", { case_id: started.case_id }, controller.signal);
+        handover = await callTool(8, "prepare_handover", { case_id: started.case_id }, controller.signal);
         if (restored.status !== "Handover ready" || handover.evidence.checks?.length || handover.evidence.scope_report !== started.reported_issue) throw new Error("The scope boundary did not persist into the handover.");
         selectedCheck = "None";
         selectedPages = "none";
@@ -132,7 +142,7 @@ export function LiveProof() {
           step_id: pending.step_id,
           outcome: "Not yet tested",
           observation: "Fictional browser proof; no appliance was inspected.",
-        });
+        }, controller.signal);
         if (variant === "retry") {
           const retried = await callTool(8, "record_outcome", {
             request_id: mutationRequestId,
@@ -141,16 +151,16 @@ export function LiveProof() {
             step_id: pending.step_id,
             outcome: "Not yet tested",
             observation: "Fictional browser proof; no appliance was inspected.",
-          });
+          }, controller.signal);
           if (JSON.stringify(retried) !== JSON.stringify(recorded)) throw new Error("The retried mutation did not return the original result.");
-          restored = await callTool(9, "read_case", { case_id: started.case_id });
-          handover = await callTool(10, "prepare_handover", { case_id: started.case_id });
+          restored = await callTool(9, "read_case", { case_id: started.case_id }, controller.signal);
+          handover = await callTool(10, "prepare_handover", { case_id: started.case_id }, controller.signal);
           const savedOutcomes = Object.keys(restored.recorded_outcomes || {});
           if (savedOutcomes.length !== 1 || restored.revision !== recorded.revision) throw new Error("The retried mutation changed persisted case state.");
           retry = `Same request ID returned revision ${recorded.revision} twice · one outcome persisted`;
         } else {
-          restored = await callTool(8, "read_case", { case_id: started.case_id });
-          handover = await callTool(9, "prepare_handover", { case_id: started.case_id });
+          restored = await callTool(8, "read_case", { case_id: started.case_id }, controller.signal);
+          handover = await callTool(9, "prepare_handover", { case_id: started.case_id }, controller.signal);
         }
         const restoredObservation = restored.recorded_outcomes?.[pending.step_id]?.observation;
         if (restoredObservation !== "Fictional browser proof; no appliance was inspected.") throw new Error("The recorded observation did not persist.");
@@ -182,9 +192,23 @@ export function LiveProof() {
       setAppView({ html: appHtml, handover });
       setState("passed");
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "The live proof failed.");
+      setError(
+        abortReason.current === "timeout"
+          ? "The production endpoint did not complete within 15 seconds. No result was claimed; try again."
+          : abortReason.current === "stopped"
+            ? "Proof stopped before completion. No result was claimed; run it again when ready."
+            : reason instanceof Error ? reason.message : "The live proof failed.",
+      );
       setState("failed");
+    } finally {
+      window.clearTimeout(timeout);
+      if (activeProof.current === controller) activeProof.current = null;
     }
+  }
+
+  function stop() {
+    abortReason.current = "stopped";
+    activeProof.current?.abort();
   }
 
   return (
@@ -203,6 +227,11 @@ export function LiveProof() {
           <button id="retry-proof" onClick={() => run("retry")} disabled={state === "running"} className="mt-3 block rounded-full border border-[#a8c3b4] bg-white px-6 py-3 font-semibold text-[#163a31] disabled:cursor-wait disabled:opacity-60">
             Run retry-safety proof
           </button>
+          {state === "running" && (
+            <button onClick={stop} className="mt-3 block rounded-full border border-[#c08a83] bg-white px-6 py-3 font-semibold text-[#7b332c]">
+              Stop proof
+            </button>
+          )}
           <p className="mt-3 text-xs leading-5 text-[#6a7b74]">Uses only hard-coded fictional data. It does not inspect or diagnose an appliance.</p>
         </div>
         <div className="rounded-2xl bg-[#f3f6f2] p-5" aria-live="polite">
