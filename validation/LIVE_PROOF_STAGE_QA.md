@@ -22,7 +22,10 @@ The active stage uses `aria-current="step"`; completed stages remain visibly mar
 - `npm run build` — passed.
 - `npm run lint` — passed.
 - `node validation/test_public_workflow.cjs` — all 31 browser-workflow regressions passed.
-- Public production browser verification — pending deployment.
+- Public MCP Site v32 deployed successfully and remained public.
+- Production Chrome observed exactly one `aria-current="step"` item while the retry proof was running. Its four labels matched the protocol, discovery, retry/persistence, and integrity assertions.
+- The completed retry proof marked all four stages complete, returned one persisted outcome after the duplicate request ID, matched the browser-recomputed SHA-256, rendered the MCP App, and produced no console warnings or errors.
+- Stopping a scope proof marked its exact scope-boundary stage as failed, left the fingerprint stage pending, and displayed no false success.
 
 ## Claim boundary
 
