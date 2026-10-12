@@ -16,6 +16,14 @@ type Proof = {
   retry?: string;
 };
 
+type ProofVariant = "streaks" | "scope" | "retry";
+
+const proofStages: Record<ProofVariant, readonly string[]> = {
+  streaks: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise cited-check persistence", "Recompute the evidence fingerprint"],
+  scope: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise scope-boundary persistence", "Recompute the evidence fingerprint"],
+  retry: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise persistence and retry safety", "Recompute the evidence fingerprint"],
+};
+
 function sortForDigest(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sortForDigest);
   if (value && typeof value === "object") {
@@ -67,11 +75,13 @@ export function LiveProof() {
   const activeProof = useRef<AbortController | null>(null);
   const abortReason = useRef<"timeout" | "stopped" | null>(null);
   const [state, setState] = useState<"idle" | "running" | "passed" | "failed">("idle");
+  const [phase, setPhase] = useState(0);
+  const [variant, setVariant] = useState<ProofVariant>("streaks");
   const [proof, setProof] = useState<Proof | null>(null);
   const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
-  async function run(variant: "streaks" | "scope" | "retry") {
+  async function run(selectedVariant: ProofVariant) {
     const controller = new AbortController();
     abortReason.current = null;
     activeProof.current = controller;
@@ -80,6 +90,8 @@ export function LiveProof() {
       controller.abort();
     }, 15_000);
     setState("running");
+    setPhase(1);
+    setVariant(selectedVariant);
     setProof(null);
     setAppView(null);
     setError("");
@@ -89,6 +101,7 @@ export function LiveProof() {
         capabilities: {},
         clientInfo: { name: "FixProof browser judge probe", version: "1.0.0" },
       }, controller.signal);
+      setPhase(2);
       const listed = await request(2, "tools/list", {}, controller.signal);
       const expectedTools = ["ask_fixproof", "prepare_handover", "read_case", "record_outcome", "start_case"];
       const discoveredTools = listed.tools.map((item: { name: string }) => item.name).sort();
@@ -99,10 +112,11 @@ export function LiveProof() {
       const appContents = await request(4, "resources/read", { uri: app.uri }, controller.signal);
       const appHtml = appContents.contents?.[0]?.text;
       if (typeof appHtml !== "string" || !appHtml.includes("FixProof repair handover")) throw new Error("The handover MCP App did not load.");
+      setPhase(3);
 
       const started = await callTool(5, "start_case", {
         request_id: crypto.randomUUID(),
-        reported_issue: variant === "scope"
+        reported_issue: selectedVariant === "scope"
           ? "This fictional dishwasher displays error code E:61-03 after the wash."
           : "Removable streaks remain on glasses after this fictional wash.",
         model: "Bosch SMS6HCI02A/72",
@@ -122,7 +136,7 @@ export function LiveProof() {
       let continuity;
       let scope: string | undefined;
       let retry: string | undefined;
-      if (variant === "scope") {
+      if (selectedVariant === "scope") {
         if (guided.status !== "Handover ready" || guided.pending_check || guided.latest_event?.kind !== "scope") throw new Error("The error-code report was not kept outside the verified scope.");
         restored = await callTool(7, "read_case", { case_id: started.case_id }, controller.signal);
         handover = await callTool(8, "prepare_handover", { case_id: started.case_id }, controller.signal);
@@ -143,7 +157,7 @@ export function LiveProof() {
           outcome: "Not yet tested",
           observation: "Fictional browser proof; no appliance was inspected.",
         }, controller.signal);
-        if (variant === "retry") {
+        if (selectedVariant === "retry") {
           const retried = await callTool(8, "record_outcome", {
             request_id: mutationRequestId,
             case_id: started.case_id,
@@ -169,6 +183,7 @@ export function LiveProof() {
         continuity = `${recorded.evidence_summary.deferred_or_skipped} deferred · restored by read_case`;
       }
 
+      setPhase(4);
       const integrity = handover.evidence_integrity;
       if (integrity?.algorithm !== "sha256" || integrity?.canonicalization !== "fixproof-sorted-json-v1" || integrity?.covers !== "evidence" || integrity?.authorship_proof !== false) {
         throw new Error("The handover fingerprint declaration was missing or unsupported.");
@@ -190,6 +205,7 @@ export function LiveProof() {
         retry,
       });
       setAppView({ html: appHtml, handover });
+      setPhase(5);
       setState("passed");
     } catch (reason) {
       setError(
@@ -236,7 +252,7 @@ export function LiveProof() {
         </div>
         <div className="rounded-2xl bg-[#f3f6f2] p-5" aria-live="polite">
           {state === "idle" && <p className="text-sm leading-6 text-[#61766e]">Ready. No request has been sent yet.</p>}
-          {state === "running" && <p className="text-sm font-semibold text-[#36574c]">Calling the production Streamable HTTP endpoint…</p>}
+          {state === "running" && <p className="text-sm font-semibold text-[#36574c]">Live verification in progress · step {phase} of {proofStages[variant].length}</p>}
           {state === "failed" && <p className="text-sm font-semibold text-[#8a352c]">Proof failed: {error}</p>}
           {state === "passed" && proof && (
             <div>
@@ -253,6 +269,20 @@ export function LiveProof() {
               <code className="mt-2 block break-all text-xs text-[#36574c]">SHA-256 {proof.fingerprint}</code>
             </div>
           )}
+          <ol className="mt-5 grid gap-2 border-t border-[#d8e2dc] pt-4" aria-label="Live proof stages">
+            {proofStages[variant].map((label, index) => {
+              const stage = index + 1;
+              const complete = phase > stage;
+              const current = state === "running" && phase === stage;
+              const failed = state === "failed" && phase === stage;
+              return (
+                <li key={label} aria-current={current ? "step" : undefined} className={`flex items-center gap-3 text-sm ${complete ? "font-semibold text-[#1d6848]" : failed ? "font-semibold text-[#8a352c]" : current ? "font-semibold text-[#36574c]" : "text-[#71827a]"}`}>
+                  <span aria-hidden="true" className="w-5 text-center">{complete ? "✓" : failed ? "!" : current ? "●" : "○"}</span>
+                  <span>{label}</span>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
       {state === "passed" && appView && (

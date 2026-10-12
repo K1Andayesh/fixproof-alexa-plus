@@ -1,0 +1,29 @@
+# Live proof stage transparency QA
+
+Date: 2026-10-12
+
+## Judge-facing gap
+
+The zero-setup MCP proof previously showed one generic loading message while it negotiated the protocol, discovered tools and the App, mutated and restored persistent state, retried a write, and recomputed the evidence fingerprint. A judge could not tell which assertion was currently being exercised or where a failure occurred.
+
+## Improvement
+
+The public proof now exposes four ordered stages:
+
+1. Negotiate MCP protocol.
+2. Discover five tools and the MCP App.
+3. Exercise cited-check persistence, scope-boundary persistence, or persistence plus retry safety, matching the selected proof.
+4. Recompute the evidence fingerprint.
+
+The active stage uses `aria-current="step"`; completed stages remain visibly marked, and a stopped or failed run marks the stage at which it ended. The checklist describes the actual assertions already enforced by the browser proof and does not add a new product or impact claim.
+
+## Verification
+
+- `npm run build` — passed.
+- `npm run lint` — passed.
+- `node validation/test_public_workflow.cjs` — all 31 browser-workflow regressions passed.
+- Public production browser verification — pending deployment.
+
+## Claim boundary
+
+The stage list makes the live browser checks easier to inspect. It does not prove appliance inspection, diagnosis, repair success, evidence authorship, customer validation, or Alexa-device execution.
