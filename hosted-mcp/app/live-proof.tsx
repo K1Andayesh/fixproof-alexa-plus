@@ -227,6 +227,18 @@ export function LiveProof() {
     activeProof.current?.abort();
   }
 
+  function downloadEvidence() {
+    if (!appView) return;
+    const caseId = typeof appView.handover.case_id === "string" ? appView.handover.case_id.slice(0, 8) : "fictional";
+    const blob = new Blob([`${JSON.stringify(appView.handover, null, 2)}\n`], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `fixproof-live-${caseId}.json`;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+
   return (
     <section className="mx-auto max-w-6xl px-6 pb-16 lg:px-10" aria-labelledby="live-proof-title">
       <div className="grid gap-6 rounded-[2rem] border border-[#c9d5cf] bg-white p-7 shadow-[0_18px_60px_rgba(18,57,47,.08)] lg:grid-cols-[.75fr_1.25fr] lg:p-9">
@@ -290,6 +302,15 @@ export function LiveProof() {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Live MCP App preview</p>
           <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em]">Inspect the live handover App.</h3>
           <p className="mt-2 text-sm leading-6 text-[#52645b]">This sandbox renders the App resource just read from the live MCP server, with the fictional handover returned by <code>prepare_handover</code>. Clients without MCP Apps still receive Markdown and structured evidence.</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <button onClick={downloadEvidence} className="rounded-full bg-[#163a31] px-5 py-2.5 text-sm font-semibold text-white">
+              Download exact evidence JSON
+            </button>
+            <a href="https://fixproof-alexa.keyvan-andayesh.chatgpt.site/#verify-title" target="_blank" rel="noopener" className="rounded-full border border-[#a8c3b4] bg-white px-5 py-2.5 text-sm font-semibold text-[#163a31]">
+              Open receiver verifier ↗
+            </a>
+          </div>
+          <p className="mt-3 text-xs leading-5 text-[#6a7b74]">The download contains the exact fictional <code>prepare_handover</code> result shown below. The receiver recomputes its fingerprint locally without uploading the file.</p>
           <iframe
             title="Fictional FixProof MCP App handover"
             className="mt-5 h-[42rem] w-full rounded-2xl border border-[#d9e5dd] bg-[#f5f8f5]"
