@@ -227,17 +227,8 @@ export function LiveProof() {
     activeProof.current?.abort();
   }
 
-  function downloadEvidence() {
-    if (!appView) return;
-    const caseId = typeof appView.handover.case_id === "string" ? appView.handover.case_id.slice(0, 8) : "fictional";
-    const blob = new Blob([`${JSON.stringify(appView.handover, null, 2)}\n`], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `fixproof-live-${caseId}.json`;
-    link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
-  }
+  const exportCaseId = typeof appView?.handover.case_id === "string" ? appView.handover.case_id.slice(0, 8) : "fictional";
+  const exportHref = appView ? `data:application/json;charset=utf-8,${encodeURIComponent(`${JSON.stringify(appView.handover, null, 2)}\n`)}` : "";
 
   return (
     <section className="mx-auto max-w-6xl px-6 pb-16 lg:px-10" aria-labelledby="live-proof-title">
@@ -303,9 +294,9 @@ export function LiveProof() {
           <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em]">Inspect the live handover App.</h3>
           <p className="mt-2 text-sm leading-6 text-[#52645b]">This sandbox renders the App resource just read from the live MCP server, with the fictional handover returned by <code>prepare_handover</code>. Clients without MCP Apps still receive Markdown and structured evidence.</p>
           <div className="mt-4 flex flex-wrap gap-3">
-            <button onClick={downloadEvidence} className="rounded-full bg-[#163a31] px-5 py-2.5 text-sm font-semibold text-white">
+            <a href={exportHref} download={`fixproof-live-${exportCaseId}.json`} className="rounded-full bg-[#163a31] px-5 py-2.5 text-sm font-semibold text-white">
               Download exact evidence JSON
-            </button>
+            </a>
             <a href="https://fixproof-alexa.keyvan-andayesh.chatgpt.site/#verify-title" target="_blank" rel="noopener" className="rounded-full border border-[#a8c3b4] bg-white px-5 py-2.5 text-sm font-semibold text-[#163a31]">
               Open receiver verifier ↗
             </a>
