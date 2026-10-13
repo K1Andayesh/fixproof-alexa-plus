@@ -18,7 +18,11 @@ The public MCP proof rendered its returned handover and independently verified t
 - `npm run build` — passed.
 - `npm run lint` — passed.
 - `node validation/test_public_workflow.cjs` — all 31 browser-workflow regressions passed.
-- Public production Chrome export and receiver round trip — pending deployment.
+- Public MCP Site v35 deployed successfully from source commit `a6818e4767dba6c0720d8ffe155947030c127f76`.
+- Production Chrome completed the retry-safety proof: protocol `2025-11-25`, five discovered tools, one persisted outcome for the repeated request ID, and a matching browser-recomputed evidence fingerprint.
+- After the pass, Chrome exposed a direct `application/json` export containing the exact returned case, evidence and integrity record. The exported JSON parsed successfully and retained `fictional_demo: true`.
+- The exact exported JSON was pasted into the separate public receiver. It recomputed `9276dde699d1674647844d6f1cfafb87d85afa12c4dff767d562daa3cb95810d`, matched the exported fingerprint, and rendered the same case, model, reference and evidence counts.
+- The receiver produced no console warnings or errors. The automation browser could inspect the direct download payload but did not surface a filesystem download event for the data URL, so filesystem-level download capture remains unverified.
 
 ## Claim boundary
 
