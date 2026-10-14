@@ -16,7 +16,12 @@ The receiver already rejected altered evidence, but the public judge tour requir
 ## Verification
 
 - The existing portable-evidence regression now checks the helper's changed digest, mismatch verdict, visible control, and rendered negative result.
-- Production browser verification is recorded after deployment.
+- `node --check dist/app.js` passed.
+- `node --test validation/test_public_workflow.cjs` passed all 31 workflow regressions.
+- Public FixProof Site v71 deployed successfully from commit `35d355b1841916fd62e064b5cee377762cbaea62`.
+- Production Chrome generated a fresh fictional bundle through the live MCP retry-safety proof, then pasted that exact bundle into the receiver.
+- The unchanged bundle matched fingerprint `9453706b00c4089a39f3b55c87c7a1b4f9224bfcdbf527eb8faa1e75ae5178af` and exposed **Run changed-field check**.
+- The one-click check changed the local copy, produced recomputed fingerprint `e5238b88d1448452df52c7bc7b20b45f9d440e7717107466441da5409930e501`, displayed the mismatch, removed the valid-only action, and emitted no browser warnings or errors.
 
 ## Claim boundary
 
