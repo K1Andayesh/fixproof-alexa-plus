@@ -170,6 +170,11 @@ async function verifyEvidenceBundle(input){
  const valid=recomputed===integrity.digest;
  return{valid,reason:valid?'Fingerprint matches the evidence fields.':'Fingerprint mismatch: one or more evidence fields changed after export.',expected:integrity.digest,recomputed,evidence};
 }
+async function verifyChangedField(evidence,digest){
+ const changed=JSON.parse(JSON.stringify(evidence));
+ changed.reported_issue=changed.reported_issue+' [changed locally for verification]';
+ return verifyEvidenceBundle({evidence:changed,evidence_integrity:{algorithm:'sha256',canonicalization:'fixproof-sorted-json-v1',covers:'evidence',digest,authorship_proof:false}});
+}
 function renderVerification(result){
  const target=$('verify-result');target.replaceChildren();
  const verdict=document.createElement('p');verdict.className='verdict '+(result.valid?'verified':'mismatch');verdict.textContent=result.valid?'✓ '+result.reason:'! '+result.reason;target.append(verdict);
@@ -177,6 +182,8 @@ function renderVerification(result){
  if(result.valid){
   const e=result.evidence,performed=e.checks.filter(check=>check.evidence_status==='user_reports_performed').length,deferred=e.checks.filter(check=>check.evidence_status==='deferred_or_skipped').length;
   for(const text of ['Case: '+e.case_id+' · '+e.case_status,'Reported issue: '+e.reported_issue,'Model: '+e.model.reported+(e.model.fictional_demo?' · fictional demonstration':''),'Evidence: '+performed+' reported performed · '+deferred+' deferred or skipped','Reference: '+(e.reference?e.reference.title+' · '+e.reference.document:'No verified reference for this model')]){const p=document.createElement('p');p.textContent=text;target.append(p);}
+  const tamper=document.createElement('button');tamper.id='verify-changed-field';tamper.type='button';tamper.className='secondary';tamper.textContent='Run changed-field check';tamper.onclick=async()=>renderVerification(await verifyChangedField(e,result.expected));target.append(tamper);
+  const hint=document.createElement('p');hint.className='fine';hint.textContent='This makes a local copy, changes only the reported issue, and checks it against the original fingerprint.';target.append(hint);
  }
  const boundary=document.createElement('p');boundary.className='fine';boundary.textContent='Authorship, identity and physical inspection are not proven by this fingerprint.';target.append(boundary);
 }

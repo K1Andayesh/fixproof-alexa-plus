@@ -13,7 +13,7 @@ Open [the public FixProof evaluation build](https://fixproof-alexa.keyvan-andaye
 3. Save **Issue unchanged** with the observation **Waited 30 minutes; glasses remained wet.**
 4. Reload the page, resume the saved case, and ask **What should I check next?** The recorded check is excluded.
 5. Preview the handover, download its evidence JSON, then open **Verify evidence JSON** and paste or choose the file. Confirm that the recomputed fingerprint matches and the bounded case facts remain readable.
-6. Change one evidence field in a copy and verify that the receiver reports a fingerprint mismatch, then use the scenario shortcuts to inspect the plastic, safety, unsupported-issue, and unclear-report boundaries.
+6. Choose **Run changed-field check**. The receiver changes only the reported issue in a local copy and rejects it against the original fingerprint. Then use the scenario shortcuts to inspect the plastic, safety, unsupported-issue, and unclear-report boundaries.
 
 ## Runtime architecture
 

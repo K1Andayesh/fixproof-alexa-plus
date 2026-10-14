@@ -13,7 +13,7 @@ function app(saved=new Map()){
  const get=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id)};
  const sandbox={document:{getElementById:get,createElement:element,querySelectorAll:()=>[]},window:{},localStorage:{getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v),removeItem:k=>saved.delete(k)},crypto:webcrypto,TextEncoder,Uint8Array,location:{reload(){}},setTimeout,URL,Blob};
  vm.createContext(sandbox);vm.runInContext(source,sandbox);
- return {get,saved,run:code=>vm.runInContext(code,sandbox),start:()=>sandbox.start('Plates are wet.'),ask:q=>{get('question').value=q;get('ask').onsubmit({preventDefault(){}})},record:(result,note='')=>{get('result').value=result;get('note').value=note;get('outcome').onsubmit({preventDefault(){}})},handover:()=>sandbox.handover(),bundle:()=>sandbox.handoverBundle(),digest:value=>sandbox.evidenceSha256(value),verify:value=>sandbox.verifyEvidenceBundle(value)};
+ return {get,saved,run:code=>vm.runInContext(code,sandbox),start:()=>sandbox.start('Plates are wet.'),ask:q=>{get('question').value=q;get('ask').onsubmit({preventDefault(){}})},record:(result,note='')=>{get('result').value=result;get('note').value=note;get('outcome').onsubmit({preventDefault(){}})},handover:()=>sandbox.handover(),bundle:()=>sandbox.handoverBundle(),digest:value=>sandbox.evidenceSha256(value),verify:value=>sandbox.verifyEvidenceBundle(value),changedField:(e,d)=>sandbox.verifyChangedField(e,d),render:r=>sandbox.renderVerification(r)};
 }
 test('a suggestion is not a performed check; next preserves the pending check',()=>{
  const a=app();a.start();a.ask('first check');a.ask('next');
@@ -224,6 +224,15 @@ test('the public evaluation exposes portable fingerprinted evidence and the call
  assert.equal(bundle.evidence_integrity.authorship_proof,false);
  const verified=await a.verify(JSON.stringify(bundle));
  assert.equal(verified.valid,true);assert.equal(verified.evidence.reported_issue,'Plates are wet.');
+ const guidedTamper=await a.changedField(bundle.evidence,bundle.evidence_integrity.digest);
+ assert.equal(guidedTamper.valid,false);assert.match(guidedTamper.reason,/Fingerprint mismatch/);
+ assert.equal(guidedTamper.expected,bundle.evidence_integrity.digest);
+ assert.notEqual(guidedTamper.recomputed,bundle.evidence_integrity.digest);
+ a.render(verified);
+ const tamperButton=a.get('verify-result').children.find(item=>item.id==='verify-changed-field');
+ assert.equal(tamperButton.textContent,'Run changed-field check');
+ await tamperButton.onclick();
+ assert.match(a.get('verify-result').children[0].textContent,/Fingerprint mismatch/);
  const changedBundle=JSON.parse(JSON.stringify(bundle));changedBundle.evidence.reported_issue='Changed after export.';
  assert.equal((await a.verify(changedBundle)).valid,false);
  const wrongSchema=JSON.parse(JSON.stringify(bundle));wrongSchema.evidence.schema_version='unknown-schema';
