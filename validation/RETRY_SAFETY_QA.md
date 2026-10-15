@@ -2,13 +2,12 @@
 
 ## Enhancement
 
-The public MCP landing page now offers a zero-setup **Run retry-safety proof** path. It opens a fixed fictional streaks case, selects a cited check, sends the same `record_outcome` mutation twice with the same `request_id`, reads the case back, and prepares the returned MCP App handover.
+The public MCP landing page offers a zero-setup **Run retry-safety proof** path. It opens a fixed fictional streaks case, selects a cited check, sends `record_outcome`, deliberately discards that first successful response, retries with the same `request_id`, reads the case back, and prepares the returned MCP App handover.
 
-The proof passes only when:
+The current proof passes only when:
 
-- the retry returns the byte-equivalent structured result from the first mutation;
-- both calls report the same case revision;
-- `read_case` contains exactly one recorded outcome;
+- the retry returns a committed result after the first response was intentionally ignored;
+- `read_case` contains exactly one recorded outcome at the retry's committed revision;
 - that one outcome retains the fixed fictional observation; and
 - the handover App and evidence fingerprint still render.
 
@@ -18,7 +17,7 @@ The proof passes only when:
 
 ## Boundary
 
-This demonstrates idempotent handling for one repeated `record_outcome` request through the real MCP route and persistence layer. It does not simulate every network failure, prove general availability, or establish repair outcomes.
+This exercises the recovery decision a client makes after losing a successful response at its boundary. The production request completes and its returned value is deliberately ignored before the same request ID is retried. It does not force a transport connection to drop at the commit boundary, simulate every network failure, prove general availability, or establish repair outcomes.
 
 ## Production verification
 

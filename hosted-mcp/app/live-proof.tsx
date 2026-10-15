@@ -21,7 +21,7 @@ type ProofVariant = "streaks" | "scope" | "retry";
 const proofStages: Record<ProofVariant, readonly string[]> = {
   streaks: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise cited-check persistence", "Recompute the evidence fingerprint"],
   scope: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise scope-boundary persistence", "Recompute the evidence fingerprint"],
-  retry: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise persistence and retry safety", "Recompute the evidence fingerprint"],
+  retry: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Ignore the first response and retry safely", "Recompute the evidence fingerprint"],
 };
 
 function sortForDigest(value: unknown): unknown {
@@ -149,30 +149,27 @@ export function LiveProof() {
         const pending = guided.pending_check;
         if (!pending) throw new Error("The cited streaks check was not selected.");
         const mutationRequestId = crypto.randomUUID();
-        const recorded = await callTool(7, "record_outcome", {
+        const outcomeArgs = {
           request_id: mutationRequestId,
           case_id: started.case_id,
           revision: guided.revision,
           step_id: pending.step_id,
           outcome: "Not yet tested",
           observation: "Fictional browser proof; no appliance was inspected.",
-        }, controller.signal);
+        };
+        let recorded;
         if (selectedVariant === "retry") {
-          const retried = await callTool(8, "record_outcome", {
-            request_id: mutationRequestId,
-            case_id: started.case_id,
-            revision: guided.revision,
-            step_id: pending.step_id,
-            outcome: "Not yet tested",
-            observation: "Fictional browser proof; no appliance was inspected.",
-          }, controller.signal);
-          if (JSON.stringify(retried) !== JSON.stringify(recorded)) throw new Error("The retried mutation did not return the original result.");
+          // Simulate a client losing the first successful response after the server
+          // commits: deliberately discard it, then recover using the same request ID.
+          await callTool(7, "record_outcome", outcomeArgs, controller.signal);
+          recorded = await callTool(8, "record_outcome", outcomeArgs, controller.signal);
           restored = await callTool(9, "read_case", { case_id: started.case_id }, controller.signal);
           handover = await callTool(10, "prepare_handover", { case_id: started.case_id }, controller.signal);
           const savedOutcomes = Object.keys(restored.recorded_outcomes || {});
           if (savedOutcomes.length !== 1 || restored.revision !== recorded.revision) throw new Error("The retried mutation changed persisted case state.");
-          retry = `Same request ID returned revision ${recorded.revision} twice · one outcome persisted`;
+          retry = `First successful response ignored · retry recovered revision ${recorded.revision} · one outcome persisted`;
         } else {
+          recorded = await callTool(7, "record_outcome", outcomeArgs, controller.signal);
           restored = await callTool(8, "read_case", { case_id: started.case_id }, controller.signal);
           handover = await callTool(9, "prepare_handover", { case_id: started.case_id }, controller.signal);
         }
@@ -236,7 +233,7 @@ export function LiveProof() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Zero-setup judge proof</p>
           <h2 id="live-proof-title" className="mt-3 text-3xl font-bold tracking-[-0.03em]">Call the live MCP now.</h2>
-          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Every path calls the production MCP endpoint, then shows the returned handover App. The boundary path prevents an unsupported error code from becoming guidance; the retry path repeats one mutation with the same request ID and checks that only one outcome persists.</p>
+          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Every path calls the production MCP endpoint, then shows the returned handover App. The boundary path prevents an unsupported error code from becoming guidance; the retry path deliberately ignores the first successful mutation response, retries with the same request ID, and checks that only one outcome persists.</p>
           <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
             {state === "running" ? "Running live proof…" : "Run live MCP proof"}
           </button>
