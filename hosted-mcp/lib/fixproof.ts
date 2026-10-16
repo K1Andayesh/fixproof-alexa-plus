@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { makeRequestReceipt, readRequestReceipt } from "./request-receipt";
 
 export type Source = { title: string; url: string; service_url: string; document: string; verified: string; sha256: string };
 export type Step = { workflow: "drying" | "food" | "detergent" | "streaks" | "noise" | "rust" | "clouding" | "odour" | "starting" | "water_retention"; title: string; text: string; pages: number[] };
@@ -147,9 +148,13 @@ function view(caseRecord: FixProofCase) {
   };
 }
 
-async function cached(requestId: string): Promise<FixProofCase | null> {
+async function cached(requestId: string, operation: string, input: unknown): Promise<FixProofCase | null> {
   const row = await database().prepare("SELECT body FROM requests WHERE id = ?").bind(clean(requestId, 100)).first<{ body: string }>();
-  return row ? JSON.parse(row.body) as FixProofCase : null;
+  if (!row) return null;
+  const receipt = await readRequestReceipt<FixProofCase>(row.body, operation, input);
+  if (receipt.kind === "match") return receipt.case_record;
+  if (receipt.kind === "legacy") throw new Error("This request ID belongs to an earlier unbound receipt. Use a new request ID.");
+  throw new Error("This request ID was already used for a different operation or input. Use a new request ID.");
 }
 
 export async function readCase(id: string): Promise<FixProofCase> {
@@ -158,22 +163,24 @@ export async function readCase(id: string): Promise<FixProofCase> {
   return JSON.parse(row.body) as FixProofCase;
 }
 
-async function saveNew(caseRecord: FixProofCase, requestId: string): Promise<FixProofCase> {
+async function saveNew(caseRecord: FixProofCase, requestId: string, operation: string, input: unknown): Promise<FixProofCase> {
   const now = new Date().toISOString();
+  const receipt = await makeRequestReceipt(operation, input, caseRecord);
   await database().batch([
     database().prepare("INSERT INTO cases (id, revision, body, created_at) VALUES (?, ?, ?, ?)").bind(caseRecord.id, caseRecord.revision, JSON.stringify(caseRecord), now),
-    database().prepare("INSERT INTO requests (id, case_id, body, created_at) VALUES (?, ?, ?, ?)").bind(clean(requestId, 100), caseRecord.id, JSON.stringify(caseRecord), now),
+    database().prepare("INSERT INTO requests (id, case_id, body, created_at) VALUES (?, ?, ?, ?)").bind(clean(requestId, 100), caseRecord.id, receipt, now),
   ]);
   return caseRecord;
 }
 
-async function saveUpdated(caseRecord: FixProofCase, requestId: string, expectedRevision: number): Promise<FixProofCase> {
+async function saveUpdated(caseRecord: FixProofCase, requestId: string, expectedRevision: number, operation: string, input: unknown): Promise<FixProofCase> {
   const next = { ...caseRecord, revision: expectedRevision + 1 };
   const now = new Date().toISOString();
+  const receipt = await makeRequestReceipt(operation, input, next);
   const results = await database().batch([
     database().prepare("UPDATE cases SET revision = ?, body = ? WHERE id = ? AND revision = ?").bind(next.revision, JSON.stringify(next), next.id, expectedRevision),
     // The batch is one SQLite transaction. Do not cache a proposed result when the compare-and-swap updated zero rows.
-    database().prepare("INSERT INTO requests (id, case_id, body, created_at) SELECT ?, ?, ?, ? WHERE changes() = 1").bind(clean(requestId, 100), next.id, JSON.stringify(next), now),
+    database().prepare("INSERT INTO requests (id, case_id, body, created_at) SELECT ?, ?, ?, ? WHERE changes() = 1").bind(clean(requestId, 100), next.id, receipt, now),
   ]);
   if ((results[0].meta?.changes ?? 0) !== 1) throw new Error("This case changed. Read it again before continuing.");
   if ((results[1].meta?.changes ?? 0) !== 1) throw new Error("The case was saved but its request receipt is missing. Read the case before retrying.");
@@ -182,7 +189,7 @@ async function saveUpdated(caseRecord: FixProofCase, requestId: string, expected
 
 export async function startCase(input: { request_id: string; reported_issue: string; model: string; model_confirmed: boolean; fictional_demo: boolean }) {
   const requestId = clean(input.request_id, 100);
-  const prior = await cached(requestId);
+  const prior = await cached(requestId, "start_case", input);
   if (prior) return view(prior);
   if (!input.fictional_demo) throw new Error("The public endpoint accepts fictional evaluation cases only. Do not send real household or personal data.");
   if (!input.model_confirmed) throw new Error("Confirm the exact fictional model identity before starting.");
@@ -197,12 +204,12 @@ export async function startCase(input: { request_id: string; reported_issue: str
     latest_event: isHazard ? { kind: "safety", text: "Stop using the appliance and seek qualified help. No further troubleshooting check was selected." } : { kind: "intro", text: "Fictional case saved. Ask for one source-backed check." },
     ...(isHazard ? { safety_report: issue } : {}),
   };
-  return view(await saveNew(caseRecord, requestId));
+  return view(await saveNew(caseRecord, requestId, "start_case", input));
 }
 
 export async function askFixProof(input: { request_id: string; case_id: string; revision: number; user_message: string }) {
   const requestId = clean(input.request_id, 100);
-  const prior = await cached(requestId);
+  const prior = await cached(requestId, "ask_fixproof", input);
   if (prior) return view(prior);
   const caseRecord = await readCase(input.case_id);
   if (caseRecord.revision !== input.revision) throw new Error("This case changed. Read it again before continuing.");
@@ -211,25 +218,25 @@ export async function askFixProof(input: { request_id: string; case_id: string; 
   if (hazard(message)) {
     caseRecord.status = "Handover ready"; caseRecord.pending = null; caseRecord.safety_report = message;
     caseRecord.latest_event = { kind: "safety", text: "Stop using the appliance and seek qualified help. No further troubleshooting check was selected." };
-    return view(await saveUpdated(caseRecord, requestId, input.revision));
+    return view(await saveUpdated(caseRecord, requestId, input.revision, "ask_fixproof", input));
   }
   if (unsupportedIssue(`${caseRecord.issue} ${message}`)) {
     caseRecord.status = "Handover ready"; caseRecord.pending = null;
     caseRecord.scope_report = unsupportedIssue(message) ? message : caseRecord.issue;
     caseRecord.latest_event = { kind: "scope", text: "This reference set has no verified error-code, pump or hose diagnosis. No check was selected. Keep the reported issue in the handover for a qualified service conversation." };
-    return view(await saveUpdated(caseRecord, requestId, input.revision));
+    return view(await saveUpdated(caseRecord, requestId, input.revision, "ask_fixproof", input));
   }
   caseRecord.workflow ??= classify(`${caseRecord.issue} ${message}`);
   if (!caseRecord.workflow) {
     caseRecord.latest_event = { kind: "clarification", text: "Is the issue wet tableware, food remnants, detergent residue, removable streaks, knocking or rattling during the wash, rust spots on cutlery, irreversible glass clouding, an unpleasant interior odour, a door that will not close, or water left inside after a programme?" };
-    return view(await saveUpdated(caseRecord, requestId, input.revision));
+    return view(await saveUpdated(caseRecord, requestId, input.revision, "ask_fixproof", input));
   }
   const steps = stepsFor(caseRecord.model);
   if (!Object.values(steps).some((step) => step.workflow === caseRecord.workflow)) {
     caseRecord.status = "Handover ready";
     caseRecord.scope_report = `No verified ${caseRecord.workflow.replaceAll("_", " ")} guidance is mapped to this exact model.`;
     caseRecord.latest_event = { kind: "scope", text: "This issue is outside the verified paths for this exact model. No check was selected; keep the report for a qualified service conversation." };
-    return view(await saveUpdated(caseRecord, requestId, input.revision));
+    return view(await saveUpdated(caseRecord, requestId, input.revision, "ask_fixproof", input));
   }
   if (caseRecord.pending && steps[caseRecord.pending]) return view(caseRecord);
   const next = Object.entries(steps).find(([id, step]) => step.workflow === caseRecord.workflow && !caseRecord.attempts[id]);
@@ -240,12 +247,12 @@ export async function askFixProof(input: { request_id: string; case_id: string; 
     caseRecord.pending = next[0];
     caseRecord.latest_event = { kind: "check", text: `${next[1].title}. ${next[1].text}`, citations: citationsFor(caseRecord.model, next[1].pages) };
   }
-  return view(await saveUpdated(caseRecord, requestId, input.revision));
+  return view(await saveUpdated(caseRecord, requestId, input.revision, "ask_fixproof", input));
 }
 
 export async function recordOutcome(input: { request_id: string; case_id: string; revision: number; step_id: string; outcome: string; observation?: string }) {
   const requestId = clean(input.request_id, 100);
-  const prior = await cached(requestId);
+  const prior = await cached(requestId, "record_outcome", input);
   if (prior) return view(prior);
   const caseRecord = await readCase(input.case_id);
   if (caseRecord.revision !== input.revision) throw new Error("This case changed. Read it again before continuing.");
@@ -254,7 +261,7 @@ export async function recordOutcome(input: { request_id: string; case_id: string
   caseRecord.attempts[input.step_id] = { outcome: input.outcome, observation: clean(input.observation ?? "", 300), recorded_at: new Date().toISOString() };
   caseRecord.pending = null;
   caseRecord.latest_event = { kind: "outcome", text: `${input.step_id}: ${input.outcome}` };
-  return view(await saveUpdated(caseRecord, requestId, input.revision));
+  return view(await saveUpdated(caseRecord, requestId, input.revision, "record_outcome", input));
 }
 
 function sortForDigest(value: unknown): unknown {

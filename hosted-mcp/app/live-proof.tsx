@@ -21,7 +21,7 @@ type ProofVariant = "streaks" | "scope" | "retry";
 const proofStages: Record<ProofVariant, readonly string[]> = {
   streaks: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise cited-check persistence", "Recompute the evidence fingerprint"],
   scope: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise scope-boundary persistence", "Recompute the evidence fingerprint"],
-  retry: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Ignore the first response and retry safely", "Recompute the evidence fingerprint"],
+  retry: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Recover the lost response and reject changed input", "Recompute the evidence fingerprint"],
 };
 
 function sortForDigest(value: unknown): unknown {
@@ -163,11 +163,17 @@ export function LiveProof() {
           // commits: deliberately discard it, then recover using the same request ID.
           await callTool(7, "record_outcome", outcomeArgs, controller.signal);
           recorded = await callTool(8, "record_outcome", outcomeArgs, controller.signal);
-          restored = await callTool(9, "read_case", { case_id: started.case_id }, controller.signal);
-          handover = await callTool(10, "prepare_handover", { case_id: started.case_id }, controller.signal);
+          const conflict = await request(9, "tools/call", {
+            name: "record_outcome",
+            arguments: { ...outcomeArgs, observation: "Different fictional observation that must be rejected." },
+          }, controller.signal);
+          const conflictText = conflict.content?.find?.((item: { type: string }) => item.type === "text")?.text || "";
+          if (!conflict.isError || !conflictText.includes("different operation or input")) throw new Error("Changed input reused the request ID without a conflict.");
+          restored = await callTool(10, "read_case", { case_id: started.case_id }, controller.signal);
+          handover = await callTool(11, "prepare_handover", { case_id: started.case_id }, controller.signal);
           const savedOutcomes = Object.keys(restored.recorded_outcomes || {});
           if (savedOutcomes.length !== 1 || restored.revision !== recorded.revision) throw new Error("The retried mutation changed persisted case state.");
-          retry = `First successful response ignored · retry recovered revision ${recorded.revision} · one outcome persisted`;
+          retry = `First response ignored · exact retry recovered revision ${recorded.revision} · changed input rejected · one outcome persisted`;
         } else {
           recorded = await callTool(7, "record_outcome", outcomeArgs, controller.signal);
           restored = await callTool(8, "read_case", { case_id: started.case_id }, controller.signal);
@@ -233,7 +239,7 @@ export function LiveProof() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Zero-setup judge proof</p>
           <h2 id="live-proof-title" className="mt-3 text-3xl font-bold tracking-[-0.03em]">Call the live MCP now.</h2>
-          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Every path calls the production MCP endpoint, then shows the returned handover App. The boundary path prevents an unsupported error code from becoming guidance; the retry path deliberately ignores the first successful mutation response, retries with the same request ID, and checks that only one outcome persists.</p>
+          <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Every path calls the production MCP endpoint, then shows the returned handover App. The boundary path prevents an unsupported error code from becoming guidance; the retry path ignores the first successful mutation response, replays the exact request, rejects changed input under that request ID, and confirms that only one outcome persists.</p>
           <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
             {state === "running" ? "Running live proof…" : "Run live MCP proof"}
           </button>
