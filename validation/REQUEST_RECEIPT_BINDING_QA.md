@@ -25,6 +25,12 @@ The zero-setup retry proof now exercises all three properties through the produc
 
 Release 0.13.0 passed the four receipt tests, lint, production build and all 31 public-workflow checks. Actual Chrome ran the local Worker proof and visibly reported protocol 2025-11-25, five tools, the MCP App, exact-retry recovery at revision 2, changed-input rejection, one persisted deferred outcome, pages 45 and 24, and a matching 64-digit fingerprint. The rendered handover retained the original fixed fictional observation rather than the rejected replacement. The browser console contained no warnings or errors.
 
+## Production verification
+
+Main commit `082646369d6a1561962abbbc7e9a3f213c95c64d` was pushed to the public repository. Its `hosted-mcp` source became Sites commit `66f8faab92ae0da64939f10241925f82b19d3460`, MCP Site version 37, and successful deployment `appgdep_6ad1d33bfd0c819182add64940f56ac8`. The Site remained public.
+
+Actual production Chrome ran the proof against `https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp`. It visibly reported release 0.13.0, protocol 2025-11-25, five tools, the MCP App, exact-retry recovery at revision 2, changed-input rejection, one persisted deferred outcome, pages 45 and 24, and browser-side SHA-256 agreement. The rendered App kept `Fictional browser proof; no appliance was inspected.` and did not show the rejected replacement. The browser console contained no warnings or errors.
+
 ## Boundary
 
 This proves receipt binding and replay behaviour for the tested fixed fictional mutation. It does not authenticate a client, sign a receipt, force a network connection to drop at the commit boundary, prove general availability, or establish any appliance outcome.
