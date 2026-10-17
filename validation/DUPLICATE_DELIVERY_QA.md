@@ -16,6 +16,12 @@ The zero-setup retry proof now sends two identical `record_outcome` requests con
 
 Release 0.14.0 passed the four payload-bound receipt tests, lint, production build and all 31 public-workflow checks. Actual Chrome ran the local Worker proof and visibly reported protocol 2025-11-25, five tools, the MCP App, two overlapping deliveries converged on revision 2, the exact replay recovered it, changed input was rejected, one deferred outcome persisted, pages 45 and 24, and the browser-recomputed SHA-256 matched the returned evidence.
 
+## Production verification
+
+Main commit `86ae3178b2f5899d9a94108fdce4942a59fdcdba` was pushed to the public repository. The current-release wording was published as public evaluation Site version 72 in successful deployment `appgdep_6ad32628c62c819195994a3bbf8fdc67`. The `hosted-mcp` source became Sites commit `e1a394f63d1e8992c3cb5678790d24a69045ec1c`, MCP Site version 38 and successful deployment `appgdep_6ad3273fa87c8191be48148646581102`. Both Sites remained public.
+
+Actual production Chrome showed release 0.14.0 and ran the retry proof against the public Streamable HTTP endpoint. It visibly reported protocol 2025-11-25, five discovered tools, the loaded MCP App, both overlapping deliveries converged on revision 2, the later exact replay recovered that result, changed input was rejected, and one deferred outcome persisted. Pages 45 and 24 were retained, the browser-recomputed SHA-256 matched, and the rendered App showed the original fictional observation plus the no-inspection and no-diagnosis limits. The public evaluation page visibly described the same overlapping-delivery proof and linked to it.
+
 ## Evidence boundary
 
 The browser sends two requests concurrently, but it cannot force a particular internal scheduling interleaving. A passing run demonstrates the production endpoint's result for that overlapping client pattern; it is not a load, availability, or distributed-systems benchmark. All data is fixed and fictional.
