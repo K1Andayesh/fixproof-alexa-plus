@@ -281,6 +281,7 @@ test('judge map exposes the optional friction-log evidence',()=>{
 test('technical evidence routes judges directly to the retry-safety proof',()=>{
  assert.match(page,/https:\/\/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#retry-proof/);
  assert.match(page,/Run protocol, persistence and retry-safety proofs/);
+ assert.match(page,/overlapping copies of one mutation/);
  assert.match(page,/confirms that only one outcome persists/);
 });
 

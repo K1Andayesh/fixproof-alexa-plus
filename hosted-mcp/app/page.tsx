@@ -21,7 +21,7 @@ export default function Home() {
             <code className="mt-3 block break-all text-base font-semibold text-[#163a31]">https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp</code>
             <p className="mt-3 text-sm leading-6 text-[#61766e]">Protocol 2025-11-25 and later · native Sites MCP capability · JSON responses · fictional evaluation cases only</p>
             <p className="mt-2 text-sm leading-6 text-[#61766e]">The public <code className="font-semibold">/api/mcp</code> route needs no login. The same five-tool server is exposed at <code className="font-semibold">/mcp</code> with Sites-managed authentication.</p>
-            <a className="mt-4 inline-block text-sm font-semibold underline underline-offset-4" href="/readiness?release=0.13.0" target="_blank" rel="noreferrer">Verify D1 readiness without writing data ↗</a>
+            <a className="mt-4 inline-block text-sm font-semibold underline underline-offset-4" href="/readiness?release=0.14.0" target="_blank" rel="noreferrer">Verify D1 readiness without writing data ↗</a>
           </div>
         </div>
 
@@ -36,7 +36,7 @@ export default function Home() {
             ))}
           </ol>
           <div className="mt-7 border-t border-white/15 pt-6 text-sm leading-6 text-[#d3e1db]">
-            Three Bosch models with ten paths each · one Electrolux model with eight source-backed paths · revision checks · idempotent request IDs · D1 persistence · self-contained MCP App · SHA-256 evidence fingerprint
+            Three Bosch models with ten paths each · one Electrolux model with eight source-backed paths · revision checks · duplicate-delivery convergence · D1 persistence · self-contained MCP App · SHA-256 evidence fingerprint
           </div>
           <div className="mt-5 rounded-xl bg-[#dff1b7] p-4 text-sm font-semibold leading-6 text-[#163a31]">
             This endpoint refuses non-fictional cases. It does not diagnose faults, inspect appliances, or claim repair success.

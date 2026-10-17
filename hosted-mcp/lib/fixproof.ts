@@ -166,10 +166,19 @@ export async function readCase(id: string): Promise<FixProofCase> {
 async function saveNew(caseRecord: FixProofCase, requestId: string, operation: string, input: unknown): Promise<FixProofCase> {
   const now = new Date().toISOString();
   const receipt = await makeRequestReceipt(operation, input, caseRecord);
-  await database().batch([
-    database().prepare("INSERT INTO cases (id, revision, body, created_at) VALUES (?, ?, ?, ?)").bind(caseRecord.id, caseRecord.revision, JSON.stringify(caseRecord), now),
-    database().prepare("INSERT INTO requests (id, case_id, body, created_at) VALUES (?, ?, ?, ?)").bind(clean(requestId, 100), caseRecord.id, receipt, now),
-  ]);
+  try {
+    await database().batch([
+      database().prepare("INSERT INTO cases (id, revision, body, created_at) VALUES (?, ?, ?, ?)").bind(caseRecord.id, caseRecord.revision, JSON.stringify(caseRecord), now),
+      database().prepare("INSERT INTO requests (id, case_id, body, created_at) VALUES (?, ?, ?, ?)").bind(clean(requestId, 100), caseRecord.id, receipt, now),
+    ]);
+  } catch (error) {
+    // Two identical deliveries can both miss the receipt before either commits.
+    // If the other delivery won, return its bound result instead of surfacing a
+    // uniqueness error. A changed payload still fails closed inside cached().
+    const replay = await cached(requestId, operation, input);
+    if (replay) return replay;
+    throw error;
+  }
   return caseRecord;
 }
 
@@ -177,12 +186,25 @@ async function saveUpdated(caseRecord: FixProofCase, requestId: string, expected
   const next = { ...caseRecord, revision: expectedRevision + 1 };
   const now = new Date().toISOString();
   const receipt = await makeRequestReceipt(operation, input, next);
-  const results = await database().batch([
-    database().prepare("UPDATE cases SET revision = ?, body = ? WHERE id = ? AND revision = ?").bind(next.revision, JSON.stringify(next), next.id, expectedRevision),
-    // The batch is one SQLite transaction. Do not cache a proposed result when the compare-and-swap updated zero rows.
-    database().prepare("INSERT INTO requests (id, case_id, body, created_at) SELECT ?, ?, ?, ? WHERE changes() = 1").bind(clean(requestId, 100), next.id, receipt, now),
-  ]);
-  if ((results[0].meta?.changes ?? 0) !== 1) throw new Error("This case changed. Read it again before continuing.");
+  let results;
+  try {
+    results = await database().batch([
+      database().prepare("UPDATE cases SET revision = ?, body = ? WHERE id = ? AND revision = ?").bind(next.revision, JSON.stringify(next), next.id, expectedRevision),
+      // The batch is one SQLite transaction. Do not cache a proposed result when the compare-and-swap updated zero rows.
+      database().prepare("INSERT INTO requests (id, case_id, body, created_at) SELECT ?, ?, ?, ? WHERE changes() = 1").bind(clean(requestId, 100), next.id, receipt, now),
+    ]);
+  } catch (error) {
+    const replay = await cached(requestId, operation, input);
+    if (replay) return replay;
+    throw error;
+  }
+  if ((results[0].meta?.changes ?? 0) !== 1) {
+    // A simultaneous exact duplicate can lose the compare-and-swap after the
+    // winner has committed its bound receipt. Converge on that same result.
+    const replay = await cached(requestId, operation, input);
+    if (replay) return replay;
+    throw new Error("This case changed. Read it again before continuing.");
+  }
   if ((results[1].meta?.changes ?? 0) !== 1) throw new Error("The case was saved but its request receipt is missing. Read the case before retrying.");
   return next;
 }
