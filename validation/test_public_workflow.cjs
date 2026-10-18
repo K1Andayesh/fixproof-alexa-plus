@@ -264,10 +264,10 @@ test('judge evidence routes support keyboard navigation',()=>{
 });
 
 test('Devpost visitors get a dated current-release route',()=>{
- assert.match(page,/CURRENT RELEASE · 1 OCTOBER 2026/);
+ assert.match(page,/CURRENT RELEASE · 18 OCTOBER 2026/);
  assert.match(page,/Arriving from Devpost\? Start with the current evidence\./);
  assert.match(page,/href="#demo-title"/);
- assert.match(page,/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#retry-proof/);
+ assert.match(page,/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#judge-suite-proof/);
  assert.match(page,/github\.com\/K1Andayesh\/fixproof-alexa-plus/);
 });
 
@@ -278,11 +278,11 @@ test('judge map exposes the optional friction-log evidence',()=>{
  assert.match(page,/github\.com\/K1Andayesh\/fixproof-alexa-plus\/blob\/main\/FRICTION_LOG\.md/);
 });
 
-test('technical evidence routes judges directly to the retry-safety proof',()=>{
- assert.match(page,/https:\/\/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#retry-proof/);
- assert.match(page,/Run protocol, persistence and retry-safety proofs/);
- assert.match(page,/overlapping copies of one mutation/);
- assert.match(page,/confirms that only one outcome persists/);
+test('technical evidence routes judges directly to the complete MCP judge suite',()=>{
+ assert.match(page,/https:\/\/fixproof-mcp\.keyvan-andayesh\.chatgpt\.site\/#judge-suite-proof/);
+ assert.match(page,/Run complete live MCP judge suite/);
+ assert.match(page,/exercises three fixed fictional cases/);
+ assert.match(page,/recomputes every evidence fingerprint in the browser/);
 });
 
 test('open-source mini-challenge evidence supplies every required identity and link',()=>{

@@ -18,6 +18,18 @@ type Proof = {
 
 type ProofVariant = "streaks" | "scope" | "retry";
 
+type ProofRun = {
+  proof: Proof;
+  appHtml: string;
+  handover: Record<string, unknown>;
+};
+
+const proofLabels: Record<ProofVariant, string> = {
+  streaks: "Cited continuity",
+  scope: "Scope boundary",
+  retry: "Delivery safety",
+};
+
 const proofStages: Record<ProofVariant, readonly string[]> = {
   streaks: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise cited-check persistence", "Recompute the evidence fingerprint"],
   scope: ["Negotiate MCP protocol", "Discover five tools and the MCP App", "Exercise scope-boundary persistence", "Recompute the evidence fingerprint"],
@@ -78,10 +90,11 @@ export function LiveProof() {
   const [phase, setPhase] = useState(0);
   const [variant, setVariant] = useState<ProofVariant>("streaks");
   const [proof, setProof] = useState<Proof | null>(null);
+  const [suite, setSuite] = useState<Array<{ variant: ProofVariant; proof: Proof }>>([]);
   const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
-  async function run(selectedVariant: ProofVariant) {
+  async function run(selectedVariant: ProofVariant, suiteMode = false): Promise<ProofRun | null> {
     const controller = new AbortController();
     abortReason.current = null;
     activeProof.current = controller;
@@ -89,19 +102,22 @@ export function LiveProof() {
       abortReason.current = "timeout";
       controller.abort();
     }, 15_000);
-    setState("running");
-    setPhase(1);
-    setVariant(selectedVariant);
-    setProof(null);
-    setAppView(null);
-    setError("");
+    if (!suiteMode) {
+      setState("running");
+      setPhase(1);
+      setVariant(selectedVariant);
+      setProof(null);
+      setSuite([]);
+      setAppView(null);
+      setError("");
+    }
     try {
       const initialized = await request(1, "initialize", {
         protocolVersion: "2025-11-25",
         capabilities: {},
         clientInfo: { name: "FixProof browser judge probe", version: "1.0.0" },
       }, controller.signal);
-      setPhase(2);
+      if (!suiteMode) setPhase(2);
       const listed = await request(2, "tools/list", {}, controller.signal);
       const expectedTools = ["ask_fixproof", "prepare_handover", "read_case", "record_outcome", "start_case"];
       const discoveredTools = listed.tools.map((item: { name: string }) => item.name).sort();
@@ -112,7 +128,7 @@ export function LiveProof() {
       const appContents = await request(4, "resources/read", { uri: app.uri }, controller.signal);
       const appHtml = appContents.contents?.[0]?.text;
       if (typeof appHtml !== "string" || !appHtml.includes("FixProof repair handover")) throw new Error("The handover MCP App did not load.");
-      setPhase(3);
+      if (!suiteMode) setPhase(3);
 
       const started = await callTool(5, "start_case", {
         request_id: crypto.randomUUID(),
@@ -192,7 +208,7 @@ export function LiveProof() {
         continuity = `${recorded.evidence_summary.deferred_or_skipped} deferred · restored by read_case`;
       }
 
-      setPhase(4);
+      if (!suiteMode) setPhase(4);
       const integrity = handover.evidence_integrity;
       if (integrity?.algorithm !== "sha256" || integrity?.canonicalization !== "fixproof-sorted-json-v1" || integrity?.covers !== "evidence" || integrity?.authorship_proof !== false) {
         throw new Error("The handover fingerprint declaration was missing or unsupported.");
@@ -200,7 +216,7 @@ export function LiveProof() {
       const recomputedDigest = await evidenceSha256(handover.evidence);
       if (recomputedDigest !== integrity.digest) throw new Error("The browser-recomputed evidence fingerprint did not match the handover.");
 
-      setProof({
+      const proofResult: Proof = {
         protocol: initialized.protocolVersion,
         server: initialized.serverInfo.version,
         tools: listed.tools.length,
@@ -212,11 +228,15 @@ export function LiveProof() {
         integrity: "Browser recomputation matched the returned evidence",
         scope,
         retry,
-      });
+      };
+      if (suiteMode) return { proof: proofResult, appHtml, handover };
+      setProof(proofResult);
       setAppView({ html: appHtml, handover });
       setPhase(5);
       setState("passed");
+      return { proof: proofResult, appHtml, handover };
     } catch (reason) {
+      if (suiteMode) throw reason;
       setError(
         abortReason.current === "timeout"
           ? "The production endpoint did not complete within 15 seconds. No result was claimed; try again."
@@ -228,6 +248,43 @@ export function LiveProof() {
     } finally {
       window.clearTimeout(timeout);
       if (activeProof.current === controller) activeProof.current = null;
+    }
+  }
+
+  async function runSuite() {
+    abortReason.current = null;
+    setState("running");
+    setVariant("streaks");
+    setPhase(1);
+    setProof(null);
+    setSuite([]);
+    setAppView(null);
+    setError("");
+    try {
+      const results: Array<{ variant: ProofVariant; proof: Proof }> = [];
+      let finalRun: ProofRun | null = null;
+      for (const selectedVariant of ["streaks", "scope", "retry"] as const) {
+        setVariant(selectedVariant);
+        setPhase(1);
+        finalRun = await run(selectedVariant, true);
+        if (!finalRun) throw new Error(`${proofLabels[selectedVariant]} did not return a result.`);
+        results.push({ variant: selectedVariant, proof: finalRun.proof });
+        setSuite([...results]);
+      }
+      if (!finalRun) throw new Error("The judge suite returned no result.");
+      setProof(finalRun.proof);
+      setAppView({ html: finalRun.appHtml, handover: finalRun.handover });
+      setPhase(5);
+      setState("passed");
+    } catch (reason) {
+      setError(
+        abortReason.current === "timeout"
+          ? "A live suite case did not complete within 15 seconds. No suite pass was claimed; try again."
+          : abortReason.current === "stopped"
+            ? "Suite stopped before completion. No suite pass was claimed; run it again when ready."
+            : reason instanceof Error ? reason.message : "The live judge suite failed.",
+      );
+      setState("failed");
     }
   }
 
@@ -246,8 +303,11 @@ export function LiveProof() {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#6a857a]">Zero-setup judge proof</p>
           <h2 id="live-proof-title" className="mt-3 text-3xl font-bold tracking-[-0.03em]">Call the live MCP now.</h2>
           <p className="mt-4 leading-7 text-[#52645b]">Choose a fixed fictional case. Every path calls the production MCP endpoint, then shows the returned handover App. The boundary path prevents an unsupported error code from becoming guidance; the retry path sends two overlapping copies of one mutation, replays the exact request, rejects changed input under that request ID, and confirms that only one outcome persists.</p>
-          <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
-            {state === "running" ? "Running live proof…" : "Run live MCP proof"}
+          <button id="judge-suite-proof" onClick={runSuite} disabled={state === "running"} className="mt-6 rounded-full bg-[#163a31] px-6 py-3 font-semibold text-white disabled:cursor-wait disabled:opacity-60">
+            {state === "running" ? "Running live proof…" : "Run complete judge suite"}
+          </button>
+          <button onClick={() => run("streaks")} disabled={state === "running"} className="mt-3 block rounded-full border border-[#a8c3b4] bg-white px-6 py-3 font-semibold text-[#163a31] disabled:cursor-wait disabled:opacity-60">
+            Run cited continuity proof
           </button>
           <button onClick={() => run("scope")} disabled={state === "running"} className="mt-3 block rounded-full border border-[#a8c3b4] bg-white px-6 py-3 font-semibold text-[#163a31] disabled:cursor-wait disabled:opacity-60">
             Run scope boundary proof
@@ -268,7 +328,18 @@ export function LiveProof() {
           {state === "failed" && <p className="text-sm font-semibold text-[#8a352c]">Proof failed: {error}</p>}
           {state === "passed" && proof && (
             <div>
-              <p className="font-bold text-[#1d6848]">Live proof passed</p>
+              <p className="font-bold text-[#1d6848]">{suite.length === 3 ? "Complete judge suite passed · 3/3" : "Live proof passed"}</p>
+              {suite.length === 3 && (
+                <ul className="mt-4 grid gap-2" aria-label="Judge suite results">
+                  {suite.map((result) => (
+                    <li key={result.variant} className="rounded-xl border border-[#c9d5cf] bg-white px-4 py-3 text-sm">
+                      <strong className="text-[#1d6848]">✓ {proofLabels[result.variant]}</strong>
+                      <span className="mt-1 block text-[#52645b]">{result.proof.scope || result.proof.retry || `${result.proof.check} · pages ${result.proof.pages} · ${result.proof.continuity}`}</span>
+                      <span className="mt-1 block text-xs text-[#6a7b74]">Browser fingerprint recomputation matched</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                 <div><dt className="text-[#6a7b74]">Protocol · server</dt><dd className="font-semibold">{proof.protocol} · {proof.server}</dd></div>
                 <div><dt className="text-[#6a7b74]">Discovery</dt><dd className="font-semibold">{proof.tools} tools · MCP App loaded</dd></div>
