@@ -24,4 +24,9 @@ Verified locally on 18 October 2026:
 - 31 public-workflow tests passed
 - Chrome ran the real local UI and displayed **Complete judge suite passed · 3/3**, with all three result rows and matched browser fingerprint recomputation
 
-The final production Site version and deployment IDs are appended after deployment.
+Verified in production Chrome on 18 October 2026:
+
+- main Site version 73, deployment `appgdep_6ad478919b788191a7cfcf0a87c609a5`, succeeded
+- MCP Site version 39, deployment `appgdep_6ad478a461f88191ad09dfa2b7a913e0`, succeeded with MCP capability
+- the main Site showed the 18 October release route to `#judge-suite-proof`
+- the MCP Site showed readiness release `0.15.0` and completed the real production suite with **3/3 passed**
