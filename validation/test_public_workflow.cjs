@@ -283,6 +283,7 @@ test('technical evidence routes judges directly to the complete MCP judge suite'
  assert.match(page,/Run complete live MCP judge suite/);
  assert.match(page,/exercises three fixed fictional cases/);
  assert.match(page,/recomputes every evidence fingerprint in the browser/);
+ assert.match(page,/exports a reviewable JSON proof report/);
 });
 
 test('open-source mini-challenge evidence supplies every required identity and link',()=>{

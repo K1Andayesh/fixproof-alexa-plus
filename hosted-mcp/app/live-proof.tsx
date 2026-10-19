@@ -295,6 +295,28 @@ export function LiveProof() {
 
   const exportCaseId = typeof appView?.handover.case_id === "string" ? appView.handover.case_id.slice(0, 8) : "fictional";
   const exportHref = appView ? `data:application/json;charset=utf-8,${encodeURIComponent(`${JSON.stringify(appView.handover, null, 2)}\n`)}` : "";
+  const suiteReport = suite.length === 3 ? {
+    schema_version: "fixproof-judge-suite-v1",
+    generated_at: new Date().toISOString(),
+    endpoint: "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
+    protocol: suite[0].proof.protocol,
+    server: suite[0].proof.server,
+    tools_discovered: suite[0].proof.tools,
+    fictional_demo_only: true,
+    cases: suite.map((result) => ({
+      id: result.variant,
+      title: proofLabels[result.variant],
+      result: "passed",
+      evidence: result.proof.scope || result.proof.retry || `${result.proof.check} · pages ${result.proof.pages} · ${result.proof.continuity}`,
+      fingerprint: result.proof.fingerprint,
+      browser_recomputation: "matched",
+    })),
+    limits: [
+      "Fixed fictional cases only",
+      "No appliance inspection, diagnosis, repair result, customer validation, or authorship proof",
+    ],
+  } : null;
+  const suiteReportHref = suiteReport ? `data:application/json;charset=utf-8,${encodeURIComponent(`${JSON.stringify(suiteReport, null, 2)}\n`)}` : "";
 
   return (
     <section className="mx-auto max-w-6xl px-6 pb-16 lg:px-10" aria-labelledby="live-proof-title">
@@ -330,15 +352,21 @@ export function LiveProof() {
             <div>
               <p className="font-bold text-[#1d6848]">{suite.length === 3 ? "Complete judge suite passed · 3/3" : "Live proof passed"}</p>
               {suite.length === 3 && (
-                <ul className="mt-4 grid gap-2" aria-label="Judge suite results">
-                  {suite.map((result) => (
-                    <li key={result.variant} className="rounded-xl border border-[#c9d5cf] bg-white px-4 py-3 text-sm">
-                      <strong className="text-[#1d6848]">✓ {proofLabels[result.variant]}</strong>
-                      <span className="mt-1 block text-[#52645b]">{result.proof.scope || result.proof.retry || `${result.proof.check} · pages ${result.proof.pages} · ${result.proof.continuity}`}</span>
-                      <span className="mt-1 block text-xs text-[#6a7b74]">Browser fingerprint recomputation matched</span>
-                    </li>
-                  ))}
-                </ul>
+                <>
+                  <ul className="mt-4 grid gap-2" aria-label="Judge suite results">
+                    {suite.map((result) => (
+                      <li key={result.variant} className="rounded-xl border border-[#c9d5cf] bg-white px-4 py-3 text-sm">
+                        <strong className="text-[#1d6848]">✓ {proofLabels[result.variant]}</strong>
+                        <span className="mt-1 block text-[#52645b]">{result.proof.scope || result.proof.retry || `${result.proof.check} · pages ${result.proof.pages} · ${result.proof.continuity}`}</span>
+                        <span className="mt-1 block text-xs text-[#6a7b74]">Browser fingerprint recomputation matched</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a id="download-judge-suite" href={suiteReportHref} download="fixproof-live-judge-suite.json" className="mt-4 inline-block rounded-full bg-[#163a31] px-5 py-2.5 text-sm font-semibold text-white">
+                    Download verified suite report
+                  </a>
+                  <p className="mt-2 text-xs leading-5 text-[#6a7b74]">Generated in this browser from the three live results. It includes each returned fingerprint and the proof limits.</p>
+                </>
               )}
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                 <div><dt className="text-[#6a7b74]">Protocol · server</dt><dd className="font-semibold">{proof.protocol} · {proof.server}</dd></div>
