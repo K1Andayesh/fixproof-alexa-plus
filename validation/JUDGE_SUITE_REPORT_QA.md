@@ -25,4 +25,9 @@ Verified locally on 19 October 2026:
 - Chrome completed the real three-case suite and exposed **Download verified suite report**
 - the browser-generated JSON used schema `fixproof-judge-suite-v1`, server `0.16.0`, five tools, all three expected case IDs, three 64-character fingerprints, three matched recomputations, and two explicit limit statements
 
-Production Chrome verification, Site versions, and deployment identifiers are appended after deployment.
+Verified in production Chrome on 19 October 2026:
+
+- main Site version 74, deployment `appgdep_6ad5ca1e2c30819197d573e612ae107c`, succeeded
+- MCP Site version 40, deployment `appgdep_6ad5ca30f5d88191a24ca4505442ddc3`, succeeded with MCP capability
+- the main Site described the downloadable JSON proof report and routed to the live suite
+- the production suite passed 3/3 on server `0.16.0`; its downloadable report met the complete contract above
