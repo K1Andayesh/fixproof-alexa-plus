@@ -27,12 +27,13 @@ Verified locally on 20 October 2026:
 - the browser-generated JSON used schema `fixproof-judge-suite-v1`, server `0.17.0`, all three expected case IDs, three complete evidence objects, three integrity declarations, and two explicit limit statements
 - an independent browser recomputation of all three canonical evidence objects matched both digest fields, and the report exposed the repository verifier URL
 
-Verified in production Chrome on 19 October 2026:
+Verified in production Chrome on 20 October 2026:
 
-- main Site version 74, deployment `appgdep_6ad5ca1e2c30819197d573e612ae107c`, succeeded
-- MCP Site version 40, deployment `appgdep_6ad5ca30f5d88191a24ca4505442ddc3`, succeeded with MCP capability
-- the main Site described the downloadable JSON proof report and routed to the live suite
-- the production suite passed 3/3 on server `0.16.0`; its downloadable report met the complete contract above
+- main Site version 75, deployment `appgdep_6ad71b5919888191a12b89d798776f2d`, succeeded
+- MCP Site version 43, deployment `appgdep_6ad71d50de6c819185f5479ffcd54205`, succeeded with MCP capability
+- the main Site described the self-contained JSON proof report, stated that its evidence fingerprints can be independently recomputed, and routed to the live suite
+- the production suite passed 3/3 on server `0.17.0`; its report contained five-tool discovery, all three complete evidence objects and integrity declarations, the verifier URL, and the explicit limits
+- an independent browser recomputation matched both digest fields for all three production evidence objects
 
 
 ## Independent verification
