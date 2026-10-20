@@ -24,6 +24,12 @@ type ProofRun = {
   handover: Record<string, unknown>;
 };
 
+type SuiteCase = {
+  variant: ProofVariant;
+  proof: Proof;
+  handover: Record<string, unknown>;
+};
+
 const proofLabels: Record<ProofVariant, string> = {
   streaks: "Cited continuity",
   scope: "Scope boundary",
@@ -90,7 +96,7 @@ export function LiveProof() {
   const [phase, setPhase] = useState(0);
   const [variant, setVariant] = useState<ProofVariant>("streaks");
   const [proof, setProof] = useState<Proof | null>(null);
-  const [suite, setSuite] = useState<Array<{ variant: ProofVariant; proof: Proof }>>([]);
+  const [suite, setSuite] = useState<SuiteCase[]>([]);
   const [appView, setAppView] = useState<{ html: string; handover: Record<string, unknown> } | null>(null);
   const [error, setError] = useState("");
 
@@ -261,14 +267,14 @@ export function LiveProof() {
     setAppView(null);
     setError("");
     try {
-      const results: Array<{ variant: ProofVariant; proof: Proof }> = [];
+      const results: SuiteCase[] = [];
       let finalRun: ProofRun | null = null;
       for (const selectedVariant of ["streaks", "scope", "retry"] as const) {
         setVariant(selectedVariant);
         setPhase(1);
         finalRun = await run(selectedVariant, true);
         if (!finalRun) throw new Error(`${proofLabels[selectedVariant]} did not return a result.`);
-        results.push({ variant: selectedVariant, proof: finalRun.proof });
+        results.push({ variant: selectedVariant, proof: finalRun.proof, handover: finalRun.handover });
         setSuite([...results]);
       }
       if (!finalRun) throw new Error("The judge suite returned no result.");
@@ -299,6 +305,7 @@ export function LiveProof() {
     schema_version: "fixproof-judge-suite-v1",
     generated_at: new Date().toISOString(),
     endpoint: "https://fixproof-mcp.keyvan-andayesh.chatgpt.site/api/mcp",
+    verifier: "https://github.com/K1Andayesh/fixproof-alexa-plus/blob/main/validation/verify_judge_suite_report.cjs",
     protocol: suite[0].proof.protocol,
     server: suite[0].proof.server,
     tools_discovered: suite[0].proof.tools,
@@ -307,7 +314,9 @@ export function LiveProof() {
       id: result.variant,
       title: proofLabels[result.variant],
       result: "passed",
-      evidence: result.proof.scope || result.proof.retry || `${result.proof.check} · pages ${result.proof.pages} · ${result.proof.continuity}`,
+      summary: result.proof.scope || result.proof.retry || `${result.proof.check} · pages ${result.proof.pages} · ${result.proof.continuity}`,
+      evidence: result.handover.evidence,
+      evidence_integrity: result.handover.evidence_integrity,
       fingerprint: result.proof.fingerprint,
       browser_recomputation: "matched",
     })),
@@ -365,7 +374,10 @@ export function LiveProof() {
                   <a id="download-judge-suite" href={suiteReportHref} download="fixproof-live-judge-suite.json" className="mt-4 inline-block rounded-full bg-[#163a31] px-5 py-2.5 text-sm font-semibold text-white">
                     Download verified suite report
                   </a>
-                  <p className="mt-2 text-xs leading-5 text-[#6a7b74]">Generated in this browser from the three live results. It includes each returned fingerprint and the proof limits.</p>
+                  <a href="https://github.com/K1Andayesh/fixproof-alexa-plus/blob/main/validation/verify_judge_suite_report.cjs" target="_blank" rel="noopener" className="mt-3 block text-sm font-semibold text-[#163a31] underline underline-offset-4">
+                    Inspect the offline suite verifier ↗
+                  </a>
+                  <p className="mt-2 text-xs leading-5 text-[#6a7b74]">Generated in this browser from the three live results. It includes each complete evidence object, its fingerprint declaration, and the proof limits so every digest can be independently recomputed.</p>
                 </>
               )}
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
